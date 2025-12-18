@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>115學年度機械群甄選入學查詢系統</title>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f0f4f8; }
+        .table-header { @apply px-4 py-3 text-left text-xs font-bold text-slate-600 uppercase tracking-wider bg-slate-100 border-b border-slate-200; }
+        .table-cell { @apply px-4 py-4 text-sm text-slate-700 border-b border-slate-100 align-top; }
+        .badge { @apply px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-md; }
+        .filter-btn { @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border shadow-sm flex items-center justify-center; }
+        .filter-btn-active { @apply bg-blue-600 text-white border-blue-600 ring-2 ring-blue-200; }
+        .filter-btn-inactive { @apply bg-white text-gray-600 border-gray-300 hover:bg-gray-50; }
+        .info-card { @apply bg-white p-4 rounded-lg shadow-sm border border-slate-200 text-sm text-gray-600 mb-6; }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+    // ============================================================
+    // 資料庫 - 機械群 (01)
+    // 資料來源：115學年度四技甄選簡章資料.csv & 114學年度篩選標準.pdf
+    // ============================================================
+    const admissionsData = [
+  {
+    "id": "101001",
+    "group": "01 機械群",
+    "school": "國立臺灣科技大學",
+    "dept": "機械工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [
+      "總級分(59)",
+      "總級分(48)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "101003",
+    "group": "01 機械群",
+    "school": "國立臺灣科技大學",
+    "dept": "材料科學與工程系",
+    "ratios": {
+      "chi": 3,
+      "eng": 4,
+      "math": 3,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [
+      "英文數學(27)",
+      "國文(12)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "102001",
+    "group": "01 機械群",
+    "school": "國立雲林科技大學",
+    "dept": "機械工程系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "102002",
+    "group": "01 機械群",
+    "school": "國立雲林科技大學",
+    "dept": "環境與安全衛生工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "102003",
+    "group": "01 機械群",
+    "school": "國立雲林科技大學",
+    "dept": "營建工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "102004",
+    "group": "01 機械群",
+    "school": "國立雲林科技大學",
+    "dept": "工業工程與管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "102005",
+    "group": "01 機械群",
+    "school": "國立雲林科技大學",
+    "dept": "工業設計系",
+    "ratios": {
+      "chi": 8,
+      "eng": 8,
+      "math": 8,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "102006",
+    "group": "01 機械群",
+    "school": "國立雲林科技大學",
+    "dept": "智慧機器人學士學位學程",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "103001",
+    "group": "01 機械群",
+    "school": "國立屏東科技大學",
+    "dept": "機械工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "103002",
+    "group": "01 機械群",
+    "school": "國立屏東科技大學",
+    "dept": "生物機電工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "103003",
+    "group": "01 機械群",
+    "school": "國立屏東科技大學",
+    "dept": "材料工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "103004",
+    "group": "01 機械群",
+    "school": "國立屏東科技大學",
+    "dept": "智慧機電學士學位學程",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "104001",
+    "group": "01 機械群",
+    "school": "國立臺北科技大學",
+    "dept": "機械工程系",
+    "ratios": {
+      "chi": 4,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "104002",
+    "group": "01 機械群",
+    "school": "國立臺北科技大學",
+    "dept": "能源與冷凍空調工程系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "104003",
+    "group": "01 機械群",
+    "school": "國立臺北科技大學",
+    "dept": "材料及資源工程系材料組",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "104004",
+    "group": "01 機械群",
+    "school": "國立臺北科技大學",
+    "dept": "材料及資源工程系資源組",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "104005",
+    "group": "01 機械群",
+    "school": "國立臺北科技大學",
+    "dept": "工業工程與管理系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105001",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "工業工程與管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105002",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "機械工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105003",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "機械工程系智能系統與控制組",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105004",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "機械工程系微奈米技術組",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105005",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "模具工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105006",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "模具工程系光電模具組",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105007",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "模具工程系精微模具組",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105008",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "機電工程系精密機械組",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105009",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "機電工程系智動化組",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105010",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "能源與冷凍空調工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105011",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "車輛工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105012",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "工業設計系",
+    "ratios": {
+      "chi": 8,
+      "eng": 8,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105013",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "造船及海洋工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105014",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "航運技術系",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105015",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "輪機工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3, "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105099",
+    "group": "01 機械群",
+    "school": "國立高雄科技大學",
+    "dept": "高瞻科技不分系學士學位學程",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 0
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": false
+    }
+  },
+  {
+    "id": "107001",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "機械與電腦輔助工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107002",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "材料科學與工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107003",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "機械設計工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107004",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "動力機械工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107005",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "自動化工程系",
+    "ratios": {
+      "chi": 6,
+      "eng": 0,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107006",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "飛機工程系機械組",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107007",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "飛機工程系機械組(1)",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107008",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "工業管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107099",
+    "group": "01 機械群",
+    "school": "國立虎尾科技大學",
+    "dept": "臥虎專班(願景計畫)",
+    "ratios": {
+      "chi": 3,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "110001",
+    "group": "01 機械群",
+    "school": "國立勤益科技大學",
+    "dept": "機械工程系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "110002",
+    "group": "01 機械群",
+    "school": "國立勤益科技大學",
+    "dept": "冷凍空調與能源系能源應用組",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "110003",
+    "group": "01 機械群",
+    "school": "國立勤益科技大學",
+    "dept": "冷凍空調與能源系環境控制組",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "110004", "group": "01 機械群",
+    "school": "國立勤益科技大學",
+    "dept": "工業工程與管理系",
+    "ratios": {
+      "chi": 5,
+      "eng": 0,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "110005", "group": "01 機械群",
+    "school": "國立勤益科技大學",
+    "dept": "智慧自動化工程系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 0
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": false
+    }
+  },
+  {
+    "id": "111001",
+    "group": "01 機械群",
+    "school": "國立臺北護理健康大學",
+    "dept": "運動保健系",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "114001",
+    "group": "01 機械群",
+    "school": "國立臺北商業大學",
+    "dept": "創意科技與產品設計系(桃園校區)",
+    "ratios": {
+      "chi": 8,
+      "eng": 0,
+      "math": 8,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "129001",
+    "group": "01 機械群",
+    "school": "國立高雄大學",
+    "dept": "土木與環境工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 0,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "129002",
+    "group": "01 機械群",
+    "school": "國立高雄大學",
+    "dept": "化學工程及材料工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "130001",
+    "group": "01 機械群",
+    "school": "國立東華大學",
+    "dept": "材料科學與工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "131001",
+    "group": "01 機械群",
+    "school": "國立暨南國際大學",
+    "dept": "應用化學系",
+    "ratios": {
+      "chi": 3,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "134001",
+    "group": "01 機械群",
+    "school": "國立嘉義大學",
+    "dept": "木質材料與設計學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 0,
+      "math": 0,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "134002",
+    "group": "01 機械群",
+    "school": "國立嘉義大學",
+    "dept": "生物機電工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "134003",
+    "group": "01 機械群",
+    "school": "國立嘉義大學",
+    "dept": "機械與能源工程學系",
+    "ratios": {
+      "chi": 3,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "145001",
+    "group": "01 機械群",
+    "school": "國立宜蘭大學",
+    "dept": "生物機電工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "145002",
+    "group": "01 機械群",
+    "school": "國立宜蘭大學",
+    "dept": "機械與機電工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "146001",
+    "group": "01 機械群",
+    "school": "國立聯合大學",
+    "dept": "能源工程學系",
+    "ratios": {
+      "chi": 4,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "147001",
+    "group": "01 機械群",
+    "school": "國立臺南大學",
+    "dept": "材料科學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "147002",
+    "group": "01 機械群",
+    "school": "國立臺南大學",
+    "dept": "綠色能源科技學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "148001",
+    "group": "01 機械群",
+    "school": "國立臺東大學",
+    "dept": "應用科學系化學及奈米科學組",
+    "ratios": {
+      "chi": 3,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "150001",
+    "group": "01 機械群",
+    "school": "國立金門大學",
+    "dept": "工業工程與管理學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 0,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "151001",
+    "group": "01 機械群",
+    "school": "國立臺中教育大學",
+    "dept": "科學教育與應用學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "152001",
+    "group": "01 機械群",
+    "school": "國立臺北教育大學",
+    "dept": "自然科學教育學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "153001",
+    "group": "01 機械群",
+    "school": "國立高雄師範大學",
+    "dept": "工業科技教育學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "218064",
+    "group": "01 機械群",
+    "school": "嶺東科技大學",
+    "dept": "智慧製造科技系（資安人才）",
+    "ratios": {
+      "chi": 0,
+      "eng": 0,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "501001",
+    "group": "01 機械群",
+    "school": "國立金門大學",
+    "dept": "運動與休閒學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 0,
+      "math": 0,
+      "pro1": 0,
+      "pro2": 0
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": false,
+      "math": false,
+      "pro1": false,
+      "pro2": false
+    }
+  },
+  {
+    "id": "503001",
+    "group": "01 機械群",
+    "school": "國立臺東專科學校",
+    "dept": "動力機械科產業機械組",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "503002",
+    "group": "01 機械群",
+    "school": "國立臺東專科學校",
+    "dept": "動力機械科車輛組",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "700001",
+    "group": "01 機械群",
+    "school": "國立中山大學",
+    "dept": "機械與機電工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2.5,
+      "pro2": 2.5
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "701001",
+    "group": "01 機械群",
+    "school": "國立臺灣師範大學",
+    "dept": "機電工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "702001",
+    "group": "01 機械群",
+    "school": "國立清華大學",
+    "dept": "動力機械工程學系",
+    "ratios": {
+      "chi": 3,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "703001",
+    "group": "01 機械群",
+    "school": "國立陽明交通大學",
+    "dept": "機械工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "704001",
+    "group": "01 機械群",
+    "school": "國立臺灣海洋大學",
+    "dept": "機械與機電工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "713001",
+    "group": "01 機械群",
+    "school": "國立彰化師範大學",
+    "dept": "電機與機械科技學系",
+    "ratios": {
+      "chi": 4,
+      "eng": 4,
+      "math": 4,
+      "pro1": 2.5,
+      "pro2": 2.5
+    },
+    "change": "以簡章為準",
+    "screening": [
+      "專一專二(18)",
+      "分和(51)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "724001",
+    "group": "01 機械群",
+    "school": "國立聯合大學",
+    "dept": "機械工程學系",
+    "ratios": {
+      "chi": 4,
+      "eng": 4,
+      "math": 4,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "以簡章為準",
+    "screening": [
+      "數學(8)",
+      "專一專二(15)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "724002",
+    "group": "01 機械群",
+    "school": "國立聯合大學",
+    "dept": "環境與安全衛生工程學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "以簡章為準",
+    "screening": [
+      "數學(5)",
+      "英文(9)",
+      "國文(11)",
+      "專一專二(14)",
+      "級分和(30)"
+    ],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  }
+];
+
+    const App = () => {
+        // State
+        const [filters, setFilters] = React.useState({
+            chi: false,
+            eng: false,
+            math: false,
+            pro1: false,
+            pro2: false
+        });
+        const [strictMode, setStrictMode] = React.useState(true);
+        const [searchTerm, setSearchTerm] = React.useState("");
+
+        // Handlers
+        const toggleFilter = (subject) => {
+            setFilters(prev => ({ ...prev, [subject]: !prev[subject] }));
+        };
+
+        const resetFilters = () => {
+            setFilters({ chi: false, eng: false, math: false, pro1: false, pro2: false });
+            setSearchTerm("");
+        };
+
+        // Helper for subject labels
+        const subjectLabels = {
+            chi: "國文", eng: "英文", math: "數學", pro1: "專一", pro2: "專二"
+        };
+        const subjectShortLabels = {
+            chi: "國", eng: "英", math: "數", pro1: "專一", pro2: "專二"
+        };
+
+        // Tiebreaker String Generator
+        const renderTiebreaker = (item) => {
+            // 優先使用 tiebreakerV 判斷
+            if (item.tiebreakerV) {
+                const subjects = [];
+                if (item.tiebreakerV.chi) subjects.push("國");
+                if (item.tiebreakerV.eng) subjects.push("英");
+                if (item.tiebreakerV.math) subjects.push("數");
+                if (item.tiebreakerV.pro1) subjects.push("專一");
+                if (item.tiebreakerV.pro2) subjects.push("專二");
+
+                if (subjects.length === 0) return <span className="text-gray-400">無採計科目</span>;
+
+                const formula = `(${subjects.join('+')})級分和`;
+                
+                return (
+                    <div className="flex flex-wrap items-center gap-1">
+                        <span className="font-bold text-orange-700">{formula}</span>
+                    </div>
+                );
+            } 
+            
+            return <span className="text-gray-400 italic">無資料</span>;
+        };
+
+        // Filter Logic
+        const filteredData = React.useMemo(() => {
+            return admissionsData.filter(item => {
+                // 1. Keyword Search
+                if (searchTerm) {
+                    const searchKeywords = searchTerm.trim().split(/\s+/); // allow multiple keywords
+                    const match = searchKeywords.every(kw => {
+                        // Check abbreviation
+                        const synonym = {
+                            '台科': '臺灣科技大學',
+                            '北科': '臺北科技大學',
+                            '高科': '高雄科技大學',
+                            '雲科': '雲林科技大學',
+                            '虎科': '虎尾科技大學',
+                            '屏科': '屏東科技大學',
+                            '勤益': '勤益科技大學',
+                            '中科': '臺中科技大學',
+                            '機械': '機械工程',
+                            '動機': '動力機械',
+                            '車輛': '車輛工程',
+                            '材料': '材料科學',
+                            '模具': '模具工程',
+                            '自控': '自動化',
+                            '安衛': '環境與安全衛生',
+                        }[kw] || kw;
+                        
+                        return item.school.includes(kw) || item.dept.includes(kw) || 
+                               item.school.includes(synonym) || item.dept.includes(synonym) || item.id.includes(kw);
+                    });
+                    if (!match) return false;
+                }
+
+                // 2. Subject Filter
+                const selectedSubjects = Object.keys(filters).filter(k => filters[k]);
+                
+                // If no subjects selected, show all (that match search)
+                if (selectedSubjects.length === 0) return true;
+
+                if (strictMode) {
+                    // Strict: Selected MUST be > 0, Unselected MUST be 0
+                    // Check Selected
+                    for (let subj of selectedSubjects) {
+                        if (item.ratios[subj] === 0) return false;
+                    }
+                    // Check Unselected
+                    const allSubjects = ['chi', 'eng', 'math', 'pro1', 'pro2'];
+                    for (let subj of allSubjects) {
+                        if (!filters[subj] && item.ratios[subj] > 0) return false;
+                    }
+                    return true;
+                } else {
+                    // Inclusive: Selected MUST be > 0 (Others don't matter)
+                    for (let subj of selectedSubjects) {
+                        if (item.ratios[subj] === 0) return false;
+                    }
+                    return true;
+                }
+            });
+        }, [filters, strictMode, searchTerm]);
+
+        return (
+            <div className="min-h-screen pb-12">
+                {/* Header */}
+                <div className="bg-gradient-to-r from-slate-700 to-slate-900 text-white shadow-xl">
+                    <div className="max-w-7xl mx-auto px-4 py-10 relative">
+                        <div className="absolute top-0 right-0 p-4 opacity-10">
+                            <i className="fa-solid fa-gears text-9xl"></i>
+                        </div>
+                        <h1 className="text-3xl md:text-4xl font-bold mb-3 tracking-tight">
+                            <i className="fa-solid fa-wrench mr-3"></i>
+                            115學年度【機械群】甄選入學查詢系統
+                        </h1>
+                        <p className="text-slate-200 text-lg max-w-2xl font-light">
+                            專為機械群考生設計，整合國立科技大學最新倍率、篩選標準與同級分超額篩選科目。
+                        </p>
+                    </div>
+                </div>
+
+                <div className="max-w-7xl mx-auto px-4 -mt-8 relative z-10">
+                    {/* Control Panel */}
+                    <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-100">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            
+                            {/* Left: Subject Select */}
+                            <div>
+                                <h3 className="text-sm font-bold text-gray-700 mb-4 flex items-center">
+                                    <span className="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">1</span>
+                                    選擇篩選科目 (115年倍率)
+                                </h3>
+                                <div className="flex flex-wrap gap-3">
+                                    {Object.entries(subjectLabels).map(([key, label]) => (
+                                        <button
+                                            key={key}
+                                            onClick={() => toggleFilter(key)}
+                                            className={`filter-btn ${filters[key] ? 'filter-btn-active' : 'filter-btn-inactive'}`}
+                                        >
+                                            {filters[key] && <i className="fa-solid fa-check mr-2"></i>}
+                                            {label}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="mt-3 text-xs text-gray-500">
+                                    <i className="fa-solid fa-circle-info mr-1"></i>
+                                    例如：勾選「數學」與「專一」，即可找出有採計這兩科的校系。
+                                </div>
+                            </div>
+
+                            {/* Right: Mode & Search */}
+                            <div className="flex flex-col gap-4">
+                                <div>
+                                    <h3 className="text-sm font-bold text-gray-700 mb-4 flex items-center">
+                                        <span className="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">2</span>
+                                        設定篩選模式與搜尋
+                                    </h3>
+                                    
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        {/* Toggle Switch */}
+                                        <div 
+                                            onClick={() => setStrictMode(!strictMode)}
+                                            className={`cursor-pointer px-4 py-2.5 rounded-lg border transition-all duration-200 flex items-center gap-3 flex-1
+                                                ${strictMode ? 'bg-slate-100 border-slate-300' : 'bg-white border-gray-200 hover:border-slate-300'}`}
+                                        >
+                                            <div className={`w-9 h-5 flex items-center rounded-full p-0.5 duration-300 ${strictMode ? 'bg-slate-700' : 'bg-gray-300'}`}>
+                                                <div className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ${strictMode ? 'translate-x-4' : ''}`}></div>
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className={`text-sm font-bold ${strictMode ? 'text-slate-800' : 'text-gray-600'}`}>
+                                                    嚴格模式 (Only)
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Search Input */}
+                                        <div className="relative flex-[2]">
+                                            <i className="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+                                            <input 
+                                                type="text" 
+                                                placeholder="搜尋校系名稱或代碼..." 
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-slate-500 focus:outline-none transition-all"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Results Count Bar */}
+                        <div className="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center">
+                            <span className="text-gray-700 text-sm">
+                                共找到 <strong className="text-slate-700 text-lg mx-1">{filteredData.length}</strong> 個符合條件的校系
+                            </span>
+                            {(Object.values(filters).some(Boolean) || searchTerm) && (
+                                <button onClick={resetFilters} className="text-sm text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors">
+                                    <i className="fa-solid fa-rotate-left"></i> 重置條件
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Table */}
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" className="table-header w-3/12">學校科系 (代碼)</th>
+                                        <th scope="col" className="table-header w-2/12 text-center">115年 篩選倍率</th>
+                                        <th scope="col" className="table-header w-2/12">變更說明</th>
+                                        <th scope="col" className="table-header w-5/12">114年 通過標準 (兩階段)</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-100">
+                                    {filteredData.length > 0 ? (
+                                        filteredData.map((item, idx) => (
+                                            <tr key={item.id} className={`hover:bg-slate-50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/40'}`}>
+                                                <td className="table-cell">
+                                                    <div className="flex flex-col items-start">
+                                                        <span className="text-base font-bold text-gray-800">{item.school}</span>
+                                                        <span className="text-slate-700 font-medium mt-0.5">{item.dept}</span>
+                                                        <span className="text-xs text-gray-400 mt-1 font-mono">{item.id}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="table-cell">
+                                                    <div className="flex justify-center flex-wrap gap-2">
+                                                        {Object.entries(item.ratios).map(([subj, val]) => (
+                                                            val > 0 ? (
+                                                                <div key={subj} className="flex flex-col items-center group">
+                                                                    <span className="bg-slate-200 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-t w-10 text-center border-b border-slate-300">
+                                                                        {subjectShortLabels[subj]}
+                                                                    </span>
+                                                                    <span className="bg-white text-gray-800 font-bold text-sm border border-slate-200 w-10 text-center py-1 rounded-b shadow-sm">
+                                                                        {val}
+                                                                    </span>
+                                                                </div>
+                                                            ) : null
+                                                        ))}
+                                                        {Object.values(item.ratios).every(v => v === 0) && (
+                                                            <span className="text-gray-400 text-xs italic">無篩選資料</span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="table-cell">
+                                                    {item.change === "無變更" ? (
+                                                        <span className="badge bg-green-100 text-green-700 border border-green-200">
+                                                            <i className="fa-solid fa-check mr-1.5"></i>無變更
+                                                        </span>
+                                                    ) : (
+                                                        <div className="flex flex-col gap-1.5 items-start">
+                                                            {item.change.split(', ').map((change, i) => {
+                                                                const isNew = change.includes("新系科") || change.includes("變更");
+                                                                return (
+                                                                    <span key={i} className={`badge border ${isNew ? 'bg-purple-100 text-purple-700 border-purple-200' : 'bg-red-50 text-red-700 border-red-200'}`}>
+                                                                        {isNew ? <i className="fa-solid fa-circle-exclamation mr-1.5"></i> : <i className="fa-solid fa-arrow-right-arrow-left mr-1.5"></i>}
+                                                                        {change}
+                                                                    </span>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="table-cell">
+                                                    <div className="flex flex-col gap-3">
+                                                        
+                                                        {/* 第一階段篩選 */}
+                                                        <div className="text-xs text-gray-600 bg-blue-50/50 p-2.5 rounded-lg border border-blue-100 leading-relaxed">
+                                                            <strong className="block text-blue-800 mb-1.5 border-b border-blue-200 pb-1">
+                                                                <i className="fa-solid fa-filter mr-1"></i>第一階段篩選標準
+                                                            </strong>
+                                                            {item.screening && item.screening.length > 0 ? (
+                                                                item.screening.map((std, i) => (
+                                                                    <span key={i} className="block mb-1 pl-2 border-l-2 border-blue-300">
+                                                                        {std}
+                                                                    </span>
+                                                                ))
+                                                            ) : (
+                                                                <span className="text-gray-400 italic">無資料或新科系</span>
+                                                            )}
+                                                        </div>
+
+                                                        {/* 同級分超額篩選 */}
+                                                        <div className="text-xs text-gray-600 bg-orange-50/50 p-2.5 rounded-lg border border-orange-100 leading-relaxed">
+                                                            <strong className="block text-orange-800 mb-1.5 border-b border-orange-200 pb-1 flex justify-between">
+                                                                <span><i className="fa-solid fa-scale-balanced mr-1"></i>同級分超額篩選</span>
+                                                            </strong>
+                                                            <div className="pl-2">
+                                                                {renderTiebreaker(item)}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="4" className="px-6 py-16 text-center text-gray-500">
+                                                <div className="flex flex-col items-center">
+                                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
+                                                        <i className="fa-solid fa-filter text-2xl"></i>
+                                                    </div>
+                                                    <h3 className="text-lg font-medium text-gray-800 mb-1">沒有符合條件的科系</h3>
+                                                    <p className="text-sm text-gray-500">請嘗試關閉「嚴格模式」或調整篩選科目。</p>
+                                                    <button onClick={resetFilters} className="mt-4 px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors text-sm font-medium">
+                                                        清除所有篩選
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <footer className="mt-8 text-center text-gray-500 text-xs pb-12">
+                        <p className="mb-2">資料來源：115學年度科技校院四年制及專科學校二年制甄選入學招生簡章、114年篩選標準一覽表</p>
+                        <p>本表僅供參考，若資料有出入，請以技專校院招生委員會聯合會最新公告為準。</p>
+                    </footer>
+                </div>
+            </div>
+        );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+</script>
+
+</body>
+</html>
