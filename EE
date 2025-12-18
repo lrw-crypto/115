@@ -35,507 +35,29 @@
 
     // ============================================================
     // 資料庫 - 外語群英語類 (15)
-    // 資料來源：115學年度四技甄選簡章資料.csv (篩選 15 外語群英語類)
+    // 資料來源：115學年度四技甄選簡章資料.csv & 114學年度外語群篩選標準
     // ============================================================
     const admissionsData = [
   {
-    "id": "708001",
+    "id": "101019",
     "group": "15 外語群英語類",
-    "school": "國立中正大學",
-    "dept": "外國語文學系",
-    "ratios": {
-      "chi": 0,
-      "eng": 3,
-      "math": 0,
-      "pro1": 2.5,
-      "pro2": 2.5
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "107038",
-    "group": "15 外語群英語類",
-    "school": "國立虎尾科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 5,
-      "math": 5,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "107040",
-    "group": "15 外語群英語類",
-    "school": "國立虎尾科技大學",
-    "dept": "財務金融系",
-    "ratios": {
-      "chi": 0,
-      "eng": 7,
-      "math": 0,
-      "pro1": 7,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "107041",
-    "group": "15 外語群英語類",
-    "school": "國立虎尾科技大學",
+    "school": "國立臺灣科技大學",
     "dept": "應用外語系",
-    "ratios": {
-      "chi": 6,
-      "eng": 3,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "501006",
-    "group": "15 外語群英語類",
-    "school": "國立金門大學",
-    "dept": "應用英語學系",
     "ratios": {
       "chi": 3,
-      "eng": 3,
-      "math": 3,
-      "pro1": 2,
-      "pro2": 2
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "738006",
-    "group": "15 外語群英語類",
-    "school": "國立屏東大學",
-    "dept": "休閒事業經營學系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "738007",
-    "group": "15 外語群英語類",
-    "school": "國立屏東大學",
-    "dept": "應用英語學系",
-    "ratios": {
-      "chi": 5,
-      "eng": 3,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "103051",
-    "group": "15 外語群英語類",
-    "school": "國立屏東科技大學",
-    "dept": "應用外語系",
-    "ratios": {
-      "chi": 0,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105045",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "國際企業系",
-    "ratios": {
-      "chi": 7,
-      "eng": 5,
-      "math": 8,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105048",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 8,
-      "eng": 6,
+      "eng": 2,
       "math": 0,
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105054",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "運籌管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 5,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105057",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "行銷與流通管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 4,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105060",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "風險管理與保險系",
-    "ratios": {
-      "chi": 6,
-      "eng": 4,
-      "math": 4,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105076",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "航運管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 5,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105081",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "供應鏈管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 5,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105084",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "海洋休閒管理系",
-    "ratios": {
-      "chi": 8,
-      "eng": 8,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105087",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 5,
-      "eng": 0,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": false,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105092",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "應用德語系",
-    "ratios": {
-      "chi": 6,
-      "eng": 4,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105102",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "漁業科技與管理系",
-    "ratios": {
-      "chi": 7,
-      "eng": 6,
-      "math": 5,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "112004",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "餐旅暨會展行銷管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 0
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": false
-    }
-  },
-  {
-    "id": "112010",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "航空暨運輸服務管理系",
-    "ratios": {
-      "chi": 4,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "112013",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "休閒暨遊憩管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 4,
-      "math": 8,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "112017",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 4,
-      "eng": 3,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "專(14)",
+      "英文(15)",
+      "級分和(45)",
+      "總級分(46)",
+      "總級分(51)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -556,8 +78,11 @@
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "級分和(52)",
+      "國文(10)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -578,8 +103,11 @@
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "英文(12)",
+      "專一專二(24)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -600,8 +128,13 @@
       "pro1": 0,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文(12)",
+      "英文(13)",
+      "數學(8)",
+      "專二(13)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -611,221 +144,27 @@
     }
   },
   {
-    "id": "110027",
+    "id": "103051",
     "group": "15 外語群英語類",
-    "school": "國立勤益科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "110037",
-    "group": "15 外語群英語類",
-    "school": "國立勤益科技大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 6,
-      "eng": 4,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "110040",
-    "group": "15 外語群英語類",
-    "school": "國立勤益科技大學",
-    "dept": "文化創意事業系",
-    "ratios": {
-      "chi": 5,
-      "eng": 6,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113002",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "國際貿易與經營系",
-    "ratios": {
-      "chi": 4,
-      "eng": 3,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113004",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "財政稅務系",
-    "ratios": {
-      "chi": 4,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 0
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": false
-    }
-  },
-  {
-    "id": "113007",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "財務金融系",
+    "school": "國立屏東科技大學",
+    "dept": "應用外語系",
     "ratios": {
       "chi": 0,
       "eng": 4,
-      "math": 5,
-      "pro1": 4,
+      "math": 4,
+      "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "英文: 3→4, 數學: 3→4",
+    "screening": [
+      "英文(9)",
+      "數學(6)",
+      "專一專二(20)"
+    ],
     "tiebreakerV": {
       "chi": false,
       "eng": true,
       "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113029",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "保險金融管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 4,
-      "math": 5,
-      "pro1": 4,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113031",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 4,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 6
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113034",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 7,
-      "eng": 7,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113038",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "應用中文系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
       "pro1": true,
       "pro2": true
     }
@@ -842,8 +181,11 @@
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "國文: 3→6, 英文: 3→6, 數學: 3→6",
+    "screening": [
+      "國文英文數學(32)",
+      "專一專二(25)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -864,8 +206,11 @@
       "pro1": 3,
       "pro2": 0
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文英文數學(32)",
+      "專一(13)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -875,19 +220,101 @@
     }
   },
   {
-    "id": "114005",
+    "id": "105045",
     "group": "15 外語群英語類",
-    "school": "國立臺北商業大學",
-    "dept": "國際商務系(臺北校區)",
+    "school": "國立高雄科技大學",
+    "dept": "國際企業系",
     "ratios": {
-      "chi": 0,
-      "eng": 6,
-      "math": 5,
-      "pro1": 4,
+      "chi": 7,
+      "eng": 5,
+      "math": 8,
+      "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文(11)",
+      "英文(12)",
+      "數學(9)",
+      "專一專二(22)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105048",
+    "group": "15 外語群英語類",
+    "school": "國立高雄科技大學",
+    "dept": "企業管理系",
+    "ratios": {
+      "chi": 8,
+      "eng": 6,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(11)",
+      "英文(11)",
+      "專一專二(22)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105054",
+    "group": "15 外語群英語類",
+    "school": "國立高雄科技大學",
+    "dept": "運籌管理系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 0,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文英文數學(30)",
+      "專二(12)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": false,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105057",
+    "group": "15 外語群英語類",
+    "school": "國立高雄科技大學",
+    "dept": "行銷與流通管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(12)",
+      "數學(9)",
+      "專一專二(22)"
+    ],
     "tiebreakerV": {
       "chi": false,
       "eng": true,
@@ -897,32 +324,89 @@
     }
   },
   {
-    "id": "114006",
+    "id": "105060",
     "group": "15 外語群英語類",
-    "school": "國立臺北商業大學",
-    "dept": "應用外語系(臺北校區)",
+    "school": "國立高雄科技大學",
+    "dept": "風險管理與保險系",
     "ratios": {
       "chi": 6,
-      "eng": 6,
-      "math": 0,
-      "pro1": 3,
+      "eng": 4,
+      "math": 4,
+      "pro1": 0,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文(11)",
+      "英文(11)",
+      "數學(7)",
+      "專二(11)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
-      "math": false,
+      "math": true,
+      "pro1": false,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105076",
+    "group": "15 外語群英語類",
+    "school": "國立高雄科技大學",
+    "dept": "航運管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(12)",
+      "數學(8)",
+      "專一專二(21)"
+    ],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
       "pro1": true,
       "pro2": true
     }
   },
   {
-    "id": "111014",
+    "id": "105081",
     "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "休閒產業與健康促進系",
+    "school": "國立高雄科技大學",
+    "dept": "供應鏈管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(11)",
+      "數學(8)",
+      "專一專二(20)"
+    ],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105084",
+    "group": "15 外語群英語類",
+    "school": "國立高雄科技大學",
+    "dept": "海洋休閒管理系",
     "ratios": {
       "chi": 8,
       "eng": 8,
@@ -930,8 +414,12 @@
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文(10)",
+      "英文(10)",
+      "專一專二(18)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -941,107 +429,257 @@
     }
   },
   {
-    "id": "111015",
+    "id": "105087",
     "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "語言治療與聽力學系",
+    "school": "國立高雄科技大學",
+    "dept": "應用英語系",
+    "ratios": {
+      "chi": 5,
+      "eng": 0,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(11)",
+      "數學(7)",
+      "專一專二(22)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": false,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105092",
+    "group": "15 外語群英語類",
+    "school": "國立高雄科技大學",
+    "dept": "應用德語系",
     "ratios": {
       "chi": 6,
-      "eng": 6,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "111016",
-    "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "運動保健系",
-    "ratios": {
-      "chi": 6,
-      "eng": 6,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "111017",
-    "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "生死與健康心理諮商系",
-    "ratios": {
-      "chi": 8,
-      "eng": 5,
-      "math": 8,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "503411",
-    "group": "15 外語群英語類",
-    "school": "國立臺東專科學校",
-    "dept": "餐旅管理科",
-    "ratios": {
-      "chi": 6,
-      "eng": 5,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "以簡章為準",
-    "screening": [],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "101015",
-    "group": "15 外語群英語類",
-    "school": "國立臺灣科技大學",
-    "dept": "應用外語系",
-    "ratios": {
-      "chi": 3,
-      "eng": 2,
+      "eng": 4,
       "math": 0,
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文(10)",
+      "英文(12)",
+      "專一專二(19)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "105102",
+    "group": "15 外語群英語類",
+    "school": "國立高雄科技大學",
+    "dept": "漁業科技與管理系",
+    "ratios": {
+      "chi": 7,
+      "eng": 6,
+      "math": 5,
+      "pro1": 0,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(9)",
+      "英文(9)",
+      "數學(5)",
+      "專二(10)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": false,
+      "pro2": true
+    }
+  },
+  {
+    "id": "112004",
+    "group": "15 外語群英語類",
+    "school": "國立高雄餐旅大學",
+    "dept": "餐旅暨會展行銷管理系",
+    "ratios": {
+      "chi": 5,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 0
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(11)",
+      "英文(12)",
+      "數學(9)",
+      "專一(12)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": false
+    }
+  },
+  {
+    "id": "112010",
+    "group": "15 外語群英語類",
+    "school": "國立高雄餐旅大學",
+    "dept": "航空暨運輸服務管理系",
+    "ratios": {
+      "chi": 4,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文英文數學(33)",
+      "專一專二(24)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "112013",
+    "group": "15 外語群英語類",
+    "school": "國立高雄餐旅大學",
+    "dept": "休閒暨遊憩管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 8,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(12)",
+      "數學(7)",
+      "專一專二(21)"
+    ],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "112017",
+    "group": "15 外語群英語類",
+    "school": "國立高雄餐旅大學",
+    "dept": "應用英語系",
+    "ratios": {
+      "chi": 4,
+      "eng": 3,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "國文: 0→4",
+    "screening": [
+      "英文(12)",
+      "專二(10)",
+      "級分和(41)",
+      "總級分(47)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107038",
+    "group": "15 外語群英語類",
+    "school": "國立虎尾科技大學",
+    "dept": "企業管理系",
+    "ratios": {
+      "chi": 0,
+      "eng": 5,
+      "math": 5,
+      "pro1": 0,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文數學(18)",
+      "專二(10)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": false,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107040",
+    "group": "15 外語群英語類",
+    "school": "國立虎尾科技大學",
+    "dept": "財務金融系",
+    "ratios": {
+      "chi": 0,
+      "eng": 7,
+      "math": 0,
+      "pro1": 7,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(10)",
+      "專一(12)",
+      "專二(11)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "107041",
+    "group": "15 外語群英語類",
+    "school": "國立虎尾科技大學",
+    "dept": "應用外語系",
+    "ratios": {
+      "chi": 6,
+      "eng": 3,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "國文: 3→6, 英文: 2→3",
+    "screening": [
+      "英文(10)",
+      "專一專二(20)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -1062,8 +700,12 @@
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文(5)",
+      "數學(2)",
+      "專一專二(10)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": false,
@@ -1084,8 +726,12 @@
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "無變更",
+    "screening": [
+      "國文(5)",
+      "英文(6)",
+      "專一專二(12)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
@@ -1106,14 +752,613 @@
       "pro1": 3,
       "pro2": 3
     },
-    "change": "以簡章為準",
-    "screening": [],
+    "change": "國文: 3→5, 英文: 3→4",
+    "screening": [
+      "國文(6)",
+      "英文(6)",
+      "專一專二(13)"
+    ],
     "tiebreakerV": {
       "chi": true,
       "eng": true,
       "math": false,
       "pro1": true,
       "pro2": true
+    }
+  },
+  {
+    "id": "110027",
+    "group": "15 外語群英語類",
+    "school": "國立勤益科技大學",
+    "dept": "企業管理系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文英文數學(22)",
+      "專一專二(20)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "110037",
+    "group": "15 外語群英語類",
+    "school": "國立勤益科技大學",
+    "dept": "應用英語系",
+    "ratios": {
+      "chi": 6,
+      "eng": 4,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "國文: 3→6, 英文: 3→4, 數學: 3→6",
+    "screening": [
+      "英文(12)",
+      "數學(7)",
+      "國文專一專二(34)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "110040",
+    "group": "15 外語群英語類",
+    "school": "國立勤益科技大學",
+    "dept": "文化創意事業系",
+    "ratios": {
+      "chi": 5,
+      "eng": 6,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(11)",
+      "數學(7)",
+      "國文專一專二(31)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "111014",
+    "group": "15 外語群英語類",
+    "school": "國立臺北護理健康大學",
+    "dept": "休閒產業與健康促進系",
+    "ratios": {
+      "chi": 8,
+      "eng": 8,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(10)",
+      "英文(11)",
+      "專一專二(20)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "111015",
+    "group": "15 外語群英語類",
+    "school": "國立臺北護理健康大學",
+    "dept": "語言治療與聽力學系",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(13)",
+      "數學(9)",
+      "國文專一專二(35)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "111016",
+    "group": "15 外語群英語類",
+    "school": "國立臺北護理健康大學",
+    "dept": "運動保健系",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 6,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(10)",
+      "英文(8)",
+      "數學(6)",
+      "專一專二(19)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "111017",
+    "group": "15 外語群英語類",
+    "school": "國立臺北護理健康大學",
+    "dept": "生死與健康心理諮商系",
+    "ratios": {
+      "chi": 8,
+      "eng": 5,
+      "math": 8,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(12)",
+      "數學(7)",
+      "英文專一專二(34)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "113002",
+    "group": "15 外語群英語類",
+    "school": "國立臺中科技大學",
+    "dept": "國際貿易與經營系",
+    "ratios": {
+      "chi": 4,
+      "eng": 3,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "國文: 3→4, 數學: 3→5",
+    "screening": [
+      "英文(12)",
+      "專一專二(24)",
+      "國文數學(20)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "113004",
+    "group": "15 外語群英語類",
+    "school": "國立臺中科技大學",
+    "dept": "財政稅務系",
+    "ratios": {
+      "chi": 4,
+      "eng": 4,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 0
+    },
+    "change": "國文: 3→4, 英文: 3→4, 數學: 3→4",
+    "screening": [
+      "專一(13)",
+      "國文英文數學(32)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": false
+    }
+  },
+  {
+    "id": "113007",
+    "group": "15 外語群英語類",
+    "school": "國立臺中科技大學",
+    "dept": "財務金融系",
+    "ratios": {
+      "chi": 0,
+      "eng": 4,
+      "math": 5,
+      "pro1": 4,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(12)",
+      "數學(9)",
+      "專一專二(23)"
+    ],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "113029",
+    "group": "15 外語群英語類",
+    "school": "國立臺中科技大學",
+    "dept": "保險金融管理系",
+    "ratios": {
+      "chi": 5,
+      "eng": 4,
+      "math": 5,
+      "pro1": 4,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(11)",
+      "英文(11)",
+      "數學(8)",
+      "專一專二(22)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "113031",
+    "group": "15 外語群英語類",
+    "school": "國立臺中科技大學",
+    "dept": "企業管理系",
+    "ratios": {
+      "chi": 5,
+      "eng": 4,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 6
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(11)",
+      "英文(11)",
+      "數學(9)",
+      "專一專二(22)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "113034",
+    "group": "15 外語群英語類",
+    "school": "國立臺中科技大學",
+    "dept": "應用英語系",
+    "ratios": {
+      "chi": 7,
+      "eng": 7,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "國文: 3→7, 英文: 3→7",
+    "screening": [
+      "專一專二(22)",
+      "國文英文(27)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "113038",
+    "group": "15 外語群英語類",
+    "school": "國立臺中科技大學",
+    "dept": "應用中文系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文(12)",
+      "英文(12)",
+      "專一專二(23)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "114005",
+    "group": "15 外語群英語類",
+    "school": "國立臺北商業大學",
+    "dept": "國際商務系(臺北校區)",
+    "ratios": {
+      "chi": 0,
+      "eng": 6,
+      "math": 5,
+      "pro1": 4,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(13)",
+      "數學(9)",
+      "專一(13)",
+      "專二(12)"
+    ],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "114006",
+    "group": "15 外語群英語類",
+    "school": "國立臺北商業大學",
+    "dept": "應用外語系(臺北校區)",
+    "ratios": {
+      "chi": 6,
+      "eng": 6,
+      "math": 0,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "專一(13)",
+      "國文英文(27)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "501006",
+    "group": "15 外語群英語類",
+    "school": "國立金門大學",
+    "dept": "應用英語學系",
+    "ratios": {
+      "chi": 3,
+      "eng": 3,
+      "math": 3,
+      "pro1": 2,
+      "pro2": 2
+    },
+    "change": "無變更",
+    "screening": [
+      "不設篩選"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "503411",
+    "group": "15 外語群英語類",
+    "school": "國立臺東專科學校",
+    "dept": "餐旅管理科",
+    "ratios": {
+      "chi": 6,
+      "eng": 5,
+      "math": 4,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(6)",
+      "國文(8)",
+      "數學(6)",
+      "專一專二(15)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "708001",
+    "group": "15 外語群英語類",
+    "school": "國立中正大學",
+    "dept": "外國語文學系",
+    "ratios": {
+      "chi": 0,
+      "eng": 3,
+      "math": 0,
+      "pro1": 2.5,
+      "pro2": 2.5
+    },
+    "change": "無變更",
+    "screening": [
+      "英文(13)",
+      "專一專二(22)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": false,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "738006",
+    "group": "15 外語群英語類",
+    "school": "國立屏東大學",
+    "dept": "休閒事業經營學系",
+    "ratios": {
+      "chi": 5,
+      "eng": 5,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "無變更",
+    "screening": [
+      "國文英文數學(27)",
+      "專一專二(20)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "738007",
+    "group": "15 外語群英語類",
+    "school": "國立屏東大學",
+    "dept": "應用英語學系",
+    "ratios": {
+      "chi": 5,
+      "eng": 3,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "國文: 3→5, 專一: 3→5",
+    "screening": [
+      "級分(54)",
+      "英文(10)",
+      "專一專二(18)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "738011",
+    "group": "15 外語群英語類",
+    "school": "國立屏東大學",
+    "dept": "應用英語學系",
+    "ratios": {
+      "chi": 5,
+      "eng": 3,
+      "math": 5,
+      "pro1": 3,
+      "pro2": 3
+    },
+    "change": "國文: 3→5, 專一: 3→5",
+    "screening": [
+      "級分(54)",
+      "英文(10)",
+      "專一專二(18)"
+    ],
+    "tiebreakerV": {
+      "chi": true,
+      "eng": true,
+      "math": true,
+      "pro1": true,
+      "pro2": true
+    }
+  },
+  {
+    "id": "807014",
+    "group": "15 外語群英語類",
+    "school": "逢甲大學",
+    "dept": "外國語文學系",
+    "ratios": {
+      "chi": 7,
+      "eng": 0,
+      "math": 21,
+      "pro1": 0,
+      "pro2": 0
+    },
+    "change": "以簡章為準",
+    "screening": [
+      "英文(14)",
+      "國文(10)",
+      "專二(11)"
+    ],
+    "tiebreakerV": {
+      "chi": false,
+      "eng": false,
+      "math": false,
+      "pro1": false,
+      "pro2": false
     }
   }
 ];
