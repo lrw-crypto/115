@@ -18,13 +18,7 @@
     
     <style>
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #fff7ed; } /* Orange-50 background tint */
-        .table-header { @apply px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider bg-orange-50 border-b border-orange-200; }
-        .table-cell { @apply px-4 py-4 text-sm text-gray-700 border-b border-orange-100 align-top; }
-        .badge { @apply px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-md; }
-        .filter-btn { @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border shadow-sm flex items-center justify-center; }
-        .filter-btn-active { @apply bg-orange-500 text-white border-orange-500 ring-2 ring-orange-200; }
-        .filter-btn-inactive { @apply bg-white text-gray-600 border-gray-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600; }
-        .info-card { @apply bg-white p-4 rounded-lg shadow-sm border border-orange-100 text-sm text-gray-600 mb-6; }
+        /* Removed @apply rules as they don't work with CDN. Styles moved inline to JSX. */
     </style>
 </head>
 <body>
@@ -694,7 +688,7 @@
                                         <button
                                             key={key}
                                             onClick={() => toggleFilter(key)}
-                                            className={`filter-btn ${filters[key] ? 'filter-btn-active' : 'filter-btn-inactive'}`}
+                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border shadow-sm flex items-center justify-center ${filters[key] ? 'bg-orange-500 text-white border-orange-500 ring-2 ring-orange-200' : 'bg-white text-gray-600 border-gray-300 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600'}`}
                                         >
                                             {filters[key] && <i className="fa-solid fa-check mr-2"></i>}
                                             {label}
@@ -770,19 +764,19 @@
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-orange-50">
                                     <tr>
-                                        <th scope="col" className="table-header w-3/12">學校科系 (代碼)</th>
-                                        <th scope="col" className="table-header w-2/12 text-center">115年 篩選倍率</th>
-                                        <th scope="col" className="table-header w-2/12">變更說明</th>
-                                        <th scope="col" className="table-header w-5/12">114年 通過標準 與 同級分超額篩選</th>
+                                        <th scope="col" className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider bg-orange-50 border-b border-orange-200 w-3/12">學校科系 (代碼)</th>
+                                        <th scope="col" className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider bg-orange-50 border-b border-orange-200 w-2/12 text-center">115年 篩選倍率</th>
+                                        <th scope="col" className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider bg-orange-50 border-b border-orange-200 w-2/12">變更說明</th>
+                                        <th scope="col" className="px-4 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider bg-orange-50 border-b border-orange-200 w-5/12">114年 通過標準 與 同級分超額篩選</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-orange-100">
                                     {filteredData.length > 0 ? (
                                         filteredData.map((item, idx) => (
                                             <tr key={item.id} className={`hover:bg-orange-50/50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-orange-50/20'}`}>
-                                                <td className="table-cell">
+                                                <td className="px-4 py-4 text-sm text-gray-700 border-b border-orange-100 align-top">
                                                     <div className="flex flex-col items-start">
-                                                        <span className="badge mb-1 bg-red-100 text-red-700">
+                                                        <span className="px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-md mb-1 bg-red-100 text-red-700">
                                                             01 機械群
                                                         </span>
                                                         <span className="text-base font-bold text-gray-800">{item.school}</span>
@@ -794,7 +788,7 @@
                                                         </span>
                                                     </div>
                                                 </td>
-                                                <td className="table-cell">
+                                                <td className="px-4 py-4 text-sm text-gray-700 border-b border-orange-100 align-top">
                                                     <div className="flex justify-center flex-wrap gap-2">
                                                         {Object.entries(item.ratios).map(([subj, val]) => (
                                                             val > 0 ? (
@@ -813,19 +807,19 @@
                                                         )}
                                                     </div>
                                                 </td>
-                                                <td className="table-cell">
+                                                <td className="px-4 py-4 text-sm text-gray-700 border-b border-orange-100 align-top">
                                                     {item.change === "無變更" ? (
-                                                        <span className="badge bg-green-100 text-green-700 border border-green-200">
+                                                        <span className="px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-md bg-green-100 text-green-700 border border-green-200">
                                                             <i className="fa-solid fa-check mr-1.5"></i>無變更
                                                         </span>
                                                     ) : (
-                                                        <span className="badge bg-red-50 text-red-700 border border-red-200">
+                                                        <span className="px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-md bg-red-50 text-red-700 border border-red-200">
                                                             <i className="fa-solid fa-arrow-right-arrow-left mr-1.5 text-red-400"></i>
                                                             {item.change}
                                                         </span>
                                                     )}
                                                 </td>
-                                                <td className="table-cell">
+                                                <td className="px-4 py-4 text-sm text-gray-700 border-b border-orange-100 align-top">
                                                     {/* 114 Standards - FIRST ROW */}
                                                     <div className="mb-4">
                                                         <div className="flex items-center gap-2 mb-2">
