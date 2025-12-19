@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>115學年度 土木與建築群甄選入學查詢系統</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
+
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        /* 引入字型 */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
         body { font-family: 'Noto Sans TC', sans-serif; }
     </style>
@@ -48,174 +47,174 @@
 
         // ============================================================
         // 資料庫：土木與建築群
+        // ✅ 已將每筆 screening 改成與 PDF（114 土木群第一階段篩選標準）一致
         // ============================================================
         const admissionsData = [
             {
-                "id": "701002", "group": "土木與建築群", "school": "國立中山大學", "dept": "海洋環境及工程學系", 
-                "ratios": {"chi": 0, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["英文(11)", "數學(10)", "專一(10)", "專二(10)"], 
+                "id": "701002", "group": "土木與建築群", "school": "國立中山大學", "dept": "海洋環境及工程學系",
+                "ratios": {"chi": 0, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["英文(7)", "數學(12)", "專一專二(20)"],
                 "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": null
             },
             {
-                "id": "706005", "group": "土木與建築群", "school": "國立中興大學", "dept": "土木工程學系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(35)", "專一專二(25)"], 
+                "id": "706005", "group": "土木與建築群", "school": "國立中興大學", "dept": "土木工程學系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["數學(14)", "專一專二(22)", "級分和(61)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 60
             },
             {
-                "id": "017001", "group": "土木與建築群", "school": "國立宜蘭大學", "dept": "土木工程學系", 
-                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(8)", "專一(9)", "專二(9)"], 
+                "id": "017001", "group": "土木與建築群", "school": "國立宜蘭大學", "dept": "土木工程學系",
+                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["數學(12)", "專一專二(13)"],
                 "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 38
             },
             {
-                "id": "033001", "group": "土木與建築群", "school": "國立金門大學", "dept": "土木與工程管理學系", 
-                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": [], 
+                "id": "033001", "group": "土木與建築群", "school": "國立金門大學", "dept": "土木與工程管理學系",
+                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(8)", "專一專二(13)", "級分和(30)"],
                 "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": null
             },
             {
-                "id": "103009", "group": "土木與建築群", "school": "國立屏東科技大學", "dept": "木材科學與設計系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文(9)", "專一(10)"], 
+                "id": "103009", "group": "土木與建築群", "school": "國立屏東科技大學", "dept": "木材科學與設計系",
+                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(11)", "英文(6)", "專一專二(15)", "級分和(39)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": false, "pro1": true, "pro2": true }, "tiebreakerSum": 41
             },
             {
-                "id": "103023", "group": "土木與建築群", "school": "國立屏東科技大學", "dept": "土木工程系", 
-                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(8)", "專一專二(18)"], 
+                "id": "103023", "group": "土木與建築群", "school": "國立屏東科技大學", "dept": "土木工程系",
+                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(7)", "數學(5)", "專二(7)", "專一(5)", "級分和(30)"],
                 "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 44
             },
             {
-                "id": "103024", "group": "土木與建築群", "school": "國立屏東科技大學", "dept": "水土保持系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(7)", "專一(9)"], 
+                "id": "103024", "group": "土木與建築群", "school": "國立屏東科技大學", "dept": "水土保持系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["專一(5)", "專二(8)", "級分和(33)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 40
             },
             {
-                "id": "708001", "group": "土木與建築群", "school": "國立高雄大學", "dept": "建築學系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(38)", "專一專二(26)"], 
+                "id": "708001", "group": "土木與建築群", "school": "國立高雄大學", "dept": "建築學系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(11)", "英文(12)", "專二(9)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 64
             },
             {
-                "id": "105030", "group": "土木與建築群", "school": "國立高雄科技大學", "dept": "土木工程系", 
-                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(9)", "專一(10)", "專二(10)"], 
+                "id": "105030", "group": "土木與建築群", "school": "國立高雄科技大學", "dept": "土木工程系",
+                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(8)", "數學(6)", "專一專二(14)", "級分和(30)"],
                 "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 45
             },
             {
-                "id": "105045", "group": "土木與建築群", "school": "國立高雄科技大學", "dept": "營建工程系", 
-                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(10)", "專一專二(21)"], 
+                "id": "105045", "group": "土木與建築群", "school": "國立高雄科技大學", "dept": "營建工程系",
+                "ratios": {"chi": 1, "eng": 0, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(9)", "數學(6)", "專一(6)", "級分和(33)"],
                 "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 50
             },
             {
-                "id": "105089", "group": "土木與建築群", "school": "國立高雄科技大學", "dept": "環境與安全衛生工程系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["英文(8)", "專一(10)", "專二(10)"], 
+                "id": "105089", "group": "土木與建築群", "school": "國立高雄科技大學", "dept": "環境與安全衛生工程系",
+                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(9)", "專一(7)", "級分和(29)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": false, "pro1": true, "pro2": true }, "tiebreakerSum": 43
             },
             {
-                "id": "703001", "group": "土木與建築群", "school": "國立陽明交通大學", "dept": "土木工程學系", 
-                "ratios": {"chi": 0, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(12)", "英文(12)", "專一(13)", "專二(13)"], 
+                "id": "703001", "group": "土木與建築群", "school": "國立陽明交通大學", "dept": "土木工程學系",
+                "ratios": {"chi": 0, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["英文數學(28)", "專一專二(27)"],
                 "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 60
             },
             {
-                "id": "102015", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "營建工程系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(10)", "專一(11)", "專二(11)"], 
+                "id": "102015", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "營建工程系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["英文數學(6)", "專一專二(18)", "級分和(45)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 51
             },
             {
-                "id": "102042", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "建築與室內設計系建築組", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(30)", "專一專二(25)"], 
+                "id": "102042", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "建築與室內設計系建築組",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文英文數學(34)", "專一專二(18)", "級分和(52)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 55
             },
             {
-                "id": "102043", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "建築與室內設計系室內組", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文(22)", "專一專二(25)"], 
+                "id": "102043", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "建築與室內設計系室內組",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文英文數學(32)", "專一專二(17)", "級分和(51)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 56
             },
             {
-                "id": "102048", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "創意生活設計系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文(24)", "專一(12)", "專二(12)"], 
+                "id": "102048", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "創意生活設計系",
+                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["數學(7)", "國文英文(19)", "專一專二(18)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": false, "pro1": true, "pro2": true }, "tiebreakerSum": 55
             },
             {
-                "id": "102055", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "跨域整合設計學士學位學程", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["英文(10)", "專一(11)"], 
+                "id": "102055", "group": "土木與建築群", "school": "國立雲林科技大學", "dept": "跨域整合設計學士學位學程",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(11)", "專二(9)", "級分和(45)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 49
             },
             {
-                "id": "110042", "group": "土木與建築群", "school": "國立勤益科技大學", "dept": "景觀系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文(10)", "專一(11)", "專二(11)"], 
+                "id": "110042", "group": "土木與建築群", "school": "國立勤益科技大學", "dept": "景觀系",
+                "ratios": {"chi": 1, "eng": 1, "math": 0, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["專二(9)", "專一(5)", "級分和(35)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": false, "pro1": true, "pro2": true }, "tiebreakerSum": 45
             },
             {
-                "id": "113032", "group": "土木與建築群", "school": "國立臺中科技大學", "dept": "室內設計系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(30)", "專一專二(24)"], 
+                "id": "113032", "group": "土木與建築群", "school": "國立臺中科技大學", "dept": "室內設計系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["專二(9)", "專一(7)", "級分和(46)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 55
             },
             {
-                "id": "104014", "group": "土木與建築群", "school": "國立臺北科技大學", "dept": "土木工程系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(33)", "專一專二(25)"], 
+                "id": "104014", "group": "土木與建築群", "school": "國立臺北科技大學", "dept": "土木工程系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["英文(4)", "專一專二(18)", "級分和(50)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 60
             },
             {
-                "id": "104016", "group": "土木與建築群", "school": "國立臺北科技大學", "dept": "材料及資源工程系資源組", 
-                "ratios": {"chi": 0, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["數學(11)", "英文(10)", "專一專二(23)"], 
+                "id": "104016", "group": "土木與建築群", "school": "國立臺北科技大學", "dept": "材料及資源工程系資源組",
+                "ratios": {"chi": 0, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["英文(12)", "專一(9)", "級分和(40)"],
                 "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 57
             },
             {
-                "id": "104028", "group": "土木與建築群", "school": "國立臺北科技大學", "dept": "建築系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(38)", "專一專二(28)"], 
+                "id": "104028", "group": "土木與建築群", "school": "國立臺北科技大學", "dept": "建築系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["英文(10)", "專一(8)", "專二(10)", "級分和(51)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 65
             },
             {
-                "id": "503413", "group": "土木與建築群", "school": "國立臺東專科學校", "dept": "建築科", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": [], 
+                "id": "503413", "group": "土木與建築群", "school": "國立臺東專科學校", "dept": "建築科",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文英文數學(14)", "專一專二(7)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": null
             },
             {
-                "id": "700001", "group": "土木與建築群", "school": "國立臺灣大學", "dept": "土木工程學系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(42)", "專一專二(28)"], 
+                "id": "700001", "group": "土木與建築群", "school": "國立臺灣大學", "dept": "土木工程學系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文英文數學(41)", "專一專二(24)", "級分和(65)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 68
             },
             {
-                "id": "101006", "group": "土木與建築群", "school": "國立臺灣科技大學", "dept": "營建工程系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["英文(3)", "數學(10)", "專一專二(22)"], 
+                "id": "101006", "group": "土木與建築群", "school": "國立臺灣科技大學", "dept": "營建工程系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["英文(3)", "數學(10)", "專一專二(22)", "級分和(57)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 57
             },
             {
-                "id": "101017", "group": "土木與建築群", "school": "國立臺灣科技大學", "dept": "建築系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["專一專二(22)"], 
+                "id": "101017", "group": "土木與建築群", "school": "國立臺灣科技大學", "dept": "建築系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文英文數學(31)", "專一專二(22)", "級分和(60)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 60
             },
             {
-                "id": "702004", "group": "土木與建築群", "school": "國立聯合大學", "dept": "建築學系", 
-                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更", 
-                "screening": ["國文英文數學(30)", "專一專二(20)"], 
+                "id": "702004", "group": "土木與建築群", "school": "國立聯合大學", "dept": "建築學系",
+                "ratios": {"chi": 1, "eng": 1, "math": 1, "pro1": 1, "pro2": 1}, "change": "無變更",
+                "screening": ["國文(8)", "專二(10)"],
                 "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true }, "tiebreakerSum": 50
             }
         ];
 
         const App = () => {
-            // State
             const [filters, setFilters] = useState({
                 chi: false,
                 eng: false,
@@ -226,7 +225,6 @@
             const [strictMode, setStrictMode] = useState(true);
             const [searchTerm, setSearchTerm] = useState("");
 
-            // Handlers
             const toggleFilter = (subject) => {
                 setFilters(prev => ({ ...prev, [subject]: !prev[subject] }));
             };
@@ -236,15 +234,9 @@
                 setSearchTerm("");
             };
 
-            // Helper for subject labels
-            const subjectLabels = {
-                chi: "國文", eng: "英文", math: "數學", pro1: "專一", pro2: "專二"
-            };
-            const subjectShortLabels = {
-                chi: "國", eng: "英", math: "數", pro1: "專一", pro2: "專二"
-            };
+            const subjectLabels = { chi: "國文", eng: "英文", math: "數學", pro1: "專一", pro2: "專二" };
+            const subjectShortLabels = { chi: "國", eng: "英", math: "數", pro1: "專一", pro2: "專二" };
 
-            // Tiebreaker String Generator
             const renderTiebreaker = (item) => {
                 if (item.tiebreakerV) {
                     const subjects = [];
@@ -258,24 +250,21 @@
 
                     const formula = `(${subjects.join('+')})級分和`;
                     const scoreDisplay = item.tiebreakerSum && item.tiebreakerSum !== "無資料" ? `(${item.tiebreakerSum})` : "";
-                    
+
                     return (
                         <div className="flex flex-wrap items-center gap-1">
                             <span className="font-bold text-orange-700">{formula}</span>
                             {scoreDisplay && <span className="bg-orange-600 text-white text-xs px-1.5 py-0.5 rounded ml-1">{scoreDisplay}</span>}
                         </div>
                     );
-                } 
-                
+                }
                 return <span className="text-slate-400 italic">無資料</span>;
             };
 
-            // Filter Logic
             const filteredData = useMemo(() => {
                 return admissionsData.filter(item => {
-                    // 1. Keyword Search
                     if (searchTerm) {
-                        const searchKeywords = searchTerm.trim().split(/\s+/); 
+                        const searchKeywords = searchTerm.trim().split(/\s+/);
                         const match = searchKeywords.every(kw => {
                             const synonym = {
                                 '土木': '土木工程',
@@ -303,20 +292,17 @@
                                 '聯合': '聯合大學',
                                 '台東': '臺東專科學校'
                             }[kw] || kw;
-                            
-                            return item.school.includes(kw) || item.dept.includes(kw) || 
+
+                            return item.school.includes(kw) || item.dept.includes(kw) ||
                                    item.school.includes(synonym) || item.dept.includes(synonym);
                         });
                         if (!match) return false;
                     }
 
-                    // 2. Subject Filter
                     const selectedSubjects = Object.keys(filters).filter(k => filters[k]);
-                    
                     if (selectedSubjects.length === 0) return true;
 
                     if (strictMode) {
-                        // Strict: Selected MUST be > 0, Unselected MUST be 0
                         for (let subj of selectedSubjects) {
                             if (item.ratios[subj] === 0) return false;
                         }
@@ -326,7 +312,6 @@
                         }
                         return true;
                     } else {
-                        // Inclusive: Selected MUST be > 0
                         for (let subj of selectedSubjects) {
                             if (item.ratios[subj] === 0) return false;
                         }
@@ -337,7 +322,6 @@
 
             return (
                 <div className="min-h-screen pb-12 font-sans bg-slate-50 text-slate-900">
-                    {/* Header */}
                     <div className="bg-gradient-to-r from-slate-700 to-indigo-900 text-white shadow-xl border-b-4 border-orange-500">
                         <div className="max-w-7xl mx-auto px-4 py-10 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-10 transform translate-x-10 -translate-y-4">
@@ -356,11 +340,8 @@
                     </div>
 
                     <div className="max-w-7xl mx-auto px-4 -mt-8 relative z-10">
-                        {/* Control Panel */}
                         <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-slate-100">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                
-                                {/* Left: Subject Select */}
                                 <div>
                                     <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center">
                                         <span className="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">1</span>
@@ -384,16 +365,14 @@
                                     </div>
                                 </div>
 
-                                {/* Right: Mode & Search */}
                                 <div className="flex flex-col gap-4">
                                     <div>
                                         <h3 className="text-sm font-bold text-slate-700 mb-4 flex items-center">
                                             <span className="bg-indigo-100 text-indigo-700 w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">2</span>
                                             設定篩選模式與搜尋
                                         </h3>
-                                        
-                                        {/* Toggle Switch */}
-                                        <div 
+
+                                        <div
                                             onClick={() => setStrictMode(!strictMode)}
                                             className={`cursor-pointer p-4 rounded-lg border transition-all duration-200 flex items-center justify-between group
                                                 ${strictMode ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-slate-200 hover:border-indigo-300'}`}
@@ -414,14 +393,13 @@
                                         </div>
                                     </div>
 
-                                    {/* Search Input */}
                                     <div className="relative">
                                         <div className="absolute left-3 top-3 text-slate-400">
-                                             <Search size={18} />
+                                            <Search size={18} />
                                         </div>
-                                        <input 
-                                            type="text" 
-                                            placeholder="搜尋學校或科系 (如：臺科、土木、建築、室內)..." 
+                                        <input
+                                            type="text"
+                                            placeholder="搜尋學校或科系 (如：臺科、土木、建築、室內)..."
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                             className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all"
@@ -429,8 +407,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            {/* Results Count Bar */}
+
                             <div className="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center">
                                 <span className="text-slate-700 text-sm">
                                     共找到 <strong className="text-indigo-700 text-lg mx-1">{filteredData.length}</strong> 個符合條件的國立科系
@@ -443,7 +420,6 @@
                             </div>
                         </div>
 
-                        {/* Table */}
                         <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
                             <div className="overflow-x-auto">
                                 <table className="min-w-full divide-y divide-slate-200">
@@ -478,7 +454,7 @@
                                                                             {subjectShortLabels[subj]}
                                                                         </span>
                                                                         <span className="bg-white text-indigo-700 font-bold text-sm border border-slate-200 w-10 text-center py-1 rounded-b shadow-sm group-hover:border-slate-400 transition-colors flex justify-center items-center h-7">
-                                                                             V
+                                                                            V
                                                                         </span>
                                                                     </div>
                                                                 ) : null
@@ -501,8 +477,7 @@
                                                     </td>
                                                     <td className="px-4 py-4 text-sm text-slate-700 border-b border-slate-100 align-top">
                                                         <div className="flex flex-col gap-3">
-                                                            
-                                                            {/* 第一階段篩選 */}
+
                                                             <div className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-200 leading-relaxed">
                                                                 <strong className="block text-slate-800 mb-1.5 border-b border-slate-200 pb-1 flex items-center">
                                                                     <Filter className="mr-1" size={12} />第一階段篩選標準
@@ -518,7 +493,6 @@
                                                                 )}
                                                             </div>
 
-                                                            {/* 同級分超額篩選 */}
                                                             <div className="text-xs text-slate-600 bg-orange-50/50 p-2.5 rounded-lg border border-orange-100 leading-relaxed">
                                                                 <strong className="block text-orange-800 mb-1.5 border-b border-orange-200 pb-1 flex justify-between items-center">
                                                                     <span className="flex items-center"><Scale className="mr-1" size={12} />同級分超額篩選</span>
@@ -552,7 +526,7 @@
                                 </table>
                             </div>
                         </div>
-                        
+
                         <footer className="mt-8 text-center text-slate-400 text-xs pb-12">
                             <p className="mb-2">資料來源：115學年度甄選入學招生簡章、114學年度土木群第一階段篩選標準</p>
                             <p>本系統僅供參考，若資料有出入，請以技專校院招生委員會聯合會最新公告為準。</p>
@@ -562,7 +536,6 @@
             );
         };
 
-        // 啟動 React (React 18 寫法)
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
