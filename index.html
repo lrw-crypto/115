@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>115學年度 職群總查詢系統</title>
+    <!-- Tailwind CSS (無需安裝，直接引入) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome 圖示庫 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f3f4f6;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        /* 自定義滾動條 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-gray-800">
+
+    <!-- 頂部導航欄 -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-indigo-600 text-white p-2 rounded-lg">
+                        <i class="fa-solid fa-graduation-cap text-xl"></i>
+                    </div>
+                    <span class="font-bold text-base md:text-xl tracking-wide text-gray-900">115學年度 統一入學測驗之甄選入學查詢系統</span>
+                </div>
+                <div class="hidden md:flex text-sm text-gray-500">
+                    整合國立科技大學最新倍率與去年通過標準
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區 -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        
+        <!-- 標題與搜尋區塊 -->
+        <div class="text-center mb-12 animate-fade-in-down">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+                選擇您的報考群類
+            </h1>
+            <p class="text-lg text-gray-600 mb-8">
+                快速導航至各群組分析頁面
+            </p>
+
+            <!-- 搜尋輸入框 -->
+            <div class="relative max-w-xl mx-auto group">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-indigo-500 transition-colors"></i>
+                </div>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="輸入群組名稱搜尋 (例如：商管、機械...)" 
+                    class="block w-full pl-11 pr-4 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-lg"
+                >
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                    <span class="text-xs text-gray-400 border border-gray-200 rounded px-2 py-1 hidden sm:block">ESC 清除</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片網格區 (Grid System) -->
+        <div id="cardGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+            
+            <!-- 1. 商管群 + 資管類 (Dark Green Theme) -->
+            <a href="BB.html" class="group-card block" data-keywords="商管群 資管類 商業 管理 資訊">
+                <div class="h-full bg-gradient-to-br from-green-800 to-green-950 rounded-2xl p-6 text-white shadow-lg card-hover relative overflow-hidden flex flex-col justify-between min-h-[240px]">
+                    <!-- 背景裝飾圖標 -->
+                    <i class="fa-solid fa-chart-line absolute -bottom-4 -right-4 text-9xl text-white opacity-10 transform rotate-12 group-hover:rotate-0 transition-transform duration-500"></i>
+                    
+                    <div class="relative z-10">
+                        <div class="bg-white/20 w-12 h-12 rounded-xl flex items-center justify-center mb-4 backdrop-blur-sm">
+                            <i class="fa-solid fa-briefcase text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-2">商管群 + 資管類</h2>
+                        <p class="text-green-100 text-sm font-medium opacity-90">Business & Management</p>
+                    </div>
+                    
+                    <div class="relative z-10 mt-4 flex items-center text-sm font-semibold bg-white/10 w-fit px-4 py-2 rounded-full backdrop-blur-sm group-hover:bg-white group-hover:text-green-900 transition-colors">
+                        進入查詢 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. 機械群 (Orange Theme) -->
+            <a href="MM.html" class="group-card block" data-keywords="機械群 機電 工程 模具">
+                <div class="h-full bg-gradient-to-br from-orange-500 to-orange-700 rounded-2xl p-6 text-white shadow-lg card-hover relative overflow-hidden flex flex-col justify-between min-h-[240px]">
+                    <i class="fa-solid fa-gears absolute -bottom-4 -right-4 text-9xl text-white opacity-10 transform -rotate-12 group-hover:rotate-0 transition-transform duration-500"></i>
+                    
+                    <div class="relative z-10">
+                        <div class="bg-white/20 w-12 h-12 rounded-xl flex items-center justify-center mb-4 backdrop-blur-sm">
+                            <i class="fa-solid fa-wrench text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-2">機械群</h2>
+                        <p class="text-orange-100 text-sm font-medium opacity-90">Mechanical Engineering</p>
+                    </div>
+                    
+                    <div class="relative z-10 mt-4 flex items-center text-sm font-semibold bg-white/10 w-fit px-4 py-2 rounded-full backdrop-blur-sm group-hover:bg-white group-hover:text-orange-600 transition-colors">
+                        進入查詢 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 3. 土木建築群 (Light Green Theme) -->
+            <a href="PP.html" class="group-card block" data-keywords="土木建築群 建築 設計 營建">
+                <div class="h-full bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-6 text-white shadow-lg card-hover relative overflow-hidden flex flex-col justify-between min-h-[240px]">
+                    <i class="fa-solid fa-city absolute -bottom-4 -right-4 text-9xl text-white opacity-10 group-hover:scale-110 transition-transform duration-500"></i>
+                    
+                    <div class="relative z-10">
+                        <div class="bg-white/20 w-12 h-12 rounded-xl flex items-center justify-center mb-4 backdrop-blur-sm">
+                            <i class="fa-solid fa-hard-hat text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-2">土木建築群</h2>
+                        <p class="text-green-100 text-sm font-medium opacity-90">Civil & Architecture</p>
+                    </div>
+                    
+                    <div class="relative z-10 mt-4 flex items-center text-sm font-semibold bg-white/10 w-fit px-4 py-2 rounded-full backdrop-blur-sm group-hover:bg-white group-hover:text-green-600 transition-colors">
+                        進入查詢 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 4. 應用外語群 (Purple/Violet Theme) -->
+            <a href="EE.html" class="group-card block" data-keywords="應用外語群 英文 日文 語言">
+                <div class="h-full bg-gradient-to-br from-violet-500 to-violet-700 rounded-2xl p-6 text-white shadow-lg card-hover relative overflow-hidden flex flex-col justify-between min-h-[240px]">
+                    <i class="fa-solid fa-earth-americas absolute -bottom-4 -right-4 text-9xl text-white opacity-10 group-hover:scale-110 transition-transform duration-500"></i>
+                    
+                    <div class="relative z-10">
+                        <div class="bg-white/20 w-12 h-12 rounded-xl flex items-center justify-center mb-4 backdrop-blur-sm">
+                            <i class="fa-solid fa-language text-2xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-2">應用外語群</h2>
+                        <p class="text-violet-100 text-sm font-medium opacity-90">Applied Foreign Languages</p>
+                    </div>
+                    
+                    <div class="relative z-10 mt-4 flex items-center text-sm font-semibold bg-white/10 w-fit px-4 py-2 rounded-full backdrop-blur-sm group-hover:bg-white group-hover:text-violet-600 transition-colors">
+                        進入查詢 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- 無搜尋結果提示 -->
+        <div id="noResults" class="hidden text-center py-20">
+            <div class="inline-block p-4 rounded-full bg-gray-100 mb-4">
+                <i class="fa-solid fa-magnifying-glass-minus text-3xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-900">找不到相符的群組</h3>
+            <p class="text-gray-500 mt-2">請嘗試使用更簡短的關鍵字，例如「土木」或「外語」。</p>
+            <button onclick="clearSearch()" class="mt-6 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                清除搜尋
+            </button>
+        </div>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-white border-t border-gray-200 py-8 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-500 text-sm">
+                以上為個人整理後方便查詢的參考資料,正確訊息仍以官方網站為準
+            </p>
+            <div class="mt-4 flex justify-center space-x-6 text-gray-400">
+                <a href="#" class="hover:text-gray-600 transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                <a href="#" class="hover:text-gray-600 transition-colors"><i class="fa-solid fa-circle-info text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 獲取元素
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.group-card');
+        const noResults = document.getElementById('noResults');
+        const cardGrid = document.getElementById('cardGrid');
+
+        // 搜尋功能
+        function filterCards() {
+            const query = searchInput.value.toLowerCase().trim();
+            let hasVisibleCards = false;
+
+            cards.forEach(card => {
+                // 獲取 data-keywords 中的關鍵字以及卡片文字內容
+                const keywords = card.getAttribute('data-keywords').toLowerCase();
+                const content = card.textContent.toLowerCase();
+
+                if (keywords.includes(query) || content.includes(query)) {
+                    card.classList.remove('hidden');
+                    hasVisibleCards = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // 顯示或隱藏 "無結果" 提示
+            if (hasVisibleCards) {
+                noResults.classList.add('hidden');
+                cardGrid.classList.remove('hidden');
+            } else {
+                noResults.classList.remove('hidden');
+                cardGrid.classList.add('hidden');
+            }
+        }
+
+        // 清除搜尋
+        function clearSearch() {
+            searchInput.value = '';
+            filterCards();
+            searchInput.focus();
+        }
+
+        // 監聽輸入事件
+        searchInput.addEventListener('input', filterCards);
+
+        // 監聽 ESC 鍵清除
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                clearSearch();
+            }
+        });
+    </script>
+</body>
+</html>
