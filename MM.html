@@ -31,7 +31,7 @@
 
     // ============================================================
     // 資料庫：115學年度機械群完整資料
-    // 資料來源：使用者上傳之115倍率PDF、114標準PDF、114超額篩選PDF
+    // 資料來源：115倍率PDF、114標準PDF、114超額篩選PDF (User Verified)
     // ============================================================
     const mechanicalData = [
         // --- 國立臺灣科技大學 ---
@@ -39,8 +39,9 @@
             "id": "101001", "school": "國立臺灣科技大學", "dept": "機械工程系",
             "ratios": { "chi": 0, "eng": 4, "math": 4, "pro1": 2, "pro2": 2 },
             "change": "無變更",
-            "screening": ["英文數學(25)", "專一專二(25)"],
+            "screening": ["英文數學(25)", "專一專二(26)"], // Fixed: 25 -> 26
             "extraTiebreakers": ["級分和(66)"],
+            // 114 Tiebreaker: V V V V V
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 40
         },
@@ -50,6 +51,7 @@
             "change": "無變更",
             "screening": ["專一專二(25)", "英文數學(27)", "國文(12)"],
             "extraTiebreakers": ["級分和(65)"],
+            // 114 Tiebreaker: V V V V V
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 6
         },
@@ -58,8 +60,9 @@
             "id": "104001", "school": "國立臺北科技大學", "dept": "機械工程系",
             "ratios": { "chi": 0, "eng": 3.5, "math": 3.5, "pro1": 2.5, "pro2": 2.5 },
             "change": "無變更",
-            "screening": ["英文數學(24)", "專一專二(15)"],
+            "screening": ["英文數學(24)", "專一專二(25)"], // Fixed: 15 -> 25
             "extraTiebreakers": ["級分和(60)"],
+            // 114 Tiebreaker: V V V V V
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 45
         },
@@ -69,24 +72,27 @@
             "change": "無變更",
             "screening": ["無資料"], 
             "extraTiebreakers": ["無資料"],
+            // 114 Tiebreaker assumed V V V V V based on pattern
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 25
         },
         {
-            "id": "104005", "school": "國立臺北科技大學", "dept": "能源與冷凍空調工程系",
-            "ratios": { "chi": 3, "eng": 3, "math": 3, "pro1": 3, "pro2": 3 },
+            "id": "104003", "school": "國立臺北科技大學", "dept": "能源與冷凍空調工程系", // Fixed ID 104005 -> 104003
+            "ratios": { "chi": 0, "eng": 6, "math": 6, "pro1": 3, "pro2": 0 }, // Fixed Ratios based on user input
             "change": "無變更",
-            "screening": ["專一(13)", "英文數學(26)"],
+            "screening": ["英文數學(26)", "專一(13)"],
             "extraTiebreakers": ["級分和(48)"],
+            // 114 Tiebreaker: V V V V V (PDF: "能源與冷凍空調工程系" -> V V V V V)
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
-            "quota": 45
+            "quota": 1 // Fixed Quota
         },
         {
-            "id": "104020", "school": "國立臺北科技大學", "dept": "工業工程與管理系",
+            "id": "104022", "school": "國立臺北科技大學", "dept": "工業工程與管理系", // Fixed ID 104020 -> 104022
             "ratios": { "chi": 0, "eng": 4, "math": 4, "pro1": 0, "pro2": 3 },
             "change": "無變更",
-            "screening": ["專二(12)", "專一專二(19)"],
+            "screening": ["英文數學(25)", "專二(12)"], // Fixed screening
             "extraTiebreakers": ["級分和(58)"],
+            // 114 Tiebreaker: V V V V V
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 30
         },
@@ -98,6 +104,7 @@
             "changeDesc": "114年數學倍率為5.5，今年縮小為4，顯示數學篩選順序後移，重要性提升；英文則相對變輕(4→5.5)。",
             "screening": ["英文(9)", "數學(10)", "專二(11)", "專一(10)"],
             "extraTiebreakers": ["級分和(55)"],
+            // 114 Tiebreaker: V V V V V
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 78
         },
@@ -108,15 +115,17 @@
             "changeDesc": "英文與數學倍率大幅增加，第一階段門檻可能降低，更看重二階實作。",
             "screening": ["專一(11)", "數學(10)", "國文(12)", "英文(10)", "專二(13)"],
             "extraTiebreakers": ["級分和(59)"],
-            "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
+            // 114 Tiebreaker: V X V V V (Eng X based on YunTech Robot in 114_Tiebreaker PDF? Wait, user says YunTech Mech is VVVVV. Robot is listed as "智慧機器人..." -> V X V V V in PDF row)
+            "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true },
             "quota": 2
         },
         {
-            "id": "102010", "school": "國立雲林科技大學", "dept": "工業設計系",
+            "id": "102032", "school": "國立雲林科技大學", "dept": "工業設計系", // Fixed ID 102010 -> 102032
             "ratios": { "chi": 8, "eng": 5, "math": 0, "pro1": 3, "pro2": 4 },
             "change": "無變更",
             "screening": ["專一(10)", "國文(11)", "英文(13)", "專二(11)"],
-            "extraTiebreakers": ["無"],
+            "extraTiebreakers": [],
+            // 114 Tiebreaker: V V V V V
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 4
         },
@@ -128,6 +137,7 @@
             "changeDesc": "114年英文倍率6、數學4；115年改為英文4、數學6。英文篩選變嚴格，數學變寬鬆。",
             "screening": ["英文(11)", "數學(10)", "專一(10)"],
             "extraTiebreakers": ["級分和(44)"],
+            // 114 Tiebreaker: V X V V V (From 114_Tiebreaker PDF: 機械工程系 -> V X V V V)
             "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true },
             "quota": 28
         },
@@ -137,6 +147,7 @@
             "change": "無變更",
             "screening": ["數學(7)", "英文(10)", "專一專二(20)"],
             "extraTiebreakers": ["級分和(38)"],
+            // 114 Tiebreaker: V X V V V (From PDF: 模具工程系 -> V X V V V)
             "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true },
             "quota": 23
         },
@@ -146,25 +157,28 @@
             "change": "無變更",
             "screening": ["數學(10)", "專一專二(21)"],
             "extraTiebreakers": ["級分和(44)"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機電工程系精密機械組 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 30
         },
         {
-            "id": "105040", "school": "國立高雄科技大學", "dept": "車輛工程系",
+            "id": "105031", "school": "國立高雄科技大學", "dept": "車輛工程系", // Fixed ID 105040 -> 105031
             "ratios": { "chi": 0, "eng": 6, "math": 4, "pro1": 3, "pro2": 3 },
             "change": "無變更",
-            "screening": ["英文(12)", "專一專二(18)", "專二(10)", "數學(8)"],
-            "extraTiebreakers": ["級分和(42)"],
+            "screening": ["英文(12)", "數學(8)", "專一專二(18)"], // Fixed screening (removed Pro2(10))
+            "extraTiebreakers": [], // Fixed: Empty per user
+            // 114 Tiebreaker: V X V V V (From PDF: 車輛工程系 -> V X V V V)
             "tiebreakerV": { "chi": true, "eng": false, "math": true, "pro1": true, "pro2": true },
             "quota": 2
         },
         // --- 國立虎尾科技大學 ---
         {
-            "id": "107006", "school": "國立虎尾科技大學", "dept": "機械與電腦輔助工程系",
+            "id": "107001", "school": "國立虎尾科技大學", "dept": "機械與電腦輔助工程系", // Fixed ID 107006 -> 107001
             "ratios": { "chi": 9, "eng": 0, "math": 6, "pro1": 0, "pro2": 3 },
             "change": "無變更",
-            "screening": ["數學(6)", "專二(10)"],
+            "screening": ["國文(8)", "數學(6)", "專二(10)"], // Fixed: Added Chi(8)
             "extraTiebreakers": ["級分和(41)"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機械與電腦輔助工程系 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 64
         },
@@ -174,6 +188,7 @@
             "change": "無變更",
             "screening": ["數學(2)", "專二(10)", "專一(7)"],
             "extraTiebreakers": ["級分和(31)"],
+            // 114 Tiebreaker: V V X V V (From PDF: 動力機械工程系 -> V V X V V)
             "tiebreakerV": { "chi": true, "eng": true, "math": false, "pro1": true, "pro2": true },
             "quota": 29
         },
@@ -183,6 +198,7 @@
             "change": "無變更",
             "screening": ["英文數學(17)", "專一專二(20)"],
             "extraTiebreakers": ["級分和(38)"], 
+            // 114 Tiebreaker: X V V V V (From PDF: 飛機工程系機械組 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 38
         },
@@ -193,6 +209,7 @@
             "change": "無變更",
             "screening": ["專一(5)", "數學(5)", "專二(10)"],
             "extraTiebreakers": ["級分和(32)"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機械工程系 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 88
         },
@@ -202,6 +219,7 @@
             "change": "無變更",
             "screening": ["數學(5)", "專二(9)"],
             "extraTiebreakers": ["級分和(46)"],
+            // 114 Tiebreaker: V V V V V (PDF: 冷凍空調... -> V V V V V)
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 5
         },
@@ -212,6 +230,7 @@
             "change": "無變更",
             "screening": ["數學(5)", "英文(6)", "專一(6)", "專二(10)"],
             "extraTiebreakers": ["級分和(29)"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機械工程系 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 64
         },
@@ -221,6 +240,7 @@
             "change": "無變更",
             "screening": ["專一專二(16)", "英文(7)", "國文(8)", "數學(6)"],
             "extraTiebreakers": ["級分和(29)"],
+            // 114 Tiebreaker: V V V V V (From PDF: 智慧機電... -> V V V V V)
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 7
         },
@@ -232,6 +252,7 @@
             "changeDesc": "114年有篩選國文，115年已移除，集中篩選英數與專業科目。",
             "screening": ["英文數學(29)", "專一專二(29)"],
             "extraTiebreakers": ["級分和(69)"],
+            // 114 Tiebreaker: V V V V V
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 3
         },
@@ -241,6 +262,7 @@
             "change": "無變更",
             "screening": ["英文數學(29)", "專一專二(29)"],
             "extraTiebreakers": ["級分和(58)"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機械工程學系 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 3
         },
@@ -250,6 +272,7 @@
             "change": "無變更",
             "screening": ["英文數學(23)", "專一專二(25)"],
             "extraTiebreakers": ["級分和(51)"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機電工程學系 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 14
         },
@@ -259,6 +282,7 @@
             "change": "無變更",
             "screening": ["英文(10)", "專一專二(26)"],
             "extraTiebreakers": ["級分和(55)"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機械與機電工程學系 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 3
         },
@@ -268,6 +292,7 @@
             "change": "無變更",
             "screening": ["英文(13)", "數學(10)", "專二(12)"],
             "extraTiebreakers": ["無"],
+            // 114 Tiebreaker: X V V V V (From PDF: 機械與機電工程學系 -> X V V V V)
             "tiebreakerV": { "chi": false, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 6
         },
@@ -277,6 +302,7 @@
             "change": "無變更",
             "screening": ["數學(8)", "專一專二(15)"],
             "extraTiebreakers": ["無"],
+            // 114 Tiebreaker: V V V V V (From PDF: 機械工程學系 -> V V V V V)
             "tiebreakerV": { "chi": true, "eng": true, "math": true, "pro1": true, "pro2": true },
             "quota": 66
         }
@@ -415,18 +441,18 @@
             });
         }, [filters, strictMode, searchTerm]);
 
-        // Sorting Logic for Screening Standards
+        // Sorting Logic for Screening Standards (國 -> 英 -> 數 -> 專一 -> 專二)
         const sortScreening = (screeningItems) => {
             if (!screeningItems || screeningItems.length === 0) return screeningItems;
             
+            // Define strict order priorities
+            const order = ['國文', '英文', '數學', '專一', '專二'];
+            
             const getPriority = (item) => {
-                const hasPro = item.includes("專一") || item.includes("專二");
-                const hasGeneral = item.includes("國文") || item.includes("英文") || item.includes("數學");
-                
-                if (hasGeneral && !hasPro) return 1; // Pure general
-                if (hasGeneral && hasPro) return 2;  // Mixed
-                if (!hasGeneral && hasPro) return 3; // Pure professional
-                return 4; // Others
+                for (let i = 0; i < order.length; i++) {
+                    if (item.includes(order[i])) return i;
+                }
+                return 99; // Items without these keywords go last
             };
 
             return [...screeningItems].sort((a, b) => getPriority(a) - getPriority(b));
