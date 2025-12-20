@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115學年度【外語群英語類】甄選入學查詢系統</title>
+    <title>115學年度【外語群英語類】甄選入學查詢系統 (整合版)</title>
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -17,14 +17,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fff1f2; } /* Rose-50 background */
-        .table-header { @apply px-4 py-3 text-left text-xs font-bold text-rose-800 uppercase tracking-wider bg-rose-100 border-b border-rose-200; }
-        .table-cell { @apply px-4 py-4 text-sm text-rose-900 border-b border-rose-50 align-top; }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f5f3ff; } /* Purple-50 background */
+        .table-header { @apply px-4 py-3 text-left text-xs font-bold text-indigo-800 uppercase tracking-wider bg-indigo-50 border-b border-indigo-200; }
+        .table-cell { @apply px-4 py-4 text-sm text-slate-700 border-b border-purple-100 align-top; }
         .badge { @apply px-2 py-0.5 inline-flex text-xs leading-5 font-semibold rounded-md; }
         .filter-btn { @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border shadow-sm flex items-center justify-center; }
-        .filter-btn-active { @apply bg-rose-600 text-white border-rose-600 ring-2 ring-rose-200; }
-        .filter-btn-inactive { @apply bg-white text-gray-600 border-gray-300 hover:bg-rose-50; }
-        .info-card { @apply bg-white p-4 rounded-lg shadow-sm border border-rose-100 text-sm text-gray-600 mb-6; }
+        .filter-btn-active { @apply bg-purple-600 text-white border-purple-600 ring-2 ring-purple-200; }
+        .filter-btn-inactive { @apply bg-white text-gray-600 border-gray-200 hover:bg-purple-50 hover:border-purple-200; }
+        .info-card { @apply bg-white p-4 rounded-lg shadow-sm border border-purple-100 text-sm text-gray-600 mb-6; }
     </style>
 </head>
 <body>
@@ -34,1334 +34,140 @@
 <script type="text/babel">
 
     // ============================================================
-    // 資料庫 - 外語群英語類 (15)
-    // 資料來源：115學年度四技甄選簡章資料.csv & 114學年度外語群篩選標準
+    // 資料來源 1: 同級分超額篩選資料 (114年級分和)
     // ============================================================
-    const admissionsData = [
-  {
-    "id": "101019",
-    "group": "15 外語群英語類",
-    "school": "國立臺灣科技大學",
-    "dept": "應用外語系",
-    "ratios": {
-      "chi": 3,
-      "eng": 2,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "專(14)",
-      "英文(15)",
-      "級分和(45)",
-      "總級分(46)",
-      "總級分(51)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "102022",
-    "group": "15 外語群英語類",
-    "school": "國立雲林科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 10,
-      "eng": 8,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "級分和(52)",
-      "國文(10)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "102030",
-    "group": "15 外語群英語類",
-    "school": "國立雲林科技大學",
-    "dept": "國際管理學士學位學程",
-    "ratios": {
-      "chi": 6,
-      "eng": 4,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(12)",
-      "專一專二(24)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "102046",
-    "group": "15 外語群英語類",
-    "school": "國立雲林科技大學",
-    "dept": "應用外語系",
-    "ratios": {
-      "chi": 7,
-      "eng": 5,
-      "math": 8,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(12)",
-      "英文(13)",
-      "數學(8)",
-      "專二(13)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "103051",
-    "group": "15 外語群英語類",
-    "school": "國立屏東科技大學",
-    "dept": "應用外語系",
-    "ratios": {
-      "chi": 0,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "英文: 3→4, 數學: 3→4",
-    "screening": [
-      "英文(9)",
-      "數學(6)",
-      "專一專二(20)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "104010",
-    "group": "15 外語群英語類",
-    "school": "國立臺北科技大學",
-    "dept": "應用英文系",
-    "ratios": {
-      "chi": 6,
-      "eng": 6,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→6, 英文: 3→6, 數學: 3→6",
-    "screening": [
-      "國文英文數學(32)",
-      "專一專二(25)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "104011",
-    "group": "15 外語群英語類",
-    "school": "國立臺北科技大學",
-    "dept": "文化事業發展系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 0
-    },
-    "change": "無變更",
-    "screening": [
-      "國文英文數學(32)",
-      "專一(13)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": false
-    }
-  },
-  {
-    "id": "105045",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "國際企業系",
-    "ratios": {
-      "chi": 7,
-      "eng": 5,
-      "math": 8,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(11)",
-      "英文(12)",
-      "數學(9)",
-      "專一專二(22)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105048",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 8,
-      "eng": 6,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(11)",
-      "英文(11)",
-      "專一專二(22)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105054",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "運籌管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 5,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文英文數學(30)",
-      "專二(12)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105057",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "行銷與流通管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 4,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(12)",
-      "數學(9)",
-      "專一專二(22)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105060",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "風險管理與保險系",
-    "ratios": {
-      "chi": 6,
-      "eng": 4,
-      "math": 4,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(11)",
-      "英文(11)",
-      "數學(7)",
-      "專二(11)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105076",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "航運管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 5,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(12)",
-      "數學(8)",
-      "專一專二(21)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105081",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "供應鏈管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 5,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(11)",
-      "數學(8)",
-      "專一專二(20)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105084",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "海洋休閒管理系",
-    "ratios": {
-      "chi": 8,
-      "eng": 8,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(10)",
-      "英文(10)",
-      "專一專二(18)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105087",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 5,
-      "eng": 0,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(11)",
-      "數學(7)",
-      "專一專二(22)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": false,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105092",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "應用德語系",
-    "ratios": {
-      "chi": 6,
-      "eng": 4,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(10)",
-      "英文(12)",
-      "專一專二(19)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "105102",
-    "group": "15 外語群英語類",
-    "school": "國立高雄科技大學",
-    "dept": "漁業科技與管理系",
-    "ratios": {
-      "chi": 7,
-      "eng": 6,
-      "math": 5,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(9)",
-      "英文(9)",
-      "數學(5)",
-      "專二(10)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "112004",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "餐旅暨會展行銷管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 0
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(11)",
-      "英文(12)",
-      "數學(9)",
-      "專一(12)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": false
-    }
-  },
-  {
-    "id": "112010",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "航空暨運輸服務管理系",
-    "ratios": {
-      "chi": 4,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文英文數學(33)",
-      "專一專二(24)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "112013",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "休閒暨遊憩管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 4,
-      "math": 8,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(12)",
-      "數學(7)",
-      "專一專二(21)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "112017",
-    "group": "15 外語群英語類",
-    "school": "國立高雄餐旅大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 4,
-      "eng": 3,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 0→4",
-    "screening": [
-      "英文(12)",
-      "專二(10)",
-      "級分和(41)",
-      "總級分(47)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "107038",
-    "group": "15 外語群英語類",
-    "school": "國立虎尾科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 0,
-      "eng": 5,
-      "math": 5,
-      "pro1": 0,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文數學(18)",
-      "專二(10)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": false,
-      "pro2": true
-    }
-  },
-  {
-    "id": "107040",
-    "group": "15 外語群英語類",
-    "school": "國立虎尾科技大學",
-    "dept": "財務金融系",
-    "ratios": {
-      "chi": 0,
-      "eng": 7,
-      "math": 0,
-      "pro1": 7,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(10)",
-      "專一(12)",
-      "專二(11)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "107041",
-    "group": "15 外語群英語類",
-    "school": "國立虎尾科技大學",
-    "dept": "應用外語系",
-    "ratios": {
-      "chi": 6,
-      "eng": 3,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→6, 英文: 2→3",
-    "screening": [
-      "英文(10)",
-      "專一專二(20)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "109013",
-    "group": "15 外語群英語類",
-    "school": "國立澎湖科技大學",
-    "dept": "行銷與物流管理系",
-    "ratios": {
-      "chi": 10,
-      "eng": 0,
-      "math": 10,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(5)",
-      "數學(2)",
-      "專一專二(10)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": false,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "109014",
-    "group": "15 外語群英語類",
-    "school": "國立澎湖科技大學",
-    "dept": "航運管理系",
-    "ratios": {
-      "chi": 4,
-      "eng": 4,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(5)",
-      "英文(6)",
-      "專一專二(12)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "109017",
-    "group": "15 外語群英語類",
-    "school": "國立澎湖科技大學",
-    "dept": "應用外語系",
-    "ratios": {
-      "chi": 5,
-      "eng": 4,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→5, 英文: 3→4",
-    "screening": [
-      "國文(6)",
-      "英文(6)",
-      "專一專二(13)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "110027",
-    "group": "15 外語群英語類",
-    "school": "國立勤益科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文英文數學(22)",
-      "專一專二(20)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "110037",
-    "group": "15 外語群英語類",
-    "school": "國立勤益科技大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 6,
-      "eng": 4,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→6, 英文: 3→4, 數學: 3→6",
-    "screening": [
-      "英文(12)",
-      "數學(7)",
-      "國文專一專二(34)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "110040",
-    "group": "15 外語群英語類",
-    "school": "國立勤益科技大學",
-    "dept": "文化創意事業系",
-    "ratios": {
-      "chi": 5,
-      "eng": 6,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(11)",
-      "數學(7)",
-      "國文專一專二(31)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "111014",
-    "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "休閒產業與健康促進系",
-    "ratios": {
-      "chi": 8,
-      "eng": 8,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(10)",
-      "英文(11)",
-      "專一專二(20)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "111015",
-    "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "語言治療與聽力學系",
-    "ratios": {
-      "chi": 6,
-      "eng": 6,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(13)",
-      "數學(9)",
-      "國文專一專二(35)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "111016",
-    "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "運動保健系",
-    "ratios": {
-      "chi": 6,
-      "eng": 6,
-      "math": 6,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(10)",
-      "英文(8)",
-      "數學(6)",
-      "專一專二(19)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "111017",
-    "group": "15 外語群英語類",
-    "school": "國立臺北護理健康大學",
-    "dept": "生死與健康心理諮商系",
-    "ratios": {
-      "chi": 8,
-      "eng": 5,
-      "math": 8,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(12)",
-      "數學(7)",
-      "英文專一專二(34)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113002",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "國際貿易與經營系",
-    "ratios": {
-      "chi": 4,
-      "eng": 3,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→4, 數學: 3→5",
-    "screening": [
-      "英文(12)",
-      "專一專二(24)",
-      "國文數學(20)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113004",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "財政稅務系",
-    "ratios": {
-      "chi": 4,
-      "eng": 4,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 0
-    },
-    "change": "國文: 3→4, 英文: 3→4, 數學: 3→4",
-    "screening": [
-      "專一(13)",
-      "國文英文數學(32)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": false
-    }
-  },
-  {
-    "id": "113007",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "財務金融系",
-    "ratios": {
-      "chi": 0,
-      "eng": 4,
-      "math": 5,
-      "pro1": 4,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(12)",
-      "數學(9)",
-      "專一專二(23)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113029",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "保險金融管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 4,
-      "math": 5,
-      "pro1": 4,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(11)",
-      "英文(11)",
-      "數學(8)",
-      "專一專二(22)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113031",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "企業管理系",
-    "ratios": {
-      "chi": 5,
-      "eng": 4,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 6
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(11)",
-      "英文(11)",
-      "數學(9)",
-      "專一專二(22)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113034",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "應用英語系",
-    "ratios": {
-      "chi": 7,
-      "eng": 7,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→7, 英文: 3→7",
-    "screening": [
-      "專一專二(22)",
-      "國文英文(27)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "113038",
-    "group": "15 外語群英語類",
-    "school": "國立臺中科技大學",
-    "dept": "應用中文系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文(12)",
-      "英文(12)",
-      "專一專二(23)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "114005",
-    "group": "15 外語群英語類",
-    "school": "國立臺北商業大學",
-    "dept": "國際商務系(臺北校區)",
-    "ratios": {
-      "chi": 0,
-      "eng": 6,
-      "math": 5,
-      "pro1": 4,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(13)",
-      "數學(9)",
-      "專一(13)",
-      "專二(12)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "114006",
-    "group": "15 外語群英語類",
-    "school": "國立臺北商業大學",
-    "dept": "應用外語系(臺北校區)",
-    "ratios": {
-      "chi": 6,
-      "eng": 6,
-      "math": 0,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "專一(13)",
-      "國文英文(27)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "501006",
-    "group": "15 外語群英語類",
-    "school": "國立金門大學",
-    "dept": "應用英語學系",
-    "ratios": {
-      "chi": 3,
-      "eng": 3,
-      "math": 3,
-      "pro1": 2,
-      "pro2": 2
-    },
-    "change": "無變更",
-    "screening": [
-      "不設篩選"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "503411",
-    "group": "15 外語群英語類",
-    "school": "國立臺東專科學校",
-    "dept": "餐旅管理科",
-    "ratios": {
-      "chi": 6,
-      "eng": 5,
-      "math": 4,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(6)",
-      "國文(8)",
-      "數學(6)",
-      "專一專二(15)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "708001",
-    "group": "15 外語群英語類",
-    "school": "國立中正大學",
-    "dept": "外國語文學系",
-    "ratios": {
-      "chi": 0,
-      "eng": 3,
-      "math": 0,
-      "pro1": 2.5,
-      "pro2": 2.5
-    },
-    "change": "無變更",
-    "screening": [
-      "英文(13)",
-      "專一專二(22)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": false,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "738006",
-    "group": "15 外語群英語類",
-    "school": "國立屏東大學",
-    "dept": "休閒事業經營學系",
-    "ratios": {
-      "chi": 5,
-      "eng": 5,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "無變更",
-    "screening": [
-      "國文英文數學(27)",
-      "專一專二(20)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "738007",
-    "group": "15 外語群英語類",
-    "school": "國立屏東大學",
-    "dept": "應用英語學系",
-    "ratios": {
-      "chi": 5,
-      "eng": 3,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→5, 專一: 3→5",
-    "screening": [
-      "級分(54)",
-      "英文(10)",
-      "專一專二(18)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "738011",
-    "group": "15 外語群英語類",
-    "school": "國立屏東大學",
-    "dept": "應用英語學系",
-    "ratios": {
-      "chi": 5,
-      "eng": 3,
-      "math": 5,
-      "pro1": 3,
-      "pro2": 3
-    },
-    "change": "國文: 3→5, 專一: 3→5",
-    "screening": [
-      "級分(54)",
-      "英文(10)",
-      "專一專二(18)"
-    ],
-    "tiebreakerV": {
-      "chi": true,
-      "eng": true,
-      "math": true,
-      "pro1": true,
-      "pro2": true
-    }
-  },
-  {
-    "id": "807014",
-    "group": "15 外語群英語類",
-    "school": "逢甲大學",
-    "dept": "外國語文學系",
-    "ratios": {
-      "chi": 7,
-      "eng": 0,
-      "math": 21,
-      "pro1": 0,
-      "pro2": 0
-    },
-    "change": "以簡章為準",
-    "screening": [
-      "英文(14)",
-      "國文(10)",
-      "專二(11)"
-    ],
-    "tiebreakerV": {
-      "chi": false,
-      "eng": false,
-      "math": false,
-      "pro1": false,
-      "pro2": false
-    }
-  }
+    const tiebreakerSource = [
+        { "school": "國立中正大學", "department": "外國語文學系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 54 },
+        { "school": "國立虎尾科技大學", "department": "企業管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "X", "pro2": "V", "scoreSum": null },
+        { "school": "國立虎尾科技大學", "department": "財務金融系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 49 },
+        { "school": "國立虎尾科技大學", "department": "應用外語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 46 },
+        { "school": "國立金門大學", "department": "應用英語學系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立屏東大學", "department": "休閒事業經營學系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立屏東大學", "department": "應用英語學系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 54 },
+        { "school": "國立屏東科技大學", "department": "應用外語系", "category": "15 外語群英語類", "chinese": "X", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 45 },
+        { "school": "國立高雄科技大學", "department": "國際企業系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 58 },
+        { "school": "國立高雄科技大學", "department": "企業管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 49 },
+        { "school": "國立高雄科技大學", "department": "運籌管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "X", "pro2": "V", "scoreSum": 49 },
+        { "school": "國立高雄科技大學", "department": "行銷與流通管理系", "category": "15 外語群英語類", "chinese": "X", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 48 },
+        { "school": "國立高雄科技大學", "department": "風險管理與保險系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "X", "pro2": "V", "scoreSum": 47 },
+        { "school": "國立高雄科技大學", "department": "航運管理系", "category": "15 外語群英語類", "chinese": "X", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 51 },
+        { "school": "國立高雄科技大學", "department": "供應鏈管理系", "category": "15 外語群英語類", "chinese": "X", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 42 },
+        { "school": "國立高雄科技大學", "department": "海洋休閒管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 44 },
+        { "school": "國立高雄科技大學", "department": "應用英語系", "category": "15 外語群英語類", "chinese": "V", "english": "X", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 38 },
+        { "school": "國立高雄科技大學", "department": "應用德語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 46 },
+        { "school": "國立高雄科技大學", "department": "漁業科技與管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "X", "pro2": "V", "scoreSum": null },
+        { "school": "國立高雄餐旅大學", "department": "餐旅暨會展行銷管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "X", "scoreSum": null },
+        { "school": "國立高雄餐旅大學", "department": "航空暨運輸服務管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 58 },
+        { "school": "國立高雄餐旅大學", "department": "休閒暨遊憩管理系", "category": "15 外語群英語類", "chinese": "X", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 41 }, 
+        { "school": "國立高雄餐旅大學", "department": "應用英語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 41 },
+        { "school": "國立雲林科技大學", "department": "企業管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 52 },
+        { "school": "國立雲林科技大學", "department": "國際管理學士學位學程", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 67 },
+        { "school": "國立雲林科技大學", "department": "應用外語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "X", "pro2": "V", "scoreSum": 45 },
+        { "school": "國立勤益科技大學", "department": "企業管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立勤益科技大學", "department": "應用英語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 55 },
+        { "school": "國立勤益科技大學", "department": "文化創意事業系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立臺中科技大學", "department": "國際貿易與經營系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 50 },
+        { "school": "國立臺中科技大學", "department": "財政稅務系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "X", "scoreSum": null },
+        { "school": "國立臺中科技大學", "department": "財務金融系", "category": "15 外語群英語類", "chinese": "X", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 47 },
+        { "school": "國立臺中科技大學", "department": "保險金融管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 60 },
+        { "school": "國立臺中科技大學", "department": "企業管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 54 },
+        { "school": "國立臺中科技大學", "department": "應用英語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立臺中科技大學", "department": "應用中文系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 46 },
+        { "school": "國立臺北科技大學", "department": "應用英文系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 59 },
+        { "school": "國立臺北科技大學", "department": "文化事業發展系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "X", "scoreSum": 49 },
+        { "school": "國立臺北商業大學", "department": "國際商務系(臺北校區)", "category": "15 外語群英語類", "chinese": "X", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 55 },
+        { "school": "國立臺北商業大學", "department": "應用外語系(臺北校區)", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 51 },
+        { "school": "國立臺北護理健康大學", "department": "休閒產業與健康促進系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 51 },
+        { "school": "國立臺北護理健康大學", "department": "語言治療與聽力學系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 59 },
+        { "school": "國立臺北護理健康大學", "department": "運動保健系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立臺北護理健康大學", "department": "生死與健康心理諮商系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": 60 },
+        { "school": "國立臺東專科學校", "department": "餐旅管理科", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立臺灣科技大學", "department": "應用外語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 45 },
+        { "school": "國立澎湖科技大學", "department": "行銷與物流管理系", "category": "15 外語群英語類", "chinese": "V", "english": "X", "math": "V", "pro1": "V", "pro2": "V", "scoreSum": null },
+        { "school": "國立澎湖科技大學", "department": "航運管理系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": 38 },
+        { "school": "國立澎湖科技大學", "department": "應用外語系", "category": "15 外語群英語類", "chinese": "V", "english": "V", "math": "X", "pro1": "V", "pro2": "V", "scoreSum": null }
+    ];
+
+    // ============================================================
+    // 資料來源 2: 115學年度甄選簡章 (來自新上傳的 PDF 檔案)
+    // ============================================================
+    const rawAdmissionsData = [
+  { "id": "101019", "group": "15 外語群英語類", "school": "國立臺灣科技大學", "dept": "應用外語系", "ratios": { "chi": 5, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(5)"], "tiebreakerV": null },
+  { "id": "102022", "group": "15 外語群英語類", "school": "國立雲林科技大學", "dept": "企業管理系", "ratios": { "chi": 10, "eng": 8, "math": 6, "pro1": 3, "pro2": 3 }, "change": "無變更", "screening": ["專一專二(3)", "數學(6)", "英文(8)", "國文(10)"], "tiebreakerV": null },
+  { "id": "102030", "group": "15 外語群英語類", "school": "國立雲林科技大學", "dept": "國際管理學士學位學程", "ratios": { "chi": 6, "eng": 0, "math": 0, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "國文(6)"], "tiebreakerV": null },
+  { "id": "102046", "group": "15 外語群英語類", "school": "國立雲林科技大學", "dept": "應用外語系", "ratios": { "chi": 7, "eng": 5, "math": 8, "pro1": 3, "pro2": 4.5 }, "change": "無變更", "screening": ["專一(3)", "專二(4.5)", "英文(5)", "國文(7)", "數學(8)"], "tiebreakerV": null },
+  { "id": "103051", "group": "15 外語群英語類", "school": "國立屏東科技大學", "dept": "應用外語系", "ratios": { "chi": 6, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(6)"], "tiebreakerV": null },
+  { "id": "104010", "group": "15 外語群英語類", "school": "國立臺北科技大學", "dept": "應用英文系", "ratios": { "chi": 5, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(5)"], "tiebreakerV": null },
+  { "id": "104011", "group": "15 外語群英語類", "school": "國立臺北科技大學", "dept": "文化事業發展系", "ratios": { "chi": 3.5, "eng": 4.5, "math": 0, "pro1": 2.5, "pro2": 0 }, "change": "無變更", "screening": ["專一(2.5)", "國文(3.5)", "英文(4.5)"], "tiebreakerV": null },
+  { "id": "105045", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "國際企業系", "ratios": { "chi": 6, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(6)"], "tiebreakerV": null },
+  { "id": "105048", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "企業管理系", "ratios": { "chi": 8, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(8)"], "tiebreakerV": null },
+  { "id": "105054", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "運籌管理系", "ratios": { "chi": 5, "eng": 5, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文英文(5)"], "tiebreakerV": null },
+  { "id": "105057", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "行銷與流通管理系", "ratios": { "chi": 0, "eng": 4, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "英文(4)"], "tiebreakerV": null },
+  { "id": "105060", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "風險管理與保險系", "ratios": { "chi": 0, "eng": 0, "math": 0, "pro1": 0, "pro2": 0 }, "change": "無變更", "screening": ["級分和(0)"], "tiebreakerV": null },
+  { "id": "105076", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "航運管理系", "ratios": { "chi": 5, "eng": 0, "math": 3, "pro1": 4, "pro2": 0 }, "change": "無變更", "screening": ["數學(3)", "專一(4)", "國文(5)"], "tiebreakerV": null },
+  { "id": "105081", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "供應鏈管理系", "ratios": { "chi": 5, "eng": 0, "math": 4, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "數學(4)", "國文(5)"], "tiebreakerV": null },
+  { "id": "105084", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "海洋休閒管理系", "ratios": { "chi": 4.5, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(4.5)"], "tiebreakerV": null },
+  { "id": "105087", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "應用英語系", "ratios": { "chi": 5, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(5)"], "tiebreakerV": null },
+  { "id": "105092", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "應用德語系", "ratios": { "chi": 4, "eng": 6, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(4)", "英文(6)"], "tiebreakerV": null },
+  { "id": "105102", "group": "15 外語群英語類", "school": "國立高雄科技大學", "dept": "漁業科技與管理系", "ratios": { "chi": 7, "eng": 0, "math": 3, "pro1": 0, "pro2": 0 }, "change": "無變更", "screening": ["數學(3)", "國文(7)"], "tiebreakerV": null },
+  { "id": "107038", "group": "15 外語群英語類", "school": "國立虎尾科技大學", "dept": "企業管理系", "ratios": { "chi": 10, "eng": 0, "math": 3, "pro1": 0, "pro2": 0 }, "change": "無變更", "screening": ["數學(3)", "國文(10)"], "tiebreakerV": null },
+  { "id": "107041", "group": "15 外語群英語類", "school": "國立虎尾科技大學", "dept": "應用外語系", "ratios": { "chi": 9, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(9)"], "tiebreakerV": null },
+  { "id": "109014", "group": "15 外語群英語類", "school": "國立澎湖科技大學", "dept": "航運管理系", "ratios": { "chi": 4, "eng": 0, "math": 0, "pro1": 3, "pro2": 3 }, "change": "無變更", "screening": ["專一專二(3)", "國文(4)"], "tiebreakerV": null },
+  { "id": "109017", "group": "15 外語群英語類", "school": "國立澎湖科技大學", "dept": "應用外語系", "ratios": { "chi": 5, "eng": 4, "math": 3, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["數學專二(3)", "英文(4)", "國文(5)"], "tiebreakerV": null },
+  { "id": "110027", "group": "15 外語群英語類", "school": "國立勤益科技大學", "dept": "企業管理系", "ratios": { "chi": 0, "eng": 0, "math": 3, "pro1": 0, "pro2": 6 }, "change": "無變更", "screening": ["數學(3)", "專二(6)"], "tiebreakerV": null },
+  { "id": "110037", "group": "15 外語群英語類", "school": "國立勤益科技大學", "dept": "應用英語系", "ratios": { "chi": 6, "eng": 6, "math": 0, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "國文英文(6)"], "tiebreakerV": null },
+  { "id": "110040", "group": "15 外語群英語類", "school": "國立勤益科技大學", "dept": "文化創意事業系", "ratios": { "chi": 5, "eng": 6, "math": 0, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "國文(5)", "英文(6)"], "tiebreakerV": null },
+  { "id": "111014", "group": "15 外語群英語類", "school": "國立臺北護理健康大學", "dept": "休閒產業與健康促進系", "ratios": { "chi": 8, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(8)"], "tiebreakerV": null },
+  { "id": "111015", "group": "15 外語群英語類", "school": "國立臺北護理健康大學", "dept": "語言治療與聽力學系", "ratios": { "chi": 8, "eng": 6, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "英文(6)", "國文(8)"], "tiebreakerV": null },
+  { "id": "111016", "group": "15 外語群英語類", "school": "國立臺北護理健康大學", "dept": "運動保健系", "ratios": { "chi": 8, "eng": 8, "math": 3, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["數學專二(3)", "國文英文(8)"], "tiebreakerV": null },
+  { "id": "111017", "group": "15 外語群英語類", "school": "國立臺北護理健康大學", "dept": "生死與健康心理諮商系", "ratios": { "chi": 8, "eng": 5, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "英文(5)", "國文(8)"], "tiebreakerV": null },
+  { "id": "112004", "group": "15 外語群英語類", "school": "國立高雄餐旅大學", "dept": "餐旅暨會展行銷管理系", "ratios": { "chi": 4, "eng": 5, "math": 0, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "國文(4)", "英文(5)"], "tiebreakerV": null },
+  { "id": "112010", "group": "15 外語群英語類", "school": "國立高雄餐旅大學", "dept": "航空暨運輸服務管理系", "ratios": { "chi": 4, "eng": 4, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文英文(4)"], "tiebreakerV": null },
+  { "id": "112013", "group": "15 外語群英語類", "school": "國立高雄餐旅大學", "dept": "休閒暨遊憩管理系", "ratios": { "chi": 8, "eng": 0, "math": 0, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "國文(8)"], "tiebreakerV": null },
+  { "id": "112017", "group": "15 外語群英語類", "school": "國立高雄餐旅大學", "dept": "應用英語系", "ratios": { "chi": 5, "eng": 5, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文英文(5)"], "tiebreakerV": null },
+  { "id": "113002", "group": "15 外語群英語類", "school": "國立臺中科技大學", "dept": "國際貿易與經營系", "ratios": { "chi": 4, "eng": 5, "math": 3, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["數學專二(3)", "國文(4)", "英文(5)"], "tiebreakerV": null },
+  { "id": "113004", "group": "15 外語群英語類", "school": "國立臺中科技大學", "dept": "財政稅務系", "ratios": { "chi": 4, "eng": 4, "math": 3, "pro1": 0, "pro2": 0 }, "change": "無變更", "screening": ["數學(3)", "國文英文(4)"], "tiebreakerV": null },
+  { "id": "113007", "group": "15 外語群英語類", "school": "國立臺中科技大學", "dept": "財務金融系", "ratios": { "chi": 0, "eng": 5, "math": 4, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "數學(4)", "英文(5)"], "tiebreakerV": null },
+  { "id": "113029", "group": "15 外語群英語類", "school": "國立臺中科技大學", "dept": "保險金融管理系", "ratios": { "chi": 5, "eng": 0, "math": 4, "pro1": 3, "pro2": 6 }, "change": "無變更", "screening": ["專一(3)", "數學(4)", "國文(5)", "專二(6)"], "tiebreakerV": null },
+  { "id": "113031", "group": "15 外語群英語類", "school": "國立臺中科技大學", "dept": "企業管理系", "ratios": { "chi": 0, "eng": 0, "math": 3, "pro1": 0, "pro2": 6 }, "change": "無變更", "screening": ["數學(3)", "專二(6)"], "tiebreakerV": null },
+  { "id": "113034", "group": "15 外語群英語類", "school": "國立臺中科技大學", "dept": "應用英語系", "ratios": { "chi": 7, "eng": 7, "math": 0, "pro1": 3, "pro2": 3 }, "change": "無變更", "screening": ["專一專二(3)", "國文英文(7)"], "tiebreakerV": null },
+  { "id": "113038", "group": "15 外語群英語類", "school": "國立臺中科技大學", "dept": "應用中文系", "ratios": { "chi": 5, "eng": 0, "math": 0, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "國文(5)"], "tiebreakerV": null },
+  { "id": "114005", "group": "15 外語群英語類", "school": "國立臺北商業大學", "dept": "國際商務系(臺北校區)", "ratios": { "chi": 6, "eng": 5, "math": 4, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["專一(3)", "數學(4)", "英文(5)", "國文(6)"], "tiebreakerV": null },
+  { "id": "114006", "group": "15 外語群英語類", "school": "國立臺北商業大學", "dept": "應用外語系(臺北校區)", "ratios": { "chi": 4, "eng": 0, "math": 0, "pro1": 3, "pro2": 3 }, "change": "無變更", "screening": ["專一專二(3)", "國文(4)"], "tiebreakerV": null },
+  { "id": "503411", "group": "15 外語群英語類", "school": "國立臺東專科學校", "dept": "餐旅管理科", "ratios": { "chi": 10, "eng": 0, "math": 0, "pro1": 3, "pro2": 3 }, "change": "無變更", "screening": ["專一專二(3)", "國文(10)"], "tiebreakerV": null },
+  { "id": "708001", "group": "15 外語群英語類", "school": "國立中正大學", "dept": "外國語文學系", "ratios": { "chi": 5, "eng": 0, "math": 0, "pro1": 0, "pro2": 3 }, "change": "無變更", "screening": ["專二(3)", "國文(5)"], "tiebreakerV": null },
+  { "id": "501006", "group": "15 外語群英語類", "school": "國立金門大學", "dept": "應用英語學系", "ratios": { "chi": 5, "eng": 6, "math": 3, "pro1": 4, "pro2": 0 }, "change": "無變更", "screening": ["數學(3)", "專一(4)", "國文(5)", "英文(6)"], "tiebreakerV": null },
+  { "id": "738006", "group": "15 外語群英語類", "school": "國立屏東大學", "dept": "休閒事業經營學系", "ratios": { "chi": 0, "eng": 0, "math": 0, "pro1": 3, "pro2": 3 }, "change": "無變更", "screening": ["專一專二(3)"], "tiebreakerV": null },
+  { "id": "738007", "group": "15 外語群英語類", "school": "國立屏東大學", "dept": "應用英語學系", "ratios": { "chi": 0, "eng": 5, "math": 3, "pro1": 3, "pro2": 0 }, "change": "無變更", "screening": ["數學專一(3)", "英文(5)"], "tiebreakerV": null }
 ];
+
+    // ============================================================
+    // 合併邏輯: 將 source1 的超額篩選資料合併入 source2
+    // ============================================================
+    const admissionsData = rawAdmissionsData.map(item => {
+        // 尋找對應的學校與科系
+        const match = tiebreakerSource.find(t => 
+            t.school === item.school && t.department === item.dept
+        );
+
+        if (match) {
+            return {
+                ...item,
+                tiebreakerV: {
+                    chi: match.chinese === 'V',
+                    eng: match.english === 'V',
+                    math: match.math === 'V',
+                    pro1: match.pro1 === 'V',
+                    pro2: match.pro2 === 'V',
+                    scoreSum: match.scoreSum // 加入 scoreSum
+                }
+            };
+        }
+        
+        // 若找不到對應資料，回傳原物件 (tiebreakerV 保持 null)
+        return item;
+    });
+
 
     const App = () => {
         // State
@@ -1393,29 +199,50 @@
             chi: "國", eng: "英", math: "數", pro1: "專一", pro2: "專二"
         };
 
+        // 重新排序篩選標準 (國英數在前，專一專二在後)
+        const sortScreeningCriteria = (screeningList) => {
+            if (!screeningList || screeningList.length === 0) return [];
+            
+            // 定義權重：國英數 > 專一專二 > 其他 (級分和/總級分)
+            // 權重越小越前面
+            const getWeight = (text) => {
+                if (text.includes("國文") || text.includes("英文") || text.includes("數學")) return 1;
+                if (text.includes("專一") || text.includes("專二")) return 2;
+                return 3;
+            };
+
+            return [...screeningList].sort((a, b) => {
+                const weightA = getWeight(a);
+                const weightB = getWeight(b);
+                if (weightA !== weightB) {
+                    return weightA - weightB;
+                }
+                // 同權重下維持原順序 (或是可以依倍率數字排序，這裡簡單維持原樣)
+                return 0;
+            });
+        };
+
         // Tiebreaker String Generator
         const renderTiebreaker = (item) => {
             // 優先使用 tiebreakerV 判斷
             if (item.tiebreakerV) {
-                const subjects = [];
-                if (item.tiebreakerV.chi) subjects.push("國");
-                if (item.tiebreakerV.eng) subjects.push("英");
-                if (item.tiebreakerV.math) subjects.push("數");
-                if (item.tiebreakerV.pro1) subjects.push("專一");
-                if (item.tiebreakerV.pro2) subjects.push("專二");
-
-                if (subjects.length === 0) return <span className="text-gray-400">無採計科目</span>;
-
-                const formula = `(${subjects.join('+')})級分和`;
-                
                 return (
-                    <div className="flex flex-wrap items-center gap-1">
-                        <span className="font-bold text-rose-700">{formula}</span>
+                    <div className="flex flex-col gap-1.5">
+                        {item.tiebreakerV.scoreSum !== null ? (
+                            <div className="flex items-center">
+                                <span className="inline-flex items-center px-2 py-1 rounded bg-amber-100 text-amber-900 border border-amber-200 text-xs font-bold shadow-sm">
+                                    <i className="fa-solid fa-star mr-1 text-amber-500"></i>
+                                    級分和: {item.tiebreakerV.scoreSum}
+                                </span>
+                            </div>
+                        ) : (
+                            <span className="text-gray-400 italic"></span>
+                        )}
                     </div>
                 );
             } 
             
-            return <span className="text-gray-400 italic">無資料</span>;
+            return <span className="text-gray-400 italic">無超額篩選資料</span>;
         };
 
         // Filter Logic
@@ -1481,7 +308,7 @@
         return (
             <div className="min-h-screen pb-12">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-rose-700 to-rose-900 text-white shadow-xl">
+                <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-xl">
                     <div className="max-w-7xl mx-auto px-4 py-10 relative">
                         <div className="absolute top-0 right-0 p-4 opacity-10">
                             <i className="fa-solid fa-language text-9xl"></i>
@@ -1490,7 +317,7 @@
                             <i className="fa-solid fa-earth-americas mr-3"></i>
                             115學年度【外語群英語類】甄選入學查詢系統
                         </h1>
-                        <p className="text-rose-100 text-lg max-w-2xl font-light">
+                        <p className="text-purple-100 text-lg max-w-2xl font-light">
                             專為外語群英語類考生設計，整合國立科技大學最新倍率、篩選標準與同級分超額篩選科目。
                         </p>
                     </div>
@@ -1498,13 +325,13 @@
 
                 <div className="max-w-7xl mx-auto px-4 -mt-8 relative z-10">
                     {/* Control Panel */}
-                    <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-gray-100">
+                    <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-purple-100">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             
                             {/* Left: Subject Select */}
                             <div>
                                 <h3 className="text-sm font-bold text-gray-700 mb-4 flex items-center">
-                                    <span className="bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">1</span>
+                                    <span className="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">1</span>
                                     選擇篩選科目 (115年倍率)
                                 </h3>
                                 <div className="flex flex-wrap gap-3">
@@ -1529,7 +356,7 @@
                             <div className="flex flex-col gap-4">
                                 <div>
                                     <h3 className="text-sm font-bold text-gray-700 mb-4 flex items-center">
-                                        <span className="bg-rose-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">2</span>
+                                        <span className="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center mr-2 text-xs">2</span>
                                         設定篩選模式與搜尋
                                     </h3>
                                     
@@ -1538,13 +365,13 @@
                                         <div 
                                             onClick={() => setStrictMode(!strictMode)}
                                             className={`cursor-pointer px-4 py-2.5 rounded-lg border transition-all duration-200 flex items-center gap-3 flex-1
-                                                ${strictMode ? 'bg-rose-100 border-rose-300' : 'bg-white border-gray-200 hover:border-rose-300'}`}
+                                                ${strictMode ? 'bg-purple-100 border-purple-300' : 'bg-white border-gray-200 hover:border-purple-300'}`}
                                         >
-                                            <div className={`w-9 h-5 flex items-center rounded-full p-0.5 duration-300 ${strictMode ? 'bg-rose-700' : 'bg-gray-300'}`}>
+                                            <div className={`w-9 h-5 flex items-center rounded-full p-0.5 duration-300 ${strictMode ? 'bg-purple-700' : 'bg-gray-300'}`}>
                                                 <div className={`bg-white w-4 h-4 rounded-full shadow-md transform duration-300 ${strictMode ? 'translate-x-4' : ''}`}></div>
                                             </div>
                                             <div className="flex flex-col">
-                                                <span className={`text-sm font-bold ${strictMode ? 'text-rose-800' : 'text-gray-600'}`}>
+                                                <span className={`text-sm font-bold ${strictMode ? 'text-purple-800' : 'text-gray-600'}`}>
                                                     嚴格模式 (Only)
                                                 </span>
                                             </div>
@@ -1558,7 +385,7 @@
                                                 placeholder="搜尋校系名稱或代碼..." 
                                                 value={searchTerm}
                                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all"
+                                                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
                                             />
                                         </div>
                                     </div>
@@ -1567,12 +394,12 @@
                         </div>
                         
                         {/* Results Count Bar */}
-                        <div className="mt-6 pt-4 border-t border-gray-100 flex justify-between items-center">
+                        <div className="mt-6 pt-4 border-t border-purple-100 flex justify-between items-center">
                             <span className="text-gray-700 text-sm">
-                                共找到 <strong className="text-rose-700 text-lg mx-1">{filteredData.length}</strong> 個符合條件的校系
+                                共找到 <strong className="text-purple-700 text-lg mx-1">{filteredData.length}</strong> 個符合條件的校系
                             </span>
                             {(Object.values(filters).some(Boolean) || searchTerm) && (
-                                <button onClick={resetFilters} className="text-sm text-gray-500 hover:text-red-500 flex items-center gap-1 transition-colors">
+                                <button onClick={resetFilters} className="text-sm text-gray-500 hover:text-purple-500 flex items-center gap-1 transition-colors">
                                     <i className="fa-solid fa-rotate-left"></i> 重置條件
                                 </button>
                             )}
@@ -1580,10 +407,10 @@
                     </div>
 
                     {/* Table */}
-                    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-purple-200">
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-rose-50">
+                                <thead className="bg-purple-50">
                                     <tr>
                                         <th scope="col" className="table-header w-3/12">學校科系 (代碼)</th>
                                         <th scope="col" className="table-header w-2/12 text-center">115年 篩選倍率</th>
@@ -1594,11 +421,11 @@
                                 <tbody className="bg-white divide-y divide-gray-100">
                                     {filteredData.length > 0 ? (
                                         filteredData.map((item, idx) => (
-                                            <tr key={item.id} className={`hover:bg-rose-50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-rose-50/30'}`}>
+                                            <tr key={item.id} className={`hover:bg-purple-50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-purple-50/30'}`}>
                                                 <td className="table-cell">
                                                     <div className="flex flex-col items-start">
                                                         <span className="text-base font-bold text-gray-800">{item.school}</span>
-                                                        <span className="text-rose-700 font-medium mt-0.5">{item.dept}</span>
+                                                        <span className="text-purple-700 font-medium mt-0.5">{item.dept}</span>
                                                         <span className="text-xs text-gray-400 mt-1 font-mono">{item.id}</span>
                                                     </div>
                                                 </td>
@@ -1607,10 +434,10 @@
                                                         {Object.entries(item.ratios).map(([subj, val]) => (
                                                             val > 0 ? (
                                                                 <div key={subj} className="flex flex-col items-center group">
-                                                                    <span className="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-t w-10 text-center border-b border-rose-200">
+                                                                    <span className="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded-t w-10 text-center border-b border-purple-200">
                                                                         {subjectShortLabels[subj]}
                                                                     </span>
-                                                                    <span className="bg-white text-gray-800 font-bold text-sm border border-rose-200 w-10 text-center py-1 rounded-b shadow-sm">
+                                                                    <span className="bg-white text-gray-800 font-bold text-sm border border-purple-200 w-10 text-center py-1 rounded-b shadow-sm">
                                                                         {val}
                                                                     </span>
                                                                 </div>
@@ -1649,7 +476,7 @@
                                                                 <i className="fa-solid fa-filter mr-1"></i>第一階段篩選標準
                                                             </strong>
                                                             {item.screening && item.screening.length > 0 ? (
-                                                                item.screening.map((std, i) => (
+                                                                sortScreeningCriteria(item.screening).map((std, i) => (
                                                                     <span key={i} className="block mb-1 pl-2 border-l-2 border-blue-300">
                                                                         {std}
                                                                     </span>
@@ -1682,7 +509,7 @@
                                                     </div>
                                                     <h3 className="text-lg font-medium text-gray-800 mb-1">沒有符合條件的科系</h3>
                                                     <p className="text-sm text-gray-500">請嘗試關閉「嚴格模式」或調整篩選科目。</p>
-                                                    <button onClick={resetFilters} className="mt-4 px-4 py-2 bg-rose-100 text-rose-600 rounded-lg hover:bg-rose-200 transition-colors text-sm font-medium">
+                                                    <button onClick={resetFilters} className="mt-4 px-4 py-2 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium">
                                                         清除所有篩選
                                                     </button>
                                                 </div>
