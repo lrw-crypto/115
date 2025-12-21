@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>115學年度 職群總查詢系統</title>
-    <!-- Tailwind CSS (無需安裝，直接引入) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome 圖示庫 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -39,6 +39,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8; 
         }
+        /* 載入中動畫 */
+        @keyframes pulse-light {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .loading-pulse {
+            animation: pulse-light 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col text-gray-800">
@@ -46,15 +54,25 @@
     <!-- 頂部導航欄 -->
     <nav class="bg-white shadow-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-3">
-                    <div class="bg-indigo-600 text-white p-2 rounded-lg">
+            <div class="flex flex-col md:flex-row justify-between h-auto md:h-16 items-center py-3 md:py-0 gap-3 md:gap-0">
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <div class="bg-indigo-600 text-white p-2 rounded-lg flex-shrink-0">
                         <i class="fa-solid fa-graduation-cap text-xl"></i>
                     </div>
-                    <span class="font-bold text-base md:text-xl tracking-wide text-gray-900">115學年度 統一入學測驗之甄選入學查詢系統</span>
+                    <span class="font-bold text-base md:text-xl tracking-wide text-gray-900 truncate">115學年度 甄選入學查詢系統</span>
                 </div>
-                <div class="hidden md:flex text-sm text-gray-500">
-                    整合國立科技大學最新倍率與去年通過標準
+                
+                <div class="flex items-center gap-4 text-sm w-full md:w-auto justify-between md:justify-end">
+                    <!-- 瀏覽人數顯示區 -->
+                    <div class="bg-gray-100 px-3 py-1.5 rounded-full flex items-center gap-2 border border-gray-200 shadow-sm">
+                        <i class="fa-solid fa-eye text-indigo-500"></i>
+                        <span class="text-gray-600 font-medium">瀏覽人次：</span>
+                        <span id="visitorCount" class="font-bold text-indigo-700 min-w-[30px] text-center loading-pulse">...</span>
+                    </div>
+
+                    <div class="hidden lg:flex text-gray-500 border-l pl-4 border-gray-300">
+                        整合國立科技大學最新倍率
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,7 +102,9 @@
                     class="block w-full pl-11 pr-4 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-lg"
                 >
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                    <span class="text-xs text-gray-400 border border-gray-200 rounded px-2 py-1 hidden sm:block">ESC 清除</span>
+                    <button id="clearBtn" class="text-xs text-gray-400 border border-gray-200 rounded px-2 py-1 hover:bg-gray-100 transition-colors hidden sm:block">
+                        ESC 清除
+                    </button>
                 </div>
             </div>
         </div>
@@ -178,7 +198,7 @@
             </div>
             <h3 class="text-xl font-medium text-gray-900">找不到相符的群組</h3>
             <p class="text-gray-500 mt-2">請嘗試使用更簡短的關鍵字，例如「土木」或「外語」。</p>
-            <button onclick="clearSearch()" class="mt-6 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            <button id="noResultClearBtn" class="mt-6 px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
                 清除搜尋
             </button>
         </div>
@@ -198,20 +218,84 @@
         </div>
     </footer>
 
-    <script>
-        // 獲取元素
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, updateDoc, setDoc, increment, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // 1. 初始化 Firebase
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        // 2. 瀏覽計數器邏輯
+        async function initVisitorCounter() {
+            try {
+                // 匿名登入 (Firestore 需要)
+                await signInAnonymously(auth);
+
+                // 設定計數器的文件路徑 (public data)
+                const counterDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'stats', 'visitor_count');
+                const visitorCountElement = document.getElementById('visitorCount');
+
+                // 檢查 Session Storage，避免同一使用者重複重新整理導致數字暴增
+                const hasVisited = sessionStorage.getItem('has_visited_115_exam');
+
+                if (!hasVisited) {
+                    // 如果是新訪問，增加計數
+                    try {
+                        // 嘗試更新 (如果文件存在)
+                        await updateDoc(counterDocRef, { count: increment(1) });
+                    } catch (error) {
+                        // 如果文件不存在 (第一次運行)，則創建它
+                        if (error.code === 'not-found') {
+                            await setDoc(counterDocRef, { count: 1 });
+                        }
+                    }
+                    // 標記已訪問
+                    sessionStorage.setItem('has_visited_115_exam', 'true');
+                }
+
+                // 即時監聽數據變化 (Real-time listener)
+                onSnapshot(counterDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const count = docSnap.data().count;
+                        // 格式化數字 (加逗號)
+                        visitorCountElement.innerText = count.toLocaleString();
+                    } else {
+                        visitorCountElement.innerText = "0";
+                    }
+                    // 移除載入動畫
+                    visitorCountElement.classList.remove('loading-pulse');
+                }, (error) => {
+                    console.error("Error listening to count:", error);
+                    visitorCountElement.innerText = "-";
+                });
+
+            } catch (err) {
+                console.error("Firebase init error:", err);
+            }
+        }
+
+        // 啟動計數器
+        initVisitorCounter();
+
+        // 3. 搜尋功能邏輯 (保持原有功能，但改為模組化寫法)
         const searchInput = document.getElementById('searchInput');
         const cards = document.querySelectorAll('.group-card');
         const noResults = document.getElementById('noResults');
         const cardGrid = document.getElementById('cardGrid');
+        const clearBtn = document.getElementById('clearBtn');
+        const noResultClearBtn = document.getElementById('noResultClearBtn');
 
-        // 搜尋功能
         function filterCards() {
             const query = searchInput.value.toLowerCase().trim();
             let hasVisibleCards = false;
 
             cards.forEach(card => {
-                // 獲取 data-keywords 中的關鍵字以及卡片文字內容
                 const keywords = card.getAttribute('data-keywords').toLowerCase();
                 const content = card.textContent.toLowerCase();
 
@@ -223,7 +307,6 @@
                 }
             });
 
-            // 顯示或隱藏 "無結果" 提示
             if (hasVisibleCards) {
                 noResults.classList.add('hidden');
                 cardGrid.classList.remove('hidden');
@@ -233,17 +316,17 @@
             }
         }
 
-        // 清除搜尋
         function clearSearch() {
             searchInput.value = '';
             filterCards();
             searchInput.focus();
         }
 
-        // 監聽輸入事件
+        // 綁定事件
         searchInput.addEventListener('input', filterCards);
+        clearBtn.addEventListener('click', clearSearch);
+        noResultClearBtn.addEventListener('click', clearSearch);
 
-        // 監聽 ESC 鍵清除
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 clearSearch();
