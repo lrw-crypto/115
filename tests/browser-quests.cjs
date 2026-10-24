@@ -5,8 +5,8 @@ const {chromium}=require('playwright');
  const context=await browser.newContext({viewport:{width:1440,height:1100}});
  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
  const url=process.env.CAMPUS_BASE_URL||'http://127.0.0.1:8000/';
- await page.goto(url);assert.equal(await page.locator('[data-landmark]').count(),8);assert.match(await page.locator('.fish-soup-shop').textContent(),/南台灣土魠魚羹/);assert.match(await page.locator('#quest-wallet').textContent(),/0/);
- await page.locator('#reward-npc').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('#dialog-title').innerText(),'嗨，我是中鼎文！');assert(await page.locator('#redeem-quest-reward').isDisabled());await page.keyboard.press('Escape');
+ await page.goto(url);assert.equal(await page.locator('[data-landmark]').count(),8);assert.match(await page.locator('.fish-soup-shop').textContent(),/南臺灣土魠魚羹/);assert.match(await page.locator('#quest-wallet').textContent(),/0/);
+ await page.locator('#reward-npc').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('#dialog-title').innerText(),'中鼎文NPC 客服快艇');assert(await page.locator('#redeem-quest-reward').isDisabled());await page.keyboard.press('Escape');
  const ids=['mechanical','piping','business','accounting','data','english','service','sports'];
  for(let i=0;i<ids.length;i++){
   await page.locator(`[data-island="${ids[i]}"]`).click();await page.locator('#start-island-question').click();assert.equal(await page.locator('[data-quest-answer]').count(),2);

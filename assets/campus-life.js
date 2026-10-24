@@ -12,13 +12,13 @@ function shorelineTree(x, y, scale = 1) {
 function shoreScenery() {
   return `<g id="shore-scenery" aria-label="岸邊風景與萊爾富想像場景" role="img">
     <path d="M-1500-1200H1500V175Q1320 148 1175 162T970 165Q892 177 820 137T667 96Q570 111 505 58T420-20Q300-100-100-400L-1500-1200Z" fill="#739f8730" transform="translate(0 12)"/>
-    <path d="M-1500-1200H1500V175Q1320 148 1175 162T970 165Q892 177 820 137T667 96Q570 111 505 58T420-20Q300-100-100-400L-1500-1200Z" fill="#f1e0b6" stroke="#fff0ce" stroke-width="10"/>
-    <path d="M-1500-1200H1500V139Q1320 108 1165 126T970 128Q893 139 825 103T670 59Q575 73 520 22T420-55Q300-130-100-430L-1500-1200Z" fill="#c3d49b"/>
-    <path d="M483-13Q611 110 713 65T929 102Q1107 139 1330 92" fill="none" stroke="#ded9be" stroke-width="32" stroke-linecap="round"/>
+    <path d="M-1500-1200H1500V175Q1320 148 1175 162T970 165Q892 177 820 137T667 96Q570 111 505 58T420-20Q300-100-100-400L-1500-1200Z" fill="#f2d28b" stroke="#fff0ce" stroke-width="10"/>
+    <path d="M-1500-1200H1500V139Q1320 108 1165 126T970 128Q893 139 825 103T670 59Q575 73 520 22T420-55Q300-130-100-430L-1500-1200Z" fill="#9bd54e"/>
+    <path d="M483-13Q611 110 713 65T929 102Q1107 139 1330 92" fill="none" stroke="#d0c9a2" stroke-width="32" stroke-linecap="round"/>
     <path d="M483-13Q611 110 713 65T929 102Q1107 139 1330 92" fill="none" stroke="#fdf5d5" stroke-width="2" stroke-dasharray="11 12"/>
     ${[[520,0,.8],[580,28,.6],[650,3,.9],[715,23,.7],[777,42,.65],[1085,39,.8],[1140,94,.7],[1210,39,.9]].map(t=>shorelineTree(...t)).join('')}
-    <g class="hilife-store" transform="translate(985 48)">
-      <ellipse cx="36" cy="40" rx="92" ry="23" fill="#76997d2b"/>
+    <g class="hilife-store" transform="translate(795 100)">
+      <ellipse cx="36" cy="29" rx="103" ry="45" fill="#f4d38a" stroke="#ffe8b2" stroke-width="5"/>
       <path d="M-45-14 62-14 99-36V33L62 55-45 32Z" fill="#fff6df" stroke="#eee7c9" stroke-width="2" stroke-linejoin="round"/>
       <path d="M62-14 99-36V33L62 55Z" fill="#e2e4cc"/>
       <path d="m-53-20 116 0 45-25-116-1Z" fill="#f7f8e9" stroke="#e7e5cd" stroke-width="3" stroke-linejoin="round"/>
@@ -132,15 +132,16 @@ function initWalkingResidents() {
     if(paused){previousTime=null;return;}
     const seconds=previousTime===null?0:Math.min((time-previousTime)/1000,.06);
     previousTime=time;
-    if(!$('#map-page').hidden && $('#modal-backdrop').hidden) actors.forEach(actor=>advance(actor,seconds));
+    if(!$('#map-page').hidden && $('#modal-backdrop').hidden) {actors.forEach(actor=>advance(actor,seconds));updateNpcBoat(seconds);}
     paint();frameId=requestAnimationFrame(tick);
   }
   function updateControl() {
     $('#toggle-walk').setAttribute('aria-pressed',String(paused));
-    $('#toggle-walk').textContent=reduced.matches?'已減少動態':paused?'▶ 繼續散步':'Ⅱ 暫停散步';
+    $('#toggle-walk').textContent=reduced.matches?'已減少動態':paused?'▶ 繼續動態':'Ⅱ 暫停動態';
     $('#toggle-walk').disabled=reduced.matches;
     document.body.classList.toggle('residents-paused',paused);
     paint();
+    if(boatController)boatController.paused=paused;
     if(paused && frameId!==null){cancelAnimationFrame(frameId);frameId=null;previousTime=null;}
     if(!paused && frameId===null) frameId=requestAnimationFrame(tick);
   }
