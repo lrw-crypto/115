@@ -1,0 +1,15 @@
+{
+  "updatedAt": "2026-10-24T09:00:00Z",
+  "stats": { "interactions": 1286, "activities": 12, "milestones": 38 },
+  "events": [
+    {
+      "id": "example-1",
+      "islandId": "digital",
+      "type": "learning",
+      "title": "公開的學習動態摘要（示例）",
+      "category": "實作日常",
+      "time": "今天",
+      "body": "僅包含已授權公開的匿名學習摘要，不包含 Discord 使用者名稱、ID 或私人訊息。"
+    }
+  ]
+}
