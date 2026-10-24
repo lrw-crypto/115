@@ -14,8 +14,8 @@ const islands=[
     "icon": "⚙️",
     "color": "#e9edc5",
     "accent": "#d7a26f",
-    "x": 560,
-    "y": 225,
+    "x": 572,
+    "y": 210,
     "subtitle": "從機械製圖、加工到數值控制，親手實現想法。",
     "description": "從機械製圖、加工到數值控制，親手實現想法。",
     "departments": [
@@ -23,7 +23,8 @@ const islands=[
     ],
     "programIds": [
       "mechanical"
-    ]
+    ],
+    "scale": 0.88
   },
   {
     "id": "piping",
@@ -33,8 +34,8 @@ const islands=[
     "icon": "🔧",
     "color": "#e0edc3",
     "accent": "#87bba4",
-    "x": 810,
-    "y": 225,
+    "x": 820,
+    "y": 315,
     "subtitle": "認識金屬管線、銲接與建築配管的實作世界。",
     "description": "認識金屬管線、銲接與建築配管的實作世界。",
     "departments": [
@@ -42,7 +43,8 @@ const islands=[
     ],
     "programIds": [
       "piping"
-    ]
+    ],
+    "scale": 0.79
   },
   {
     "id": "business",
@@ -52,8 +54,8 @@ const islands=[
     "icon": "🛒",
     "color": "#f2e5c4",
     "accent": "#dda080",
-    "x": 300,
-    "y": 407,
+    "x": 325,
+    "y": 370,
     "subtitle": "用門市經營、行銷與專題，探索商業的可能。",
     "description": "用門市經營、行銷與專題，探索商業的可能。",
     "departments": [
@@ -61,7 +63,8 @@ const islands=[
     ],
     "programIds": [
       "business"
-    ]
+    ],
+    "scale": 0.82
   },
   {
     "id": "accounting",
@@ -71,8 +74,8 @@ const islands=[
     "icon": "📒",
     "color": "#e8ddf2",
     "accent": "#b5a2cc",
-    "x": 550,
-    "y": 407,
+    "x": 565,
+    "y": 445,
     "subtitle": "從會計學到帳務實作，學習看懂數字的語言。",
     "description": "從會計學到帳務實作，學習看懂數字的語言。",
     "departments": [
@@ -80,7 +83,8 @@ const islands=[
     ],
     "programIds": [
       "accounting"
-    ]
+    ],
+    "scale": 0.77
   },
   {
     "id": "data",
@@ -90,8 +94,8 @@ const islands=[
     "icon": "💻",
     "color": "#d6eddf",
     "accent": "#7fbab5",
-    "x": 800,
-    "y": 407,
+    "x": 815,
+    "y": 535,
     "subtitle": "以程式、多媒體與資料庫，把點子做成作品。",
     "description": "以程式、多媒體與資料庫，把點子做成作品。",
     "departments": [
@@ -99,7 +103,8 @@ const islands=[
     ],
     "programIds": [
       "data"
-    ]
+    ],
+    "scale": 0.84
   },
   {
     "id": "english",
@@ -109,8 +114,8 @@ const islands=[
     "icon": "🌍",
     "color": "#f2e2d6",
     "accent": "#d5a090",
-    "x": 300,
-    "y": 589,
+    "x": 285,
+    "y": 580,
     "subtitle": "從聽講、閱讀到簡報，讓你的想法走向世界。",
     "description": "從聽講、閱讀到簡報，讓你的想法走向世界。",
     "departments": [
@@ -118,7 +123,8 @@ const islands=[
     ],
     "programIds": [
       "english"
-    ]
+    ],
+    "scale": 0.77
   },
   {
     "id": "service",
@@ -128,8 +134,8 @@ const islands=[
     "icon": "🌼",
     "color": "#e3edc7",
     "accent": "#a1bd71",
-    "x": 550,
-    "y": 589,
+    "x": 535,
+    "y": 655,
     "subtitle": "在餐飲、清潔與服務實作中，累積生活的自信。",
     "description": "在餐飲、清潔與服務實作中，累積生活的自信。",
     "departments": [
@@ -137,7 +143,8 @@ const islands=[
     ],
     "programIds": [
       "service"
-    ]
+    ],
+    "scale": 0.83
   },
   {
     "id": "sports",
@@ -147,8 +154,8 @@ const islands=[
     "icon": "🏅",
     "color": "#dbe8d2",
     "accent": "#94b49a",
-    "x": 800,
-    "y": 589,
+    "x": 870,
+    "y": 714,
     "subtitle": "以專項體能、技術訓練與運動防護，超越自己。",
     "description": "以專項體能、技術訓練與運動防護，超越自己。",
     "departments": [
@@ -156,7 +163,8 @@ const islands=[
     ],
     "programIds": [
       "sports"
-    ]
+    ],
+    "scale": 0.72
   }
 ];
 const programName=p=>islands.find(d=>d.id===p.id).name;
@@ -176,7 +184,7 @@ const poly=(p,fill,extra='')=>`<polygon points="${points(p)}" fill="${fill}" ${e
 function box(u,v,w,d,h,color,roof){let a=pt(u,v),b=pt(u+w,v),c=pt(u+w,v+d),e=pt(u,v+d),A=pt(u,v,h),B=pt(u+w,v,h),C=pt(u+w,v+d,h),E=pt(u,v+d,h);let out=poly([e,c,C,E],shade(color,-12))+poly([b,c,C,B],shade(color,-29))+poly([A,B,C,E],color);if(roof){let peak=pt(u+w/2,v+d/2,h+18);out+=poly([A,B,peak],shade(roof,12))+poly([B,C,peak],shade(roof,-12))+poly([C,E,peak],roof)+poly([E,A,peak],shade(roof,18));}for(let i=0;i<Math.floor(w/17);i++){let t=u+7+i*17;out+=poly([pt(t,v+d+.1,h-10),pt(t+7,v+d+.1,h-10),pt(t+7,v+d+.1,h-23),pt(t,v+d+.1,h-23)],'#709b98');}for(let i=0;i<Math.floor(d/17);i++){let t=v+6+i*17;out+=poly([pt(u+w+.1,t,h-10),pt(u+w+.1,t+6,h-10),pt(u+w+.1,t+6,h-23),pt(u+w+.1,t,h-23)],'#577e7c');}return out;}
 function tree(u,v,size=1,kind='round'){let [x,y]=pt(u,v);return `<g transform="translate(${x} ${y}) scale(${size})"><ellipse cy="4" rx="16" ry="7" fill="#6b8d5420"/><path d="M0 0V-25" stroke="#947557" stroke-width="5"/>${kind==='pine'?`<path d="m0-66-19 34h8l-14 23h50L11-32h8Z" fill="#719d6c"/><path d="M0-66v57h25L11-32h8Z" fill="#5d8c60"/>`:`<circle cy="-36" r="20" fill="#88ad73"/><circle cx="-10" cy="-29" r="15" fill="#9bbb7b"/><circle cx="9" cy="-35" r="15" fill="#7ea06a"/><circle cx="-5" cy="-43" r="13" fill="#a2be83"/>`}</g>`;}
 function person(u,v,c='#d99c69',species='bear'){const[x,y]=pt(u,v);return animal(x,y,c,species);}
-function animal(x,y,c='#d6aa80',species='bear'){const ears=species==='rabbit'?'<ellipse cx="-6" cy="-36" rx="4" ry="11" fill="#f9edcd"/><ellipse cx="6" cy="-36" rx="4" ry="11" fill="#f9edcd"/><ellipse cx="-6" cy="-36" rx="1.5" ry="7" fill="#e8b6a4"/><ellipse cx="6" cy="-36" rx="1.5" ry="7" fill="#e8b6a4"/>':species==='cat'?'<path d="m-11-24 1-13 10 8 10-8 1 13" fill="#d4b286"/>':'<circle cx="-9" cy="-30" r="5" fill="#c69b73"/><circle cx="9" cy="-30" r="5" fill="#c69b73"/>';return `<g class="animal-friend" transform="translate(${x} ${y})"><ellipse cy="3" rx="13" ry="5" fill="#5e785224"/><g class="friend-bob"><path d="m-5 1 1-7m9 7-1-7" stroke="#8e7961" stroke-width="5" stroke-linecap="round"/><path d="M-8-7q8 6 16 0l-2-13H-6Z" fill="${c}" stroke="${c}" stroke-width="4" stroke-linejoin="round"/>${ears}<ellipse cy="-25" rx="12" ry="11" fill="${species==='rabbit'?'#fff1d2':'#d4b286'}"/><ellipse cy="-21" rx="6" ry="4" fill="#f6e5c5"/><circle cx="-4.5" cy="-26" r="1.4" fill="#4e5847"/><circle cx="4.5" cy="-26" r="1.4" fill="#4e5847"/><path d="m-2-22 2 2 2-2" fill="none" stroke="#6b614e" stroke-width="1.1" stroke-linecap="round"/><ellipse cx="-9" cy="-23" rx="2.5" ry="1.5" fill="#e5a895"/><ellipse cx="9" cy="-23" rx="2.5" ry="1.5" fill="#e5a895"/><circle cy="-12" r="2" fill="#ffefc6"/></g></g>`;}
+function animal(x,y,c='#a4b99a',look='bear'){const hair=look==='cat'?'#55546c':look==='rabbit'?'#ae775b':'#655745';return `<g class="animal-friend chibi-resident" transform="translate(${x} ${y})"><ellipse cy="4" rx="12" ry="4" fill="#496b5326"/><g class="friend-bob"><path d="m-4 0v-6m8 6v-6" stroke="#645e57" stroke-width="4" stroke-linecap="round"/><path d="m-7-13-5 5m19-5 5 4" stroke="#f5d4b6" stroke-width="4" stroke-linecap="round"/><path d="M-7-17Q0-21 7-17L9-5Q0-1-9-5Z" fill="${c}" stroke="#667e681f" stroke-width="1"/><path d="m-3-18 3 5 3-5" fill="#fff6e3"/><path d="M-13-25q-4-20 13-20t13 20v5h-26Z" fill="${hair}"/><ellipse cy="-29" rx="13" ry="12" fill="#ffe2c3"/><path d="M-13-31q-3-18 13-16 15 0 14 17l-8-9-4 7-4-7-5 8-2-6Z" fill="${hair}"/><ellipse cx="-5" cy="-29" rx="2.7" ry="4" fill="#454759"/><ellipse cx="5" cy="-29" rx="2.7" ry="4" fill="#454759"/><circle cx="-5.6" cy="-30.3" r="1" fill="white"/><circle cx="4.4" cy="-30.3" r="1" fill="white"/><ellipse cx="-9" cy="-24" rx="3" ry="1.7" fill="#f1a79e"/><ellipse cx="9" cy="-24" rx="3" ry="1.7" fill="#f1a79e"/><path d="M-2-23q2 3 4 0" stroke="#aa7770" stroke-width="1.2" fill="none" stroke-linecap="round"/>${look==='rabbit'?'<path d="M-12-39q12-16 25 0" stroke="#f4cf8c" stroke-width="4" fill="none"/><path d="m8-42 7-4-1 7Z" fill="#df9c9d"/>':look==='cat'?'<path d="m-10-39 3-6 4 6m6 0 4-6 3 6" fill="#c2b2d0"/>':'<path d="M-14-40q14-14 28 0Z" fill="#a8c297"/><path d="M-15-39h30" stroke="#91ac82" stroke-width="3" stroke-linecap="round"/>'}</g></g>`;}
 
 function flowers(u,v){let[x,y]=pt(u,v);return `<g transform="translate(${x} ${y})"><ellipse rx="15" ry="7" fill="#9db579"/>${[-8,0,8].map((n,i)=>`<circle cx="${n}" cy="${i===1?-5:-1}" r="3" fill="${i===1?'#edc884':'#e3a59a'}"/>`).join('')}</g>`;}
 function bench(u,v){return box(u,v,26,8,8,'#bea37c')+poly([pt(u,v,18),pt(u+26,v,18),pt(u+26,v,11),pt(u,v,11)],'#cbb48c');}
@@ -185,11 +193,12 @@ function pond(){return `<ellipse cx="15" cy="30" rx="34" ry="17" fill="#d3d3ba"/
 function islandArt(id){const d=islands.find(x=>x.id===id);let a=poly([pt(-70,-45),pt(60,-45),pt(60,58),pt(-70,58)],'#e4d6ab','stroke="#ede4bf" stroke-width="4" stroke-linejoin="round"');a+=tree(-82,-14,.85)+tree(76,-1,.95)+tree(56,68,.60);a+=`<g class="storybook-cottage"><path d="M-58-49 27-30 60-49V11L27 33-58 12Z" fill="#f7edcd" stroke="#f7edcd" stroke-width="6" stroke-linejoin="round"/><path d="M27-30 60-49V11L27 33Z" fill="#dfdcb9"/><path d="M-66-48Q-48-77-15-102L37-86Q62-69 69-48L27-23Z" fill="${shade(d.accent,-5)}" stroke="${shade(d.accent,-5)}" stroke-width="6" stroke-linejoin="round"/><path d="M-66-48Q-48-77-15-102L27-23Z" fill="${shade(d.accent,15)}"/><path d="m-59-46 84 22" fill="none" stroke="${shade(d.accent,-22)}" stroke-width="5" stroke-linecap="round"/><path d="M-21 20v-27q0-16 14-13Q6-17 6-3v30Z" fill="#af9a70" stroke="#fff2cc" stroke-width="4"/><circle cx="-1" cy="7" r="2" fill="#f7deb0"/><rect x="-46" y="-25" width="17" height="20" rx="7" fill="#a4d4c2" stroke="#fff4cf" stroke-width="4"/><path d="M-38-23v17m-7-10 14 3" stroke="#fff3ce" stroke-width="2"/><path d="m39-15 12-7v19l-12 8Z" fill="#8fb9ac" stroke="#f6ebc6" stroke-width="3"/><ellipse cx="-4" cy="-55" rx="15" ry="13" fill="#fff1cc" stroke="#f5d99c" stroke-width="2"/><text x="-4" y="-49" text-anchor="middle" font-size="18" fill="#526d46">${d.icon}</text><path d="M-50-69q18-20 29-26" fill="none" stroke="#ffffff45" stroke-width="4" stroke-linecap="round"/></g>`;a+=flowers(-57,60)+flowers(9,77)+bench(38,43);a+=animal(-55,38,d.accent,id==='piping'||id==='english'?'rabbit':'bear')+animal(43,50,'#98bda5',id==='accounting'||id==='service'?'cat':'rabbit');if(id==='piping')a+=`<path d="M-75 1v-23q0-8 8-6l13 3" stroke="#94bdb1" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M-75 1v-23q0-8 8-6l13 3" stroke="#b9d8c3" stroke-width="3" fill="none"/>`;if(id==='sports')a+=`<ellipse cx="-11" cy="49" rx="24" ry="12" fill="#a9c18b" stroke="#edf1ce" stroke-width="2"/><path d="M-35 49h48" stroke="#eff0cf" stroke-width="1.5"/><circle cx="-8" cy="49" r="5" fill="#f6deb1" stroke="#c2a773" stroke-width="1"/>`;if(id==='data')a+=box(-12,50,23,16,13,'#b7c8a3')+box(-9,52,17,5,27,'#91b7a8');return a;}
 
 function hex(cx,cy,rx=142,ry=78){return [[cx,cy-ry],[cx+rx,cy-ry/2],[cx+rx,cy+ry/2],[cx,cy+ry],[cx-rx,cy+ry/2],[cx-rx,cy-ry/2]];}
-function land(d){const p=hex(0,0);return `<g class="island" role="button" tabindex="0" aria-label="探索${esc(d.name)}" data-island="${d.id}" transform="translate(${d.x} ${d.y}) scale(.80)"><ellipse cy="32" rx="129" ry="60" fill="#52795e" opacity=".15" filter="url(#shadow)"/>${poly(p.map(([x,y])=>[x,y+19]),'#93aa80')}${poly([p[2],p[3],p[4],[p[4][0],p[4][1]+20],[p[3][0],p[3][1]+20],[p[2][0],p[2][1]+20]],shade(d.color,-47))}${poly(p,d.color,'class="island-top" stroke="#f4f5db" stroke-width="3" stroke-linejoin="round"')}${poly(hex(0,0,130,71),shade(d.color,6),'stroke="#f5f5dd" stroke-width="1"')}<g filter="url(#soft-shadow)">${islandArt(d.id)}</g><g class="island-label" transform="translate(0 85)"><path d="M0-9v-9" stroke="#a68e65" stroke-width="5"/><rect class="label-bg" x="-88" y="-9" width="176" height="36" rx="15" stroke="#e0d6ad" stroke-width="2"/><circle cx="-66" cy="9" r="4" fill="${d.accent}"/><text class="label-name" text-anchor="middle" x="5" y="14">${d.name}</text></g></g>`;}
-function bridge(a,b){let dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy),nx=-dy/len*9,ny=dx/len*9;let s=.40,e=.60,p=[a.x+dx*s,a.y+dy*s],q=[a.x+dx*e,a.y+dy*e];return `<g>${poly([[p[0]+nx,p[1]+ny],[q[0]+nx,q[1]+ny],[q[0]-nx,q[1]-ny],[p[0]-nx,p[1]-ny]],'#bfaa82','stroke="#d9c9a7" stroke-width="2"')}${Array.from({length:6},(_,i)=>{let t=s+(e-s)*i/5;return `<path d="M${a.x+dx*t+nx} ${a.y+dy*t+ny}l${-2*nx} ${-2*ny}" stroke="#a99b75" stroke-width="1"/>`;}).join('')}</g>`;}
-function renderMap(){const waterShape=[[575,119],[738,179],[852,233],[852,287],[971,359],[971,454],[1005,527],[1005,672],[779,777],[582,726],[370,777],[184,686],[184,569],[219,498],[184,402],[184,320],[375,220],[375,175]];let art=poly(waterShape,'url(#water)','stroke="#dcebe0" stroke-width="13" stroke-linejoin="round"')+poly(waterShape,'url(#water-grid)');art+=`<g opacity=".45" fill="none" stroke="#a6cabc" stroke-width="1.5"><path d="M195 446q-24 20 0 41m775 110q28 20 0 42M564 746q25 14 50 0M418 177q-15-15 0-27"/></g>`;
+function land(d){const p=hex(0,0);return `<g class="island" role="button" tabindex="0" aria-label="探索${esc(d.name)}" data-island="${d.id}" transform="translate(${d.x} ${d.y}) scale(${d.scale||.8})"><ellipse cy="32" rx="129" ry="60" fill="#52795e" opacity=".15" filter="url(#shadow)"/>${poly(p.map(([x,y])=>[x,y+19]),'#93aa80')}${poly([p[2],p[3],p[4],[p[4][0],p[4][1]+20],[p[3][0],p[3][1]+20],[p[2][0],p[2][1]+20]],shade(d.accent,-10))}${poly(p,'#f5e7cb','class="island-top" stroke="#f4f5db" stroke-width="3" stroke-linejoin="round"')}${poly(hex(0,0,130,71),'#f9efd8','stroke="#f5f5dd" stroke-width="1"')}<g filter="url(#soft-shadow)">${islandArt(d.id)}</g><g class="island-label" transform="translate(0 85)"><path d="M0-9v-9" stroke="#a68e65" stroke-width="5"/><rect class="label-bg" x="-88" y="-9" width="176" height="36" rx="15" stroke="#e0d6ad" stroke-width="2"/><circle cx="-66" cy="9" r="4" fill="${d.accent}"/><text class="label-name" text-anchor="middle" x="5" y="14">${d.name}</text></g></g>`;}
+function bridge(a,b){const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len,nx=-uy*9,ny=ux*9;const radius=d=>1/Math.sqrt((ux/(142*(d.scale||.8)))**2+(uy/(78*(d.scale||.8)))**2);const ra=radius(a)*.92,rb=radius(b)*.92,p=[a.x+ux*ra,a.y+uy*ra],q=[b.x-ux*rb,b.y-uy*rb];return `<g class="wooden-bridge">${poly([[p[0]+nx,p[1]+ny],[q[0]+nx,q[1]+ny],[q[0]-nx,q[1]-ny],[p[0]-nx,p[1]-ny]],'#c9ad85','stroke="#e2c8a1" stroke-width="2"')}${Array.from({length:8},(_,i)=>{const t=i/7,x=p[0]+(q[0]-p[0])*t,y=p[1]+(q[1]-p[1])*t;return `<path d="M${x+nx} ${y+ny}l${-nx*2} ${-ny*2}" stroke="#b29979" stroke-width="1"/>`;}).join('')}<path d="M${p[0]+nx} ${p[1]+ny-9}Q${(p[0]+q[0])/2+nx} ${(p[1]+q[1])/2+ny-18} ${q[0]+nx} ${q[1]+ny-9}" stroke="#a98865" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>`;}
+
+function renderMap(){let art=`<rect x="-1500" y="-1200" width="4000" height="3500" fill="url(#water-grid)" opacity=".7"/><g class="ocean-ripples" stroke="#e9ffff" stroke-width="3" stroke-linecap="round" opacity=".3"><path d="M460 120h17m-270 155h12m680 155h21m-440 270h12m-340 20h17M910 180h15m-140 610h22"/></g>`;
 art+=`<g transform="translate(828 211) scale(.52)">${poly(hex(0,0,97,54),'#b9c9a2')}${poly(hex(0,-6,97,54),'#d5e0b8')}${tree(-20,-13,.9,'pine')}${tree(25,-10,1.1,'pine')}${tree(2,35,.7,'pine')}</g><g transform="translate(251 548) scale(.36)">${poly(hex(0,0,70,40),'#b4c9a4')}${tree(0,0,1.1,'pine')}${tree(30,4,.8,'pine')}</g>`;
-for(const [a,b] of [[0,1],[0,3],[1,4],[2,3],[3,4],[2,5],[3,6],[4,7],[5,6],[6,7]])art+=bridge(islands[a],islands[b]);
+for(const [a,b] of [[0,1],[0,3],[1,4],[2,3],[3,4],[2,5],[3,6],[4,7],[5,6]])art+=bridge(islands[a],islands[b]);
 art+=islands.map(land).join('');art+=`<g transform="translate(949 572) rotate(-22)"><ellipse cy="7" rx="22" ry="8" fill="#70a79b" opacity=".15"/><path d="M-19 0q18 22 38 0Z" fill="#e9d5ae"/><path d="M0-32v33" stroke="#c0a580" stroke-width="2"/><path d="m-2-30-15 23H-2Z" fill="#fff5da"/><path d="m2-24 11 17H2Z" fill="#d6a88c"/></g><g stroke="#789582" stroke-width="1.5" fill="none" opacity=".55"><path d="m859 138 5-3 5 3m7 0 4-2 4 2M275 264l5-3 5 3"/></g>`;$('#map-world').innerHTML=art;
 $$('[data-island]').forEach(el=>{el.addEventListener('click',()=>{if(!drag.moved)openIsland(el.dataset.island);});el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openIsland(el.dataset.island);}});});}
 function feedHTML(items){if(!items.length)return '<p style="padding:20px;color:#8c9b80;font-size:12px">目前沒有這類動態，再去島上走走吧。</p>';return items.map(f=>`<button class="feed-item" data-feed-id="${esc(f.id)}"><span class="feed-icon" style="background:${f.bg||'#e5eddd'}">${esc(f.icon||'✦')}</span><span><h3>${esc(f.title)}</h3><span class="feed-meta">${esc(f.time)}<b>${esc(f.category)}</b></span></span></button>`).join('');}
@@ -198,9 +207,149 @@ function renderFeed(){const list=feedFilter==='event'?feed.filter(f=>f.type==='e
 function openModal(html){if($('#modal-backdrop').hidden)modalOrigin=document.activeElement;$('#dialog').innerHTML=`<button class="icon-btn dialog-close" aria-label="關閉視窗">${ico('close')}</button>${html}`;$('#modal-backdrop').hidden=false;document.body.style.overflow='hidden';$('.dialog-close').onclick=closeModal;$('#dialog').focus();}
 function closeModal(){$('#modal-backdrop').hidden=true;document.body.style.overflow='';modalOrigin?.focus();}
 function programSource(p){return `<a href="${docHref(p.doc,p.pages[0])}" target="_blank" rel="noopener noreferrer">${CURRICULUM.documents.find(d=>d.id===p.doc).title} · PDF 第 ${p.pages.join('、')} 頁 ↗</a>`;}
-function courseCard(c,p){return `<article class="specialist-course"><div><h4>${esc(c.name)}</h4><span>${esc(c.requirement)} · ${c.credits} 學分</span></div><p>${c.semesters.map((v,i)=>v!=='0'?`${['一上','一下','二上','二下','三上','三下'][i]} ${v}`:'').filter(Boolean).join(' / ')}</p><a href="${docHref(p.doc,c.page)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(c.name)}來源 PDF 第 ${c.page} 頁">課程計畫 p.${c.page} ↗</a></article>`;}
-function programDetail(p){const courses=p.courses.filter(isSpecialistCourse);const practice=c=>c.kind==='實習科目'||(c.kind==='體育專項術科'||c.kind.includes('體育專長'))||c.name==='運動傷害防護';return `<div class="lesson-groups">${[{name:'專業科目',list:courses.filter(c=>!practice(c)),icon:'book'},{name:'實習與實作課程',list:courses.filter(practice),icon:'settings'}].map(g=>`<section><h3>${ico(g.icon)}${g.name}<span>${g.list.length} 門</span></h3><div class="specialist-list">${g.list.map(c=>courseCard(c,p)).join('')||'<p class="empty-courses">本計畫課表未列此類別。</p>'}</div></section>`).join('')}</div>${p.id==='sports'?'<p class="course-footnote">普通體育班依計畫中的體育專業學科、體育專項術科及運動防護呈現。「運動傷害防護」課表列 2 學分、大綱列 1，暫依課表顯示。</p>':''}<p class="course-footnote">115 學年度入學適用 · 選修與括號安排依原課表為準。</p>`;}
-function openIsland(id){const d=islands.find(x=>x.id===id);if(!d)return;selectedIsland=d;const p=CURRICULUM.programs.find(x=>x.id===id);openModal(`<div class="department-welcome" style="--department-color:${d.color}"><span class="department-mascot">${d.icon}</span><div class="eyebrow">${d.en}</div><h2 id="dialog-title">${d.name}</h2><p>${d.description}</p></div>${programDetail(p)}`);}
+const COURSE_EXPLAINERS={
+  "機械製造": "認識生活中的零件，是怎麼一步步做出來的。",
+  "機件原理": "齒輪、皮帶怎麼帶動機器？一起拆解運作的道理。",
+  "機械力學": "了解力量怎麼影響機器，學著讓結構更穩固。",
+  "機械材料": "金屬各有什麼脾氣？認識材料，選對用途。",
+  "機械基礎實習": "從基本工具開始，練習量測、加工與安全操作。",
+  "基礎電學實習": "動手接線與量測，認識電路怎麼運作。",
+  "機械製圖實習": "練習把零件畫清楚，讓別人看圖就能製作。",
+  "電腦輔助製圖與實習": "把紙上的線條搬進電腦，練習繪製機械圖。",
+  "機械加工實習": "把材料慢慢加工成形，練習掌握尺寸與精度。",
+  "電腦輔助設計實習": "用電腦畫出零件，試著把設計想法具體呈現。",
+  "數值控制機械實習": "把加工步驟寫成指令，練習讓機台照著做。",
+  "電腦輔助製造實習": "讓電腦協助規劃加工，連接設計與製作。",
+  "綜合機械加工實習": "把不同加工方法串起來，完成一個零件。",
+  "車床實習": "練習車削加工，把材料做成需要的形狀。",
+  "專題實作": "從一個小問題出發，和同學把想法做成成果。",
+  "電腦輔助製造進階實習": "進一步練習電腦輔助加工，把製作流程想得更周全。",
+  "電腦繪圖實習": "用繪圖工具整理線條、尺寸，讓設計更清楚。",
+  "精密加工實習": "多一點細心，練習把加工尺寸做得更準確。",
+  "銑床與磨床實習": "認識銑削與研磨，練習不同的加工方式。",
+  "數值控制機械進階實習": "進一步練習機台指令與加工操作。",
+  "機械進階實習": "延伸基礎操作，挑戰更完整的機械實作。",
+  "機電整合實習": "讓機械動作配合電路控制，練習整合系統。",
+  "工模夾具": "認識固定工件的小幫手，讓加工更穩定。",
+  "自動化概論": "了解機器如何配合感測與控制，自動完成工作。",
+  "機械設計大意": "從用途與結構出發，認識機械設計的基本想法。",
+  "機械高階實習": "整合學過的工具與方法，累積進階操作經驗。",
+  "機械設計製圖實習": "把機械結構轉成圖面，練習表達設計細節。",
+  "金屬成形實習": "試著改變金屬的形狀，認識材料成形的過程。",
+  "銲接實習": "練習把金屬接合起來，也學會保護自己。",
+  "金屬管線實習": "從辨識管材到接合，練習組裝金屬管線。",
+  "工程材料": "認識工程常用材料，了解各自適合的用途。",
+  "測量學": "學習量距離與位置，讓施工有可靠的依據。",
+  "工業配管實習": "認識工業管線，練習配管與裝配工作。",
+  "多元管材裝配實習": "接觸不同管材，練習選用合適的連接方法。",
+  "自來水管配管實習": "練習配置水管，讓水流順利到達需要的地方。",
+  "建築配管實習": "了解建築裡的管線，練習規劃與裝配。",
+  "配管基礎實習": "從認識管材、工具到基本操作，慢慢上手。",
+  "配管綜合實習": "把配管技巧連起來，練習完成較完整的工作。",
+  "機械工作圖實習": "練習讀懂與繪製工作圖，掌握製作資訊。",
+  "測量實習": "把課堂上的測量方法，拿到實際操作中練習。",
+  "電工實習": "認識電工工具與線路，練習安全操作。",
+  "機電應用實習": "把機械與電學知識，用在實際的小任務裡。",
+  "建築製圖實習": "練習用圖面表達建築空間與配置。",
+  "電腦輔助繪圖應用實習": "用電腦繪圖處理實際需求，讓圖面更有效率。",
+  "商業概論": "一家店怎麼運作？從買賣與企業的日常開始認識。",
+  "數位科技概論": "認識身邊的數位工具，以及它們如何改變工作。",
+  "會計學": "學著記下每筆收支，讀懂一家公司的帳。",
+  "經濟學": "價格為什麼變動？從生活中的選擇認識經濟。",
+  "數位科技應用": "練習用數位工具整理資料、完成日常工作。",
+  "商業溝通": "把想法說清楚，也學會聽懂合作夥伴的需求。",
+  "門市經營實務": "從店內服務與營運，認識經營門市的日常。",
+  "行銷實務": "練習想一想：怎麼讓需要的人認識好產品？",
+  "會計軟體應用": "用軟體處理帳務，讓收支紀錄更有條理。",
+  "金融與證券投資實務": "認識金融與投資工具，也學習留意風險。",
+  "經濟實務": "把經濟觀念帶回生活，分析身邊的商業現象。",
+  "資料彙整與分析": "把零散資料整理好，再找出有用的線索。",
+  "計算機應用": "認識電腦的運作與應用，建立數位工作的基礎。",
+  "記帳實務": "練習把交易記成帳，整理收支與帳務資料。",
+  "會計資訊分析與應用": "從會計資料找線索，練習理解經營狀況。",
+  "會計實務": "把會計觀念用在實際的帳務練習裡。",
+  "企業管理實務": "認識企業如何分工、規劃與一起完成目標。",
+  "商業經營實務": "把商業知識用在情境練習，思考經營的選擇。",
+  "小資理財課": "從日常收支開始，認識理財與規劃的觀念。",
+  "巴菲特都推薦的指數型投資法": "認識指數型投資的想法，學習比較工具與風險。",
+  "股神巴菲特的財報分析": "練習從財務報表，了解一家公司的經營資訊。",
+  "財會軟體應用": "用財會軟體練習處理資料與帳務。",
+  "商業簡報實務": "把資料變成清楚的簡報，練習說出重點。",
+  "商業攝影": "練習用影像表達商品特色與商業訊息。",
+  "從影片學商業": "透過影片情境，觀察商業活動與經營想法。",
+  "會計與管理專題初探": "從會計與管理的小題目出發，練習整理與探究。",
+  "租稅規劃與申報實務": "認識稅務與申報流程，練習處理相關資料。",
+  "程式語言與設計": "把想做的事拆成步驟，寫成電腦看得懂的程式。",
+  "多媒體製作與應用": "把文字、圖片與影音組合起來，做出數位作品。",
+  "資料庫應用": "讓資料有自己的家，練習整理、查找與使用。",
+  "行動裝置應用設計": "從手機上的小需求出發，練習設計應用。",
+  "電子商務實務": "認識線上買賣，練習思考網路商店怎麼經營。",
+  "電腦軟體應用進階": "進一步運用軟體，處理更完整的工作需求。",
+  "數位影像設計": "練習編修與設計影像，讓畫面說出你的想法。",
+  "軟體應用實務": "把軟體工具用在實際任務，練習解決問題。",
+  "網頁設計實務": "把內容排成網頁，練習讓資訊清楚又好用。",
+  "數位邏輯設計實務": "認識數位訊號的基本規則，練習邏輯設計。",
+  "外語簡報實務": "用外語整理重點，練習把一個主題介紹清楚。",
+  "外語文書處理實務": "練習整理外語文件，讓內容與格式更清楚。",
+  "英文商業書信寫作": "練習寫出禮貌、清楚的英文工作書信。",
+  "基礎英文文法與句型": "掌握常見句型，讓英文表達更有把握。",
+  "英文寫作": "從想法到段落，練習寫出有條理的英文。",
+  "新聞英文導讀": "跟著新聞讀英文，一起認識時事與常用表達。",
+  "中英翻譯": "在中文與英文之間，練習把意思傳達到位。",
+  "商用英文導讀": "認識商務情境常見的英文用字與表達。",
+  "面試英文應用": "練習用英文介紹自己，回答面試常見問題。",
+  "英語口語練習": "多開口、多互動，讓英文慢慢變成日常。",
+  "觀光英文應用": "在旅遊與接待情境中，練習用英文溝通。",
+  "服務導論": "認識服務工作的日常，學著理解別人的需要。",
+  "衛生與安全概論": "認識衛生與安全習慣，保護自己也照顧他人。",
+  "事務機器與電腦應用概論": "認識常見辦公設備，練習基本電腦應用。",
+  "生活保健實作": "練習日常健康照顧，建立照顧自己的習慣。",
+  "居家照顧實作": "從居家情境出發，練習照顧與協助的技巧。",
+  "飲食調理實作": "練習準備與調理餐點，建立飲食製作的基本功。",
+  "食材處理實作": "認識食材，練習清洗、整理與處理。",
+  "基礎速食實作": "認識速食製作流程，練習基本操作。",
+  "飲料調製實作": "認識材料與工具，動手練習調製飲品。",
+  "居家車輛清潔概論": "認識車輛清潔的工具、流程與安全觀念。",
+  "居家照護美髮概論": "認識日常美髮照護，了解基本工具與方法。",
+  "居家電腦應用實務": "從生活需求出發，練習使用電腦工具。",
+  "生活交通能力實務": "練習交通生活技能，讓日常出行更有把握。",
+  "餐飲烘焙實作": "動手練習烘焙，熟悉材料、步驟與安全習慣。",
+  "餐飲烘焙實務": "認識烘焙的材料與流程，練習製作基本功。",
+  "居家烹飪實習": "從家常料理出發，練習準備與烹調餐點。",
+  "餐飲門巿服務實習": "練習接待顧客與餐飲門市的服務流程。",
+  "作業安全實習": "練習在工作情境中辨認風險、安全操作。",
+  "工作社會技巧實習": "練習工作中的溝通與合作，和夥伴好好相處。",
+  "居家安全照護實習": "練習注意居家環境與照護安全。",
+  "居家照護美髮實作": "練習日常美髮照護的基本操作。",
+  "運動學概論": "認識身體與運動的關係，理解訓練背後的道理。",
+  "專項體能訓練": "練習力量、速度與耐力，打好運動表現的基礎。",
+  "專項技術訓練": "跟著專項練習動作，把技巧一步步磨得更好。",
+  "運動傷害防護": "認識運動傷害與防護，練習安全地照顧身體。",
+  "初階英語聽講練習": "從聽懂到開口，循序練習英文對話與表達。",
+  "中階英語聽講練習": "從聽懂到開口，循序練習英文對話與表達。",
+  "高階英語聽講練習": "從聽懂到開口，循序練習英文對話與表達。",
+  "初階英文閱讀與寫作練習": "邊讀邊寫，循序練習讀懂文章、表達想法。",
+  "中階英文閱讀與寫作練習": "邊讀邊寫，循序練習讀懂文章、表達想法。",
+  "高階英文閱讀與寫作練習": "邊讀邊寫，循序練習讀懂文章、表達想法。",
+  "基礎清潔實務": "認識清潔工具與方法，練習把生活、工作環境整理好。",
+  "基礎清潔實作": "認識清潔工具與方法，練習把生活、工作環境整理好。",
+  "職場清潔實作": "認識清潔工具與方法，練習把生活、工作環境整理好。",
+  "顧客服務實務": "從招呼到協助顧客，練習有禮貌又清楚的服務。",
+  "顧客服務實作": "從招呼到協助顧客，練習有禮貌又清楚的服務。",
+  "清潔技能實習": "認識清潔工具與方法，練習把生活、工作環境整理好。",
+  "居家車輛清潔實務": "練習車輛清潔流程，學會選用工具與安全操作。",
+  "居家車輛清潔實作": "練習車輛清潔流程，學會選用工具與安全操作。",
+  "選手培訓一-田徑": "跟著田徑專項練習，逐步累積技術與比賽準備能力。",
+  "選手培訓一-跆拳道": "跟著跆拳道專項練習，逐步累積技術與比賽準備能力。",
+  "選手培訓二-田徑": "跟著田徑專項練習，逐步累積技術與比賽準備能力。",
+  "選手培訓二-跆拳道": "跟著跆拳道專項練習，逐步累積技術與比賽準備能力。",
+  "選手培訓三-田徑": "跟著田徑專項練習，逐步累積技術與比賽準備能力。",
+  "選手培訓三-跆拳道": "跟著跆拳道專項練習，逐步累積技術與比賽準備能力。"
+};
+function courseCard(c,p){return `<article class="specialist-course friendly-lesson"><h4>${esc(c.name)}</h4><p class="lesson-story">${esc(COURSE_EXPLAINERS[c.name]||'從課堂到實作，練習把學到的方法用在生活與工作裡。')}</p><details class="lesson-facts"><summary>查看課程資料</summary><p>${esc(c.requirement)} · ${c.credits} 學分<br>${c.semesters.map((v,i)=>v!=='0'?`${['一上','一下','二上','二下','三上','三下'][i]} ${v}`:'').filter(Boolean).join(' / ')}</p><a href="${docHref(p.doc,c.page)}" target="_blank" rel="noopener noreferrer">原始課程計畫 p.${c.page} ↗</a></details></article>`;}
+function programDetail(p){const courses=p.courses.filter(isSpecialistCourse);const practical=c=>c.kind==='實習科目'||c.kind.includes('體育專項')||c.kind.includes('體育專長')||c.name==='運動傷害防護';return `<div class="guide-greeting"><span>✦</span><p>嗨！來看看在這裡，你會學到什麼？<small>不用先懂專業名詞，從一門有興趣的課開始。</small></p></div><div class="lesson-groups">${[{name:'先認識這些小知識',subtitle:'專業科目，打開新的視野。',list:courses.filter(c=>!practical(c)),icon:'book'},{name:'接著，動手試試看！',subtitle:'實習與實作，把想法變成自己的本事。',list:courses.filter(practical),icon:'settings'}].map(g=>`<section><h3>${ico(g.icon)}${g.name}</h3><p class="section-invite">${g.subtitle}</p><div class="specialist-list">${g.list.slice(0,3).map(c=>courseCard(c,p)).join('')||'<p class="empty-courses">這個科班以另一類課程為主，往下看看吧。</p>'}</div>${g.list.length>3?`<details class="more-lessons"><summary>還想多認識一點？看看另外 ${g.list.length-3} 門課 <span>＋</span></summary><div class="specialist-list">${g.list.slice(3).map(c=>courseCard(c,p)).join('')}</div></details>`:''}</section>`).join('')}</div><p class="course-footnote">115 學年度入學適用。以上短句依課程名稱與計畫方向白話整理，非原文引述；正式範圍與安排以課程計畫為準。${p.id==='sports'?'運動傷害防護課表為 2 學分、大綱為 1，資料保留此差異。':''}</p>`;}
+
+function openIsland(id){const d=islands.find(x=>x.id===id);if(!d)return;selectedIsland=d;const p=CURRICULUM.programs.find(x=>x.id===id);openModal(`<div class="department-welcome" style="--department-color:${d.color}"><svg class="department-mascot chibi-portrait" viewBox="-27 -57 54 68" role="img" aria-label="原創日系 Q 版科別嚮導">${animal(0,0,d.accent,d.id==='english'||d.id==='piping'?'rabbit':d.id==='accounting'?'cat':'bear')}</svg><div class="eyebrow">${d.en}</div><h2 id="dialog-title">${d.name}</h2><p>${d.description}</p></div>${programDetail(p)}`);}
 
 function openFeed(id){const f=feed.find(x=>x.id===id);if(!f)return;const d=islands.find(x=>x.id===f.islandId);openModal(`<div class="eyebrow">${esc(f.category)} · ${esc(f.time)}</div><h2 id="dialog-title">${esc(f.title)}</h2><div class="dialog-hero" style="background:${f.bg||'#e5eddd'}">${esc(f.icon||'✦')}</div><p>${esc(f.body)}</p>${botEndpoint?'':'<div class="notice">這是示範動態，並非校方公告或真實 Discord 訊息。</div>'}<div class="dialog-footer"><span>${d?esc(d.name):'校園觀測站'}</span>${d?'<button id="feed-island">前往這座島 →</button>':''}</div>`);if(d)$('#feed-island').onclick=()=>openIsland(d.id);}
 function catalogHTML(){return `<section class="curriculum-catalog" id="curriculum-catalog"><div class="page-eyebrow">YOUR LEARNING MAP · 115</div><h2>每一門課，都有下一步。</h2><p class="page-description">六個技術型科別、綜合職能科與體育班，依三份計畫書課表整理。僅顯示專業科目、實習課程與體育專項課程。<br>選修含互斥項目，不可將所有選項學分加總。括號數值保留原表標示。</p><div class="catalog-filters"><label>科別與班別<select id="catalog-program">${CURRICULUM.programs.map(p=>`<option value="${p.id}">${programName(p)}</option>`).join('')}</select></label><label>授課學年<select id="catalog-year"><option value="all">全部學年</option><option value="0">一年級</option><option value="1">二年級</option><option value="2">三年級</option></select></label><label>課程類別<select id="catalog-kind"><option value="all">全部類別</option><option value="required">必修課程</option><option value="elective">選修／其他安排</option><option value="practice">實習科目</option></select></label><label class="catalog-keyword">找一門課<input id="catalog-search" type="search" placeholder="課程名稱，例如：數值控制" autocomplete="off"></label></div><div id="catalog-results" aria-live="polite"></div></section>`;}
