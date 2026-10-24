@@ -1031,7 +1031,7 @@ const CURRICULUM = {
       "id": "piping",
       "name": "配管科",
       "group": "機械群",
-      "islandId": "mechanical",
+      "islandId": "piping",
       "pages": [
         30,
         31
@@ -3017,7 +3017,7 @@ const CURRICULUM = {
       "id": "accounting",
       "name": "會計事務科",
       "group": "商業與管理群",
-      "islandId": "business",
+      "islandId": "accounting",
       "pages": [
         34,
         35
@@ -4010,7 +4010,7 @@ const CURRICULUM = {
       "id": "data",
       "name": "資料處理科",
       "group": "商業與管理群",
-      "islandId": "digital",
+      "islandId": "data",
       "pages": [
         37,
         38
@@ -4955,7 +4955,7 @@ const CURRICULUM = {
       "id": "english",
       "name": "應用英語科",
       "group": "外語群",
-      "islandId": "language",
+      "islandId": "english",
       "pages": [
         39,
         40
@@ -6813,7 +6813,7 @@ const CURRICULUM = {
       "id": "sports",
       "name": "體育班",
       "group": "普通型・田徑／跆拳道",
-      "islandId": "campus",
+      "islandId": "sports",
       "pages": [
         13,
         14
