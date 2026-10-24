@@ -23,7 +23,7 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 來源公告：https://www.ttvs.ntct.edu.tw/ischool/publish_page/14/?cid=2855 。原始文件下載網址格式為 `https://www.ttvs.ntct.edu.tw/ischool/rfile/<原始檔 ID>`。環境仍無法連線官網，但上傳檔案已完整讀取，不再以網路限制阻擋課程整理。
 
-網站以六座主題島分組八個正式科班：校園生活島（體育班）、機械工藝島（機械、配管）、商業創意島（商經、會計）、數位資訊島（資處）、語言交流島（應英）、生活服務島（綜合職能）。原型中的電機／電子／汽車／國貿示例已撤換。
+網站地圖為八個獨立科班，直接命名為機械科、配管科、商業經營科、會計事務科、資料處理科、應用英文科、綜合職能科、普通體育班。依使用者指定名稱顯示；後兩個名稱中的「應用英文科」及「普通體育班」，在原件分別為「應用英語科」及「體育班」，保留原始資料不改寫。每個島只對應一科班，點入只顯示專業科目與實習實作課程（含選修及原表特殊安排），不顯示一般科目、證照或三年總學分。體育班對應體育專業學科、專項術科、體育專長培訓與運動傷害防護。視覺採圓潤小屋、花圃與原創熊、兔、貓島民，未使用商業遊戲角色或圖像。
 
 `assets/curriculum-data.js` 與 `assets/curriculum/catalog.json` 保存 469 筆課表項目（以科班計，跨科同名課程分別保留，包含零學分及特殊安排項目），涵蓋一般、專業、實習與選修科目、六學期配置、原始備註及逐項來源頁碼。不是 469 門獨立課程，也不將所有選修學分相加當作個人的應修總額。每份原件 SHA-256 記錄在 documents 中。島嶼文字為依課表摘要，不能替代原件全部選課規則與大綱。
 
@@ -41,9 +41,9 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 學校官網的 HTML 頁面不是 TA bot JSON 接口。前端不會抓取官網或直接連接 Discord，也沒有虛構的後端服務。
 
-JSON 格式見 `assets/ta-bot.example.json`。`updatedAt` 為可解析的時間字串；`stats` 三項皆為非負安全整數；`events` 最多 50 筆，id 需唯一，`title/category/time/body` 均為不超過 3000 字的純文字。島 id：`campus`、`mechanical`、`digital`、`business`、`language`、`service`。type：`learning`、`event`、`milestone`。
+JSON 格式見 `assets/ta-bot.example.json`。`updatedAt` 為可解析的時間字串；`stats` 三項皆為非負安全整數；`events` 最多 50 筆，id 需唯一，`title/category/time/body` 均為不超過 3000 字的純文字。島 id：`mechanical`、`piping`、`business`、`accounting`、`data`、`english`、`service`、`sports`。type：`learning`、`event`、`milestone`。
 
-連接前先驗證資料，成功後每 60 秒更新一次；失敗保留上次資料並顯示中斷狀態。網址保存在此瀏覽器 localStorage，可切回示範資料清除。JSON 的 HTML 會作為純文字顯示。接口不得包含身份資料或任何需要保密的內容。舊版 electrical / maker / automotive 識別碼可讀取為 digital / language / service；新接口請使用新版識別碼。若部署環境限制對外連線，需另允許實際 bot 接口網域。
+連接前先驗證資料，成功後每 60 秒更新一次；失敗保留上次資料並顯示中斷狀態。網址保存在此瀏覽器 localStorage，可切回示範資料清除。JSON 的 HTML 會作為純文字顯示。接口不得包含身份資料或任何需要保密的內容。舊版 campus / digital / language 識別碼分別對應 sports / data / english；electrical / maker / automotive 分別對應 data / english / service；新接口請使用新版識別碼。若部署環境限制對外連線，需另允許實際 bot 接口網域。
 
 ## 驗證
 
@@ -53,4 +53,4 @@ python3 tests/validate_curriculum.py
 
 四組標準函式庫測試：原件雜湊與前端／JSON 資料一致性、八科班必修與總學分、469 列六學期學分與頁碼、代表性課程轉錄內容。選修含互斥項目，不把所有選項直接加總。這些檢查驗證轉錄結構及已比對的課表數字，並不代表校方已覆核網站摘要或確認當前開課狀況。
 
-另外以 Chromium / Playwright 驗證六島選取、雙科島分頁、八科班完整課表、課程名稱／學年／必選修篩選、原件 PDF 及定位頁碼、學分差異提示、搜尋、有效與無效 TA bot 接口處理、舊版島 ID 對應、HTML 注入字串作為純文字顯示，以及 390px 手機版課表橫向捲動與無頁面橫溢。接口測試為攔截回應，尚未接入真實 TA bot；也未正式發布網站。
+另外以 Chromium / Playwright 驗證八科班獨立島嶼選取、指定顯示名稱、各科專業／實習課程及一般科目排除、課程名稱／學年／必選修篩選、原件 PDF 及定位頁碼、學分差異提示、搜尋、有效與無效 TA bot 接口處理、舊版島 ID 對應、HTML 注入字串作為純文字顯示，以及 390px 手機版科別點選、課程閱讀與無頁面橫溢。接口測試為攔截回應，尚未接入真實 TA bot；已透過 `.github/workflows/pages.yml` 發布至 https://lrw-crypto.github.io/115/。
