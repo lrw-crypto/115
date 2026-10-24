@@ -17,7 +17,7 @@ function shoreScenery() {
     <path d="M483-13Q611 110 713 65T929 102Q1107 139 1330 92" fill="none" stroke="#ded9be" stroke-width="32" stroke-linecap="round"/>
     <path d="M483-13Q611 110 713 65T929 102Q1107 139 1330 92" fill="none" stroke="#fdf5d5" stroke-width="2" stroke-dasharray="11 12"/>
     ${[[520,0,.8],[580,28,.6],[650,3,.9],[715,23,.7],[777,42,.65],[1085,39,.8],[1140,94,.7],[1210,39,.9]].map(t=>shorelineTree(...t)).join('')}
-    <g class="hilife-store" transform="translate(1010 48)">
+    <g class="hilife-store" transform="translate(985 48)">
       <ellipse cx="36" cy="40" rx="92" ry="23" fill="#76997d2b"/>
       <path d="M-45-14 62-14 99-36V33L62 55-45 32Z" fill="#fff6df" stroke="#eee7c9" stroke-width="2" stroke-linejoin="round"/>
       <path d="M62-14 99-36V33L62 55Z" fill="#e2e4cc"/>
