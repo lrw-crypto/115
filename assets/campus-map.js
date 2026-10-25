@@ -1,7 +1,7 @@
 'use strict';
 // Building numbers are counted from the main entrance toward the rear campus.
 // All scenery, hit areas and resident paths share the 1536 × 1024 art coordinates.
-const CAMPUS_ART='assets/campus-macaron.png?v=iron-roofs1';
+const CAMPUS_ART='assets/campus-macaron.png?v=iron-roofs2-pavilion';
 const campusPoint=(u,v,z=0)=>[u*1240/1536,v*815/1024-z];
 const CAMPUS_PLACES={
  'left-1':{side:'left',order:1,name:'左邊第一棟',departments:['service'],anchor:[591,558],polygons:[[[421,488],[627,438],[687,474],[478,534]],[[421,488],[477,506],[559,570],[511,611]],[[512,611],[706,542],[762,579],[564,661]]]},
