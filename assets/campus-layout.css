@@ -1,0 +1,24 @@
+/* Reference-map layout: a large campus illustration, with a compact passport. */
+@media(min-width:801px){
+ .header{height:76px;padding:0 24px}.brand{font-size:22px}.header nav{gap:23px}.header-right{gap:12px}
+ .map-page{height:calc((100vw - 220px)*.657 + 142px);min-height:820px;max-height:1250px;background:radial-gradient(ellipse at 50% 45%,#e0efb6,#eaf3cc 65%,#f6efd3)}
+ .intro{left:24px;top:14px;max-width:calc(100% - 245px)}.intro .eyebrow{font-size:8px;color:#8f986b;letter-spacing:1.7px}.intro h1{font-size:26px;margin:8px 0 5px}.intro p{font-size:10px;margin-left:24px;color:#7a8c65}.intro-bottom{display:none}.hero-star{right:-22px;width:17px;top:4px}
+ .map-toolbar{left:24px;top:92px;padding:3px;gap:2px}.chip{font-size:9px;padding:7px 10px}
+ .map-viewport{left:0;top:118px;width:calc(100% - 220px);height:calc(100% - 135px)}
+ .passport-panel{right:14px;top:116px;width:202px;padding:18px 12px 13px;max-height:calc(100% - 145px)}.passport-heading>span{font-size:23px}.passport-heading .eyebrow{font-size:6px;letter-spacing:1px}.passport-heading h2{font-size:17px;margin:9px 0 6px}.passport-heading p{font-size:9px}.passport-progress{margin-top:15px}.passport-progress>b{font-size:25px}.passport-progress>span{font-size:9px}.passport-panel .quest-progress{margin:10px 0 15px}.passport-departments{gap:6px}.passport-departments button{padding:8px 6px;gap:6px}.passport-icon{width:24px;height:26px;font-size:16px}.passport-departments b{font-size:10px}.passport-departments small{font-size:7px}.passport-help{font-size:9px;padding:8px;margin:14px 0 9px}.passport-save{font-size:7px}
+ .map-controls{left:24px;right:auto;bottom:17px;padding:4px;box-shadow:0 4px 12px #506b4113}.map-hint{left:260px;bottom:28px;font-size:8px;color:#70905a}.adventure-promise{padding:19px 24px;gap:55px;font-size:11px}.adventure-promise small{font-size:7px}footer{padding:18px 24px}
+}
+.map-page:after{background:linear-gradient(125deg,#ffffe51f,transparent 40%)}
+.campus-building{transition:filter .16s,opacity .2s}.courtyard-complex{filter:drop-shadow(1px 4px 1px #3f5e4220)}.building-sign .label-bg{stroke:#f3d48f;fill:#fff9dd;stroke-width:2;filter:drop-shadow(0 3px 2px #60754626)}.quest-complete .building-sign .label-bg{fill:#dcf2b6;stroke:#9fcb65}.campus-building:hover .label-bg,.campus-building:focus-visible .label-bg{fill:#ffe8a2;stroke:#cfa54c}.building-sign text{fill:#255b62;font-weight:800}.campus-npc{filter:drop-shadow(1px 3px 1px #3e635830)}
+@media(max-width:800px){
+ .map-page{height:1340px;background:radial-gradient(ellipse at 50% 34%,#dbefb0,#eff4d7 67%,#faf1da)}
+ .intro{top:14px;left:18px;max-width:calc(100% - 36px)}.intro .eyebrow{font-size:7.5px;letter-spacing:1.2px}.intro h1{font-size:25px;margin:10px 0 8px;line-height:1.5}.intro h1 br{display:none}.intro p{font-size:10px;line-height:1.8;display:block;margin:0;max-width:100%}.intro p br{display:none}.intro-bottom{display:none}.hero-star{right:-3px;top:-2px;width:16px}
+ .map-toolbar{top:139px;left:50%;padding:3px;gap:1px;max-width:calc(100% - 20px)}.chip{font-size:8px;padding:7px 8px}
+ .map-viewport{left:0;top:180px;width:100%;height:550px}
+ .map-controls{top:742px;bottom:auto;left:18px;right:auto;padding:4px}.map-hint{top:790px;left:18px;bottom:auto;font-size:8px;color:#7c9467}.passport-panel{top:833px;left:18px;right:18px;width:auto;padding:19px 15px 14px}.passport-heading h2{font-size:18px}.passport-departments{gap:8px}.passport-departments b{font-size:10px}.adventure-promise{padding:20px 18px;gap:22px;font-size:9px}footer{padding:18px}
+}
+@media(prefers-reduced-motion:reduce){.campus-building{transition:none}}
+.campus-map-label{cursor:pointer}.campus-map-label:hover .label-bg{fill:#ffe4a0;stroke:#cba04d}.campus-map-label.quest-complete .label-bg{fill:#dcf2b6;stroke:#9fcb65}.campus-building:focus-visible{filter:drop-shadow(0 0 5px #ffe28b)}
+.campus-npc>g:last-child{pointer-events:none}
+.map-fit{padding:8px 7px;color:#6f8962;font-size:10px;border-radius:8px;background:#f1f2dc;margin-right:3px;white-space:nowrap}.map-fit:hover{background:#e7edce}
+.campus-map-label text,.campus-map-label circle,.campus-map-label path{pointer-events:none}

@@ -14,8 +14,8 @@ const departments=[
     "icon": "⚙️",
     "color": "#fff1bf",
     "accent": "#ff9847",
-    "x": 460,
-    "y": 260,
+    "x": 624.85,
+    "y": 247.5,
     "subtitle": "從機械製圖、加工到數值控制，親手實現想法。",
     "description": "從機械製圖、加工到數值控制，親手實現想法。",
     "departments": [
@@ -24,7 +24,9 @@ const departments=[
     "programIds": [
       "mechanical"
     ],
-    "scale": 0.86
+    "scale": 0.84,
+    "u": 290,
+    "v": 65
   },
   {
     "id": "piping",
@@ -34,8 +36,8 @@ const departments=[
     "icon": "🔧",
     "color": "#baf0dd",
     "accent": "#10b9ba",
-    "x": 695,
-    "y": 225,
+    "x": 776.4,
+    "y": 335.0,
     "subtitle": "認識金屬管線、銲接與建築配管的實作世界。",
     "description": "認識金屬管線、銲接與建築配管的實作世界。",
     "departments": [
@@ -44,7 +46,9 @@ const departments=[
     "programIds": [
       "piping"
     ],
-    "scale": 0.83
+    "scale": 0.84,
+    "u": 465,
+    "v": 65
   },
   {
     "id": "business",
@@ -54,8 +58,8 @@ const departments=[
     "icon": "🛒",
     "color": "#ffe4b5",
     "accent": "#ff6656",
-    "x": 355,
-    "y": 435,
+    "x": 481.96,
+    "y": 430.0,
     "subtitle": "用門市經營、行銷與專題，探索商業的可能。",
     "description": "用門市經營、行銷與專題，探索商業的可能。",
     "departments": [
@@ -64,7 +68,9 @@ const departments=[
     "programIds": [
       "business"
     ],
-    "scale": 0.89
+    "scale": 0.87,
+    "u": 390,
+    "v": 330
   },
   {
     "id": "accounting",
@@ -74,8 +80,8 @@ const departments=[
     "icon": "📒",
     "color": "#e3ccff",
     "accent": "#a46bea",
-    "x": 590,
-    "y": 430,
+    "x": 620.52,
+    "y": 510.0,
     "subtitle": "從會計學到帳務實作，學習看懂數字的語言。",
     "description": "從會計學到帳務實作，學習看懂數字的語言。",
     "departments": [
@@ -84,7 +90,9 @@ const departments=[
     "programIds": [
       "accounting"
     ],
-    "scale": 0.88
+    "scale": 0.87,
+    "u": 550,
+    "v": 330
   },
   {
     "id": "data",
@@ -94,8 +102,8 @@ const departments=[
     "icon": "💻",
     "color": "#bcecfb",
     "accent": "#289fdd",
-    "x": 820,
-    "y": 405,
+    "x": 927.95,
+    "y": 422.5,
     "subtitle": "以程式、多媒體與資料庫，把點子做成作品。",
     "description": "以程式、多媒體與資料庫，把點子做成作品。",
     "departments": [
@@ -104,7 +112,9 @@ const departments=[
     "programIds": [
       "data"
     ],
-    "scale": 0.88
+    "scale": 0.84,
+    "u": 640,
+    "v": 65
   },
   {
     "id": "english",
@@ -114,8 +124,8 @@ const departments=[
     "icon": "🌍",
     "color": "#ffe0df",
     "accent": "#ed7bb1",
-    "x": 365,
-    "y": 620,
+    "x": 759.0799999999999,
+    "y": 590.0,
     "subtitle": "從聽講、閱讀到簡報，讓你的想法走向世界。",
     "description": "從聽講、閱讀到簡報，讓你的想法走向世界。",
     "departments": [
@@ -124,10 +134,12 @@ const departments=[
     "programIds": [
       "english"
     ],
-    "scale": 0.9,
+    "scale": 0.87,
     "aliases": [
       "應用英文科"
-    ]
+    ],
+    "u": 710,
+    "v": 330
   },
   {
     "id": "service",
@@ -137,8 +149,8 @@ const departments=[
     "icon": "🌼",
     "color": "#e3f7ac",
     "accent": "#8fbd25",
-    "x": 720,
-    "y": 590,
+    "x": 927.95,
+    "y": 562.5,
     "subtitle": "在餐飲、清潔與服務實作中，累積生活的自信。",
     "description": "在餐飲、清潔與服務實作中，累積生活的自信。",
     "departments": [
@@ -147,7 +159,9 @@ const departments=[
     "programIds": [
       "service"
     ],
-    "scale": 0.88
+    "scale": 0.84,
+    "u": 780,
+    "v": 205
   },
   {
     "id": "sports",
@@ -157,8 +171,8 @@ const departments=[
     "icon": "🏅",
     "color": "#c7f2de",
     "accent": "#1aa886",
-    "x": 215,
-    "y": 255,
+    "x": 239.48,
+    "y": 300.0,
     "subtitle": "以專項體能、技術訓練與運動防護，超越自己。",
     "description": "以專項體能、技術訓練與運動防護，超越自己。",
     "departments": [
@@ -167,7 +181,9 @@ const departments=[
     "programIds": [
       "sports"
     ],
-    "scale": 0.9
+    "scale": 1.03,
+    "u": 120,
+    "v": 340
   }
 ];
 const programName=p=>departments.find(d=>d.id===p.id).name;
@@ -364,6 +380,6 @@ function applyBot(data,url){botEndpoint=url;feed=data.events.map(e=>({id:e.id,is
 const camera={x:0,y:0,scale:1};const drag={active:false,moved:false,x:0,y:0,lastX:0,lastY:0};
 function updateCamera(){$('#map-world').setAttribute('transform',`translate(${camera.x} ${camera.y}) translate(580 410) scale(${camera.scale}) translate(-580 -410)`);}
 function zoom(delta){camera.scale=Math.max(.65,Math.min(1.8,camera.scale+delta));updateCamera();}
-function initMapInteraction(){const el=$('#map-viewport');el.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag.active=true;drag.moved=false;drag.x=drag.lastX=e.clientX;drag.y=drag.lastY=e.clientY;});el.addEventListener('pointermove',e=>{if(!drag.active)return;if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>5){drag.moved=true;el.classList.add('dragging');}if(drag.moved){const ratio=1160/$('#campus-map').getBoundingClientRect().width;camera.x=Math.max(-400,Math.min(400,camera.x+(e.clientX-drag.lastX)*ratio));camera.y=Math.max(-300,Math.min(300,camera.y+(e.clientY-drag.lastY)*ratio));updateCamera();}drag.lastX=e.clientX;drag.lastY=e.clientY;});window.addEventListener('pointerup',()=>{drag.active=false;el.classList.remove('dragging');});el.addEventListener('pointercancel',()=>{drag.active=false;el.classList.remove('dragging');});el.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?.08:-.08);},{passive:false});$('#zoom-in').onclick=()=>zoom(.15);$('#zoom-out').onclick=()=>zoom(-.15);$('#reset-map').onclick=()=>{Object.assign(camera,{x:0,y:0,scale:1});updateCamera();};}
-function init(){installVividSceneDefs();renderMap();initCampusResidents();initCampusQuests();renderFeed();initMapInteraction();function resizeMap(){const mobile=window.innerWidth<=800;$('#campus-map').setAttribute('viewBox',mobile?'-140 50 1320 800':'0 0 1160 790');}resizeMap();window.addEventListener('resize',resizeMap);$('#year').textContent=new Date().getFullYear();$$('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));$$('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;$$('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));departments.forEach(d=>$(`[data-department="${d.id}"]`).classList.toggle('dim',filter!=='all'&&d.type!==filter));});$$('[data-feed]').forEach(b=>b.onclick=()=>{feedFilter=b.dataset.feed;$$('[data-feed]').forEach(x=>x.classList.toggle('active',x===b));renderFeed();});$('#visit').onclick=()=>{showView('map');openDepartment('mechanical');};$('#random-department').onclick=()=>openDepartment(departments[Math.floor(Math.random()*departments.length)].id);$('.search-toggle').onclick=openSearch;$('#connect-bot').onclick=openBot;$('#source-info').onclick=sourceInfo;$('#modal-backdrop').addEventListener('click',e=>{if(e.target===$('#modal-backdrop'))closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal-backdrop').hidden)closeModal();if(e.key==='Tab'&&!$('#modal-backdrop').hidden){const els=[...$('#dialog').querySelectorAll('button:not([disabled]),a[href],input,summary')];const first=els[0],last=els.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===$('#dialog'))){e.preventDefault();last?.focus();}else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===$('#dialog'))){e.preventDefault();first?.focus();}}});let saved;try{saved=localStorage.getItem('caotun-bot-endpoint');}catch{}if(saved){try{const u=new URL(saved);if(u.protocol==='https:'&&!u.username&&!u.password&&!u.search&&!u.hash)fetchBot(u.href).then(d=>applyBot(d,u.href)).catch(()=>toast('TA bot 連線未成功，目前顯示示範資料。'));}catch{}}}
+function initMapInteraction(){const el=$('#map-viewport');el.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag.active=true;drag.moved=false;drag.x=drag.lastX=e.clientX;drag.y=drag.lastY=e.clientY;});el.addEventListener('pointermove',e=>{if(!drag.active)return;if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>5){drag.moved=true;el.classList.add('dragging');}if(drag.moved){const matrix=$('#campus-map').getScreenCTM();const ratio=matrix?1/matrix.a:1;camera.x=Math.max(-400,Math.min(400,camera.x+(e.clientX-drag.lastX)*ratio));camera.y=Math.max(-300,Math.min(300,camera.y+(e.clientY-drag.lastY)*ratio));updateCamera();}drag.lastX=e.clientX;drag.lastY=e.clientY;});window.addEventListener('pointerup',()=>{drag.active=false;el.classList.remove('dragging');});el.addEventListener('pointercancel',()=>{drag.active=false;el.classList.remove('dragging');});el.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?.08:-.08);},{passive:false});$('#map-fit').onclick=()=>{$('#campus-map').setAttribute('preserveAspectRatio','xMidYMid meet');Object.assign(camera,{x:0,y:0,scale:1});updateCamera();};$('#zoom-in').onclick=()=>zoom(.15);$('#zoom-out').onclick=()=>zoom(-.15);$('#reset-map').onclick=()=>{Object.assign(camera,{x:0,y:0,scale:1});updateCamera();};}
+function init(){installVividSceneDefs();renderMap();initCampusResidents();initCampusQuests();renderFeed();initMapInteraction();function resizeMap(){const mobile=window.innerWidth<=800;$('#campus-map').setAttribute('viewBox','0 0 1240 815');$('#campus-map').setAttribute('preserveAspectRatio',mobile?'xMidYMid slice':'xMidYMid meet');}resizeMap();window.addEventListener('resize',resizeMap);$('#year').textContent=new Date().getFullYear();$$('[data-view]').forEach(b=>b.onclick=()=>showView(b.dataset.view));$$('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;$$('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));departments.forEach(d=>$(`[data-department="${d.id}"]`).classList.toggle('dim',filter!=='all'&&d.type!==filter));});$$('[data-feed]').forEach(b=>b.onclick=()=>{feedFilter=b.dataset.feed;$$('[data-feed]').forEach(x=>x.classList.toggle('active',x===b));renderFeed();});$('#visit').onclick=()=>{showView('map');openDepartment('mechanical');};$('#random-department').onclick=()=>openDepartment(departments[Math.floor(Math.random()*departments.length)].id);$('.search-toggle').onclick=openSearch;$('#connect-bot').onclick=openBot;$('#source-info').onclick=sourceInfo;$('#modal-backdrop').addEventListener('click',e=>{if(e.target===$('#modal-backdrop'))closeModal();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal-backdrop').hidden)closeModal();if(e.key==='Tab'&&!$('#modal-backdrop').hidden){const els=[...$('#dialog').querySelectorAll('button:not([disabled]),a[href],input,summary')];const first=els[0],last=els.at(-1);if(e.shiftKey&&(document.activeElement===first||document.activeElement===$('#dialog'))){e.preventDefault();last?.focus();}else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===$('#dialog'))){e.preventDefault();first?.focus();}}});let saved;try{saved=localStorage.getItem('caotun-bot-endpoint');}catch{}if(saved){try{const u=new URL(saved);if(u.protocol==='https:'&&!u.username&&!u.password&&!u.search&&!u.hash)fetchBot(u.href).then(d=>applyBot(d,u.href)).catch(()=>toast('TA bot 連線未成功，目前顯示示範資料。'));}catch{}}}
 init();

@@ -50,7 +50,7 @@ const questCoins=()=>questState.completed.length;
 function refreshQuestWallet() {
   const button=$('#quest-wallet');
   if(button){button.innerHTML=`<span>🪙</span> ${questCoins()}<small>/ 8</small>`;button.setAttribute('aria-label',`金幣 ${questCoins()} 枚，找中鼎文，校園客服`);}
-  $$('[data-department]').forEach(el=>el.classList.toggle('quest-complete',questState.completed.includes(el.dataset.department)));renderPassport();
+  $$('[data-department]').forEach(el=>el.classList.toggle('quest-complete',questState.completed.includes(el.dataset.department)));$$('[data-label-for]').forEach(el=>el.classList.toggle('quest-complete',questState.completed.includes(el.dataset.labelFor)));renderPassport();
 }
 function questFooter(id){const info=MISSION_INFO[id],done=questState.completed.includes(id);return `<div class="mission-invitation"><span>${info.icon}</span><div><h3>${info.title}</h3><p>大約 1 分鐘，動手認識這個科別。</p></div><button class="primary-btn" id="start-campus-mission">${done?'再體驗一次 →':'開始小任務 →'}</button><small>${done?'護照已有這科的章，歡迎重玩，不會重複領幣。':'完成後蓋一個章，獲得 1 枚探索金幣。'}</small></div>`;}
 function awardQuestCoin(id){
