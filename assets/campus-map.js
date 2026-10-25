@@ -8,8 +8,9 @@ const CAMPUS_PLACES={
  'left-2':{side:'left',order:2,name:'左邊第二棟',departments:['accounting','business','data'],anchor:[420,394],polygons:[[[264,329],[491,283],[533,321],[305,375]],[[265,330],[306,346],[418,416],[371,439]],[[370,439],[551,392],[603,426],[419,492]]]},
  'right-1':{side:'right',order:1,departments:[],anchor:[1230,520],polygons:[[[1050,468],[1251,415],[1302,455],[1107,518]],[[1047,467],[1107,488],[1204,552],[1154,589]],[[1153,589],[1340,512],[1396,554],[1205,650]]]},
  'right-2':{side:'right',order:2,name:'右邊第二棟',departments:['english'],anchor:[1085,375],polygons:[[[957,377],[1180,316],[1241,356],[1014,442],[961,421]]]},
- 'right-3':{side:'right',order:3,name:'右邊第三棟',departments:['mechanical','piping'],anchor:[990,292],polygons:[[[854,302],[1069,247],[1130,281],[910,355],[860,350]]]},
- 'rear-right':{side:'rear',departments:[],anchor:[794,192],polygons:[[[665,174],[872,119],[922,158],[718,222],[670,221]]]},
+ 'right-3':{side:'right',order:3,name:'右邊第三棟',departments:[],anchor:[990,292],polygons:[[[854,302],[1069,247],[1130,281],[910,355],[860,350]]]},
+ 'mechanical-hall':{side:'right',name:'機械科',departments:['mechanical'],anchor:[900,250],polygons:[[[769,238],[977,180],[1035,218],[1030,268],[826,321],[773,291]]]},
+ 'rear-right':{side:'right',name:'配管科',departments:['piping'],anchor:[794,192],polygons:[[[665,174],[872,119],[922,158],[718,222],[670,221]]]},
  'central':{side:'central',departments:[],anchor:[660,305],canopies:[[[747,287],[770,294],[852,366],[833,384]]],polygons:[[[547,282],[586,270],[586,230],[655,211],[719,245],[745,347],[681,390],[600,362],[552,331]]]},
  'rear-left':{side:'rear',departments:[],anchor:[280,90],polygons:[[[171,83],[270,49],[271,24],[323,1],[387,34],[387,77],[319,106],[186,133]]]},
  'gatehouse':{side:'entrance',departments:[],anchor:[1020,723],polygons:[[[964,671],[1030,646],[1085,681],[1085,749],[981,783],[964,735]]]},
@@ -20,8 +21,8 @@ const CAMPUS_BUILDINGS={
  business:{buildingId:'left-2',label:[431,383]},
  data:{buildingId:'left-2',label:[431,423]},
  service:{buildingId:'left-1',label:[585,556]},
- mechanical:{buildingId:'right-3',label:[994,278]},
- piping:{buildingId:'right-3',label:[994,318]},
+ mechanical:{buildingId:'mechanical-hall',label:[881,231]},
+ piping:{buildingId:'rear-right',label:[767,167]},
  english:{buildingId:'right-2',label:[1090,362]},
  sports:{buildingId:'sports',label:[280,224]}
 };
@@ -56,8 +57,9 @@ function applyCampusFilter(){
  for(const d of departments)$(`[data-label-for="${d.id}"]`).classList.toggle('dim',filter!=='all'&&d.type!==filter);
  for(const [id,place]of Object.entries(CAMPUS_PLACES)){const el=$(`[data-building="${id}"]`);if(el)el.classList.toggle('dim',filter!=='all'&&!place.departments.some(id=>departments.find(d=>d.id===id).type===filter));}
 }
-function sweepingCat(){const [x,y]=campusPoint(...CAMPUS_CAT_POINT);return `<g id="groundskeeper-cat" class="sweeping-cat" data-zone="central-lawn" role="button" tabindex="0" aria-label="和草地掃地貓說話" transform="translate(${x} ${y})"><rect class="cat-motion-bounds" x="-44" y="-100" width="100" height="135" fill="transparent" pointer-events="none"/><ellipse cy="1" rx="23" ry="7" fill="#537b4c30"/><g class="cat-sweep-body"><image href="assets/groundskeeper-cat.png" x="-27" y="-72" width="54" height="76" preserveAspectRatio="xMidYMax meet"/><g transform="translate(7 -28)"><g class="cat-broom"><path d="M-16-29 19 27" stroke="#8f6944" stroke-width="3.8" stroke-linecap="round"/><path d="M-16-29 19 27" stroke="#d5ad6e" stroke-width="1.4" stroke-linecap="round"/><path d="m17 22 8-4 13 18q-12 9-24 7Z" fill="#b5945c" stroke="#8f734c" stroke-width="1"/><path d="m19 25 3 15m1-17 4 15m0-17 6 15" stroke="#e7ca8c" stroke-width="1.3"/><path d="m17 24 10-5" stroke="#6f674e" stroke-width="3"/></g></g></g><ellipse class="cat-click-area" cx="4" cy="-29" rx="36" ry="44" fill="transparent"/><g class="cat-talk-hint" transform="translate(10 -87)"><rect x="-24" y="-10" width="48" height="20" rx="10" fill="#fff5ef" stroke="#d7a6b8"/><text y="4" text-anchor="middle" font-size="10" fill="#976c84">喵～</text></g></g>`;}
-function openSweepingCat(){openModal(`<div class="sweeping-cat-dialog"><img src="assets/groundskeeper-cat.png" alt="穿草商運動服的掃地貓"><h2 id="dialog-title">阿樺大哥又鋤草了</h2></div>`);}
+function sweepingCatArt(){return `<g class="cat-sweep-body"><image href="assets/groundskeeper-cat.png" x="-27" y="-72" width="54" height="76" preserveAspectRatio="xMidYMax meet"/><g transform="translate(7 -28)"><g class="cat-broom"><path d="M-16-29 19 27" stroke="#8f6944" stroke-width="3.8" stroke-linecap="round"/><path d="M-16-29 19 27" stroke="#d5ad6e" stroke-width="1.4" stroke-linecap="round"/><path d="m17 22 8-4 13 18q-12 9-24 7Z" fill="#b5945c" stroke="#8f734c" stroke-width="1"/><path d="m19 25 3 15m1-17 4 15m0-17 6 15" stroke="#e7ca8c" stroke-width="1.3"/><path d="m17 24 10-5" stroke="#6f674e" stroke-width="3"/></g></g></g>`;}
+function sweepingCat(){const [x,y]=campusPoint(...CAMPUS_CAT_POINT);return `<g id="groundskeeper-cat" class="sweeping-cat" data-zone="central-lawn" role="button" tabindex="0" aria-label="和草地掃地貓說話" transform="translate(${x} ${y})"><rect class="cat-motion-bounds" x="-44" y="-100" width="100" height="135" fill="transparent" pointer-events="none"/><ellipse cy="1" rx="23" ry="7" fill="#537b4c30"/>${sweepingCatArt()}<ellipse class="cat-click-area" cx="4" cy="-29" rx="36" ry="44" fill="transparent"/><g class="cat-talk-hint" transform="translate(10 -87)"><rect x="-24" y="-10" width="48" height="20" rx="10" fill="#fff5ef" stroke="#d7a6b8"/><text y="4" text-anchor="middle" font-size="10" fill="#976c84">喵～</text></g></g>`;}
+function openSweepingCat(){openModal(`<div class="sweeping-cat-dialog"><svg class="sweeping-cat-portrait" viewBox="-44 -84 100 120" role="img" aria-label="拿著掃把的草商掃地貓">${sweepingCatArt()}</svg><div class="cat-speech"><h2 id="dialog-title">阿樺大哥又割草了</h2></div></div>`);}
 function campusShops(){
  const [fx,fy]=campusPoint(208,833),[hx,hy]=campusPoint(1361,896);
  return `<g class="campus-shops" aria-label="面向正門，左邊南臺灣土魠魚羹、右邊萊爾富"><g class="fish-soup-shop" role="button" tabindex="0" aria-label="查看南臺灣土魠魚羹商標" transform="translate(${fx} ${fy})"><path class="shop-hit-area" d="M-84-61 111-12 111 99-84 58Z"/><g transform="rotate(10)"><rect x="-75" y="-10" width="151" height="27" rx="2" fill="#d95165"/><image href="assets/nantaiwan-mark.svg" x="-71" y="-9" width="26" height="25"/><text x="14" y="8" text-anchor="middle" fill="#fffaf3" font-size="12" font-weight="800">南臺灣土魠魚羹</text></g></g><g class="hilife-store" transform="translate(${hx} ${hy})"><g transform="rotate(-8)"><text x="0" y="3" text-anchor="middle" fill="#ffffff" font-size="17" font-weight="800">萊爾富 Hi-Life</text></g></g></g>`;

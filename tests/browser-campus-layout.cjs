@@ -14,10 +14,10 @@ assert.equal(digest(fs.readFileSync('assets/campus-art.js')),'b60da51c33057cc795
  for(const selector of ['#campus-illustration','#groundskeeper-cat image']){
   const loaded=await page.locator(selector).evaluate(el=>new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i.naturalWidth>100);i.onerror=reject;i.src=el.getAttribute('href')}));assert(loaded);
  }
- assert.equal(await page.locator('.campus-building').count(),5);
+ assert.equal(await page.locator('.campus-building').count(),6);
  assert.equal(await page.locator('.campus-map-label').count(),8);
  const placements=await page.evaluate(()=>Object.fromEntries(departments.map(d=>[d.id,d.buildingId])));
- assert.deepEqual(placements,{mechanical:'right-3',piping:'right-3',business:'left-2',accounting:'left-2',data:'left-2',english:'right-2',service:'left-1',sports:'sports'});
+ assert.deepEqual(placements,{mechanical:'mechanical-hall',piping:'rear-right',business:'left-2',accounting:'left-2',data:'left-2',english:'right-2',service:'left-1',sports:'sports'});
  assert.equal(await page.locator('[data-building="central"],[data-building="right-1"],[data-building-id="central"],[data-building-id="right-1"]').count(),0);
  assert.equal(await page.locator('#campus-main-gate').getAttribute('data-open'),'true');
  const gate=await page.evaluate(()=>{const a=document.querySelector('#campus-main-gate').transform.baseVal.consolidate().matrix,b=document.querySelector('#campus-side-school-name').transform.baseVal.consolidate().matrix;return{front:a.e,side:b.e,rotation:Math.atan2(b.b,b.a)}});
@@ -26,28 +26,30 @@ assert.equal(digest(fs.readFileSync('assets/campus-art.js')),'b60da51c33057cc795
  assert.equal(await page.locator('.npc-headband text').textContent(),'客服');
  await page.locator('#reward-npc').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('#dialog-title').innerText(),'校園客服-中鼎文');await page.keyboard.press('Escape');
  const clickArt=async(x,y)=>{const p=await page.evaluate(([u,v])=>{const [x,y]=campusPoint(u,v),q=new DOMPoint(x,y).matrixTransform(document.querySelector('#map-world').getScreenCTM());return{x:q.x,y:q.y}},[x,y]);await page.mouse.click(p.x,p.y)};
- for(const [building,ids,point]of [['left-2',['accounting','business','data'],[350,320]],['right-3',['mechanical','piping'],[1090,290]]]){
+ for(const [building,ids,point]of [['left-2',['accounting','business','data'],[350,320]]]){
   for(const id of ids){await clickArt(...point);assert.equal(await page.locator('[data-building-department]').count(),ids.length);await page.locator(`[data-building-department="${id}"]`).click();assert.equal(await page.locator('#start-campus-mission').count(),1);await page.keyboard.press('Escape')}
   await page.locator(`[data-building="${building}"]`).focus();await page.keyboard.press('Enter');assert.equal(await page.locator('[data-building-department]').count(),ids.length);await page.keyboard.press('Escape');
  }
  for(const id of Object.keys(placements)){await page.locator(`[data-label-for="${id}"] .label-bg`).click();assert.equal(await page.locator('#start-campus-mission').count(),1);await page.keyboard.press('Escape')}
  await clickArt(690,573);assert.equal(await page.locator('#dialog-title').innerText(),'綜合職能科');await page.keyboard.press('Escape');
+ await clickArt(1015,225);assert.equal(await page.locator('#dialog-title').innerText(),'機械科');await page.keyboard.press('Escape');
+ await clickArt(890,160);assert.equal(await page.locator('#dialog-title').innerText(),'配管科');await page.keyboard.press('Escape');
  await clickArt(1200,355);assert.equal(await page.locator('#dialog-title').innerText(),'應用英語科');await page.keyboard.press('Escape');
- await page.locator('[data-filter="engineering"]').click();assert.equal(await page.locator('.campus-map-label.dim').count(),6);assert.equal(await page.locator('.campus-building:not(.dim)').count(),1);await page.locator('[data-filter="all"]').click();
+ await page.locator('[data-filter="engineering"]').click();assert.equal(await page.locator('.campus-map-label.dim').count(),6);assert.equal(await page.locator('.campus-building:not(.dim)').count(),2);await page.locator('[data-filter="all"]').click();
  assert.equal(await page.locator('.walking-resident').count(),20);
  assert(await page.locator('.walking-resident .student-face').evaluateAll(els=>new Set(els.map(e=>e.innerHTML)).size>=4));
  const wandering=await page.evaluate(()=>{for(let i=0;i<CAMPUS_NODES.length;i++){const p=campusRoute(i,20);if(p.at(-1)!==20)throw Error(`disconnected path ${i}`)}const actor=walkingController.actors[0],random=Math.random;actor.node=8;actor.waiting=0;actor.path=[];Math.random=()=>.999;try{walkingController.advance(actor,.1);return actor.target>=28}finally{Math.random=random}});assert(wandering,'students can choose road destinations');
- const cat=page.locator('#groundskeeper-cat'),broom=page.locator('.cat-broom');
+ const cat=page.locator('#groundskeeper-cat'),broom=page.locator('#groundskeeper-cat .cat-broom');
  const catFoot=await cat.getAttribute('transform');assert(await page.evaluate(()=>campusContains(CAMPUS_CAT_POINT,CENTRAL_LAWN)));
  const firstSweep=await broom.evaluate(el=>getComputedStyle(el).transform);await page.waitForTimeout(160);assert.notEqual(await broom.evaluate(el=>getComputedStyle(el).transform),firstSweep);
- await cat.click();assert.equal(await page.locator('#dialog-title').innerText(),'阿樺大哥又鋤草了');await page.waitForFunction(()=>document.body.classList.contains('residents-inactive'));assert.equal(await broom.evaluate(el=>getComputedStyle(el).animationPlayState),'paused');await page.keyboard.press('Escape');
+ await cat.click();assert.equal(await page.locator('#dialog-title').innerText(),'阿樺大哥又割草了');assert.equal(await page.locator('.sweeping-cat-portrait .cat-broom').count(),1);assert.equal(await page.locator('.sweeping-cat-portrait image').count(),1);await page.waitForFunction(()=>document.body.classList.contains('residents-inactive'));assert.equal(await broom.evaluate(el=>getComputedStyle(el).animationPlayState),'paused');await page.keyboard.press('Escape');
  assert.equal(await cat.getAttribute('transform'),catFoot,'cat stays on the lawn');
  await page.locator('#toggle-walk').click();await page.waitForTimeout(60);const stopped=await broom.evaluate(el=>getComputedStyle(el).transform);await page.waitForTimeout(130);assert.equal(await broom.evaluate(el=>getComputedStyle(el).transform),stopped);await page.locator('#toggle-walk').click();
  await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await broom.evaluate(el=>getComputedStyle(el).animationName),'none');await page.emulateMedia({reducedMotion:'no-preference'});
  await page.locator('.fish-soup-shop').focus();await page.keyboard.press('Enter');assert.match(await page.locator('#dialog-title').innerText(),/南臺灣/);await page.keyboard.press('Escape');await page.locator('.fish-soup-shop').evaluate(el=>el.blur());
  await page.mouse.move(5,90);await page.screenshot({path:'/tmp/caoshang-living-campus-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
- await cat.click();assert.equal(await page.locator('#dialog-title').innerText(),'阿樺大哥又鋤草了');await page.keyboard.press('Escape');
+ await cat.click();assert.equal(await page.locator('#dialog-title').innerText(),'阿樺大哥又割草了');await page.keyboard.press('Escape');
  const map=await page.locator('#map-viewport').boundingBox();await page.mouse.move(map.x+map.width/2,map.y+map.height/2);await page.mouse.down();await page.mouse.move(map.x+map.width/2+45,map.y+map.height/2+12,{steps:6});await page.mouse.up();assert((await page.evaluate(()=>Math.abs(camera.x)))>20);
  await page.locator('#map-fit').click();assert.equal(await page.locator('#campus-map').getAttribute('preserveAspectRatio'),'xMidYMid meet');
  await page.setViewportSize({width:390,height:760});assert.equal(await page.locator('#campus-map').getAttribute('preserveAspectRatio'),'xMidYMid meet');assert((await page.locator('#map-viewport').boundingBox()).height<300);await page.setViewportSize({width:390,height:844});
