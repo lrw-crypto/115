@@ -21,8 +21,8 @@ function initCampusResidents(){
   if(actor.segment>=actor.path.length-1){actor.node=actor.target;actor.path=[];actor.waiting=actor===npc?.7:1+Math.random()*3;}
  }
  function placeDepth(actor){
-  const blockers=departments.filter(d=>Math.abs(actor.x-d.x)<110*d.scale&&actor.y>d.y-95*d.scale&&actor.y<d.y+7).sort((a,b)=>b.y-a.y);
-  if(blockers.length){const building=$(`[data-department="${blockers[0].id}"]`);if(actor.element.nextSibling!==building)$('#map-world').insertBefore(actor.element,building);}
+  const blockers=departments.filter(d=>d.id!=='sports'&&d.occlusion.some(p=>campusContains([actor.x,actor.y],p))).sort((a,b)=>b.y-a.y);
+  if(blockers.length){const building=$(`#occluder-${blockers[0].id}`);if(actor.element.nextSibling!==building)$('#map-world').insertBefore(actor.element,building);}
   else if(actor.element.parentNode!==layer)layer.append(actor.element);
  }
  function paint(){
