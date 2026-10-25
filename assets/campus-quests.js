@@ -30,20 +30,8 @@ function foodShopScenery() {
  <text x="19" y="67" fill="#886e46" font-size="8" text-anchor="middle">萊爾富右側 · 想像場景</text>
  </g>`;
 }
-function rewardNpcScenery(){return `<path id="npc-sea-route" d="${boatRoutePath()}" fill="none" stroke="none" pointer-events="none"/><g class="reward-npc cruising-npc" id="reward-npc" role="button" tabindex="0" aria-label="呼叫中鼎文NPC 客服快艇" transform="translate(300 220)"><g class="boat-turn">${speedboatArt()}</g><g class="boat-name"><rect x="-86" y="27" width="172" height="27" rx="13" fill="#fff5c8" stroke="#efc967" stroke-width="2"/><text x="0" y="44" text-anchor="middle" fill="#8a672c" font-size="11" font-weight="700">中鼎文NPC 客服快艇</text></g></g>`;}
-
 const QUEST_IDS=['mechanical','piping','business','accounting','data','english','service','sports'];
 const QUEST_KEY='caotun-island-exploration-v1';
-const QUEST_QUESTIONS={
- mechanical:['如果有機會，你想動手把一塊材料做成小零件嗎？','想試試看！','先看看同學做也不錯'],
- piping:['如果能看懂家裡的水管怎麼接，你覺得有趣嗎？','蠻有趣的！','我比較喜歡其他主題'],
- business:['看到一家小店，你會想知道它怎麼吸引客人嗎？','會，想一起想點子','我喜歡當開心的顧客'],
- accounting:['整理一筆筆收支、把數字對清楚，你願意試試嗎？','喜歡清清楚楚的感覺','數字的事我再慢慢認識'],
- data:['如果能做一個小程式或網頁，你想試試嗎？','想，把點子做出來！','先欣賞別人的作品'],
- english:['遇到外國朋友，你想試著用英文打招呼嗎？','Hello！我想試試','先微笑揮手也很好'],
- service:['做一道料理和把車洗乾淨，你比較想先試哪個？','先來做一道料理','我想試試洗車'],
- sports:['來到操場，你比較想先試哪一種活動？','跑跑步，動一動！','試試跆拳道或撐竿跳']
-};
 let questState={completed:[]};
 let questStorageOK=true;
 function parseQuestState(value) {
@@ -61,41 +49,31 @@ function saveQuestState(){try{localStorage.setItem(QUEST_KEY,JSON.stringify(ques
 const questCoins=()=>questState.completed.length;
 function refreshQuestWallet() {
   const button=$('#quest-wallet');
-  if(button){button.innerHTML=`<span>🪙</span> ${questCoins()}<small>/ 8</small>`;button.setAttribute('aria-label',`金幣 ${questCoins()} 枚，呼叫中鼎文NPC 客服快艇`);}
-  $$('[data-island]').forEach(el=>el.classList.toggle('quest-complete',questState.completed.includes(el.dataset.island)));
+  if(button){button.innerHTML=`<span>🪙</span> ${questCoins()}<small>/ 8</small>`;button.setAttribute('aria-label',`金幣 ${questCoins()} 枚，找中鼎文，校園客服`);}
+  $$('[data-department]').forEach(el=>el.classList.toggle('quest-complete',questState.completed.includes(el.dataset.department)));renderPassport();
 }
-function questFooter(id) {
-  if(questState.completed.includes(id))return `<div class="quest-finish-note">✦ 這個科別的探索金幣已經拿到了，歡迎再來逛逛！</div>`;
-  return `<div class="quest-invitation"><span>🪙</span><h3>逛完了，帶走一枚金幣吧！</h3><p>沒有考試壓力，只要聊聊你的小想法。</p><button class="primary-btn" id="start-island-question" data-question-island="${id}">看完了，回答一個小問題 →</button><small>每個科別首次回答可得 1 枚，八枚可呼叫中鼎文NPC 客服快艇。</small></div>`;
+function questFooter(id){const info=MISSION_INFO[id],done=questState.completed.includes(id);return `<div class="mission-invitation"><span>${info.icon}</span><div><h3>${info.title}</h3><p>大約 1 分鐘，動手認識這個科別。</p></div><button class="primary-btn" id="start-campus-mission">${done?'再體驗一次 →':'開始小任務 →'}</button><small>${done?'護照已有這科的章，歡迎重玩，不會重複領幣。':'完成後蓋一個章，獲得 1 枚探索金幣。'}</small></div>`;}
+function awardQuestCoin(id){
+ if(!QUEST_IDS.includes(id))return;syncQuestState();const already=questState.completed.includes(id);
+ if(!already){questState.completed.push(id);saveQuestState();}refreshQuestWallet();
+ const info=MISSION_INFO[id],department=departments.find(d=>d.id===id);
+ openModal(`<div class="mission-success"><span class="success-seal">${already?'✓':'🪙'}</span><div class="eyebrow">PASSPORT STAMPED · ${department.name}</div><h2 id="dialog-title">你認識了這個科別！</h2><p>${info.learn}</p><strong>${already?'已經有這一科的章了，重玩一樣很棒！':'探索金幣 ＋1，護照多了一個章！'}</strong><div class="quest-progress"><span style="width:${questState.completed.length/8*100}%"></span></div><p>已探索 ${questState.completed.length} / 8 科 · 目前 ${questCoins()} 枚金幣</p><div class="form-actions"><button class="primary-btn" id="continue-exploring">繼續逛校園 →</button><button class="secondary-btn" id="view-quest-wallet">看看探索護照</button></div></div>${questStorageNotice()}`);
+ $('#continue-exploring').onclick=()=>{closeModal();showView('map');};$('#view-quest-wallet').onclick=openRewardNpc;
 }
-function openIslandQuestion(id) {
-  syncQuestState();
-  if(questState.completed.includes(id)){openRewardNpc();return;}
-  const department=islands.find(d=>d.id===id),question=QUEST_QUESTIONS[id];
-  openModal(`<div class="eyebrow">ONE LITTLE THOUGHT · 一個小小想法</div><h2 id="dialog-title">${department.name}，你覺得呢？</h2><div class="question-guide">${npcPortrait()}<p>${question[0]}</p></div><p class="question-reassurance">兩個答案都可以，照自己的感覺選就好。</p><div class="question-options">${question.slice(1).map((text,i)=>`<button data-quest-answer="${i}">${text}<span>→</span></button>`).join('')}</div><p class="course-footnote">不儲存你的選項，只記錄這一科已完成探索。</p>`);
-  $$('[data-quest-answer]').forEach(button=>button.onclick=()=>awardQuestCoin(id));
-}
-function awardQuestCoin(id) {
-  syncQuestState();
-  if(questState.completed.includes(id)){openRewardNpc();return;}
-  questState.completed.push(id);saveQuestState();refreshQuestWallet();
-  openModal(`<div class="coin-celebration" aria-hidden="true">🪙</div><div class="eyebrow">NICE TO MEET YOUR CURIOSITY</div><h2 id="dialog-title">謝謝分享！金幣 ＋1</h2><p>每一種喜歡，都值得被發現。<br>你已探索 ${questState.completed.length} / 8 個科別，目前有 ${questCoins()} 枚金幣。</p><div class="quest-progress"><span style="width:${questState.completed.length/8*100}%"></span></div><div class="form-actions"><button class="primary-btn" id="continue-exploring">${questState.completed.length===8?'呼叫中鼎文NPC 客服快艇 →':'繼續逛逛 →'}</button><button class="secondary-btn" id="view-quest-wallet">看看我的金幣</button></div>${questStorageNotice()}`);
-  $('#continue-exploring').onclick=()=>questState.completed.length===8?openRewardNpc():closeModal();
-  $('#view-quest-wallet').onclick=openRewardNpc;
-}
-function npcPortrait(){return `<svg class="npc-portrait boat-portrait" viewBox="-113 -83 187 145" aria-hidden="true">${speedboatArt()}</svg>`;}
+
+function npcPortrait(){return `<svg class="npc-portrait scooter-portrait" viewBox="-54 -76 108 115" aria-hidden="true">${scooterArt()}</svg>`;}
 
 function questStorageNotice(){return `<p class="course-footnote">${questStorageOK?'進度保存在此瀏覽器，不會跨裝置同步；清除網站資料會重設進度。':'此瀏覽器無法保存進度，目前只保留在這次開啟的頁面；關閉後可能遺失。'}這是此瀏覽器的探索紀錄；正式兌換與領取資格，依校方之後公告的規則確認。</p>`;}
 function openRewardNpc() {
   syncQuestState();refreshQuestWallet();
   const coins=questCoins();
-  openModal(`<div class="npc-shop-heading">${npcPortrait()}<div class="eyebrow">ZHONG DING WEN · 海上客服</div><h2 id="dialog-title">中鼎文NPC 客服快艇</h2><p>${coins===8?'八個科別都逛過了，好厲害！你的八枚金幣已收集完成，小禮物的領取辦法正在準備中。':'每次認識一個科別，再分享一個小想法，就能得到一枚金幣。集滿八枚，就可以來看看校方準備的小禮物！'}</p></div><div class="quest-balance"><span>🪙</span><strong>${coins}</strong><small>枚金幣 · 已探索 ${questState.completed.length} / 8 科</small></div><div class="quest-stamps">${islands.map(d=>`<span class="${questState.completed.includes(d.id)?'earned':''}">${questState.completed.includes(d.id)?'✓':'○'} ${d.name}</span>`).join('')}</div><div class="reward-card"><span>🎁</span><div><h3>校方準備的實體小禮物</h3><p>帶著好奇心完成八個科別的探索，再呼叫我吧！</p><small>獎品內容、領取時間、地點與確認方式，待校方公告。</small></div></div><button class="primary-btn redeem-button" id="redeem-quest-reward" disabled>${coins===8?'已集滿！領取辦法待公告':`還差 ${8-coins} 枚，再去逛逛吧`}</button><p class="reward-pending">${coins===8?'金幣先幫你保留，不會預先扣除。':'目前尚未開放正式兌換，先開心地探索吧！'}</p>${questStorageNotice()}`);
+  openModal(`<div class="npc-shop-heading">${npcPortrait()}<div class="eyebrow">ZHONG DING WEN · CAMPUS GUIDE</div><h2 id="dialog-title">中鼎文・校園客服</h2><p>${coins===8?'八個科別都探索過了，好厲害！你的八枚金幣已收集完成，小禮物的領取辦法正在準備中。':'每次完成一個科別小任務，就會在探索護照蓋一個章，並得到一枚金幣。集滿八枚，就可以來看看校方準備的小禮物！'}</p></div><div class="quest-balance"><span>🪙</span><strong>${coins}</strong><small>枚金幣 · 已探索 ${questState.completed.length} / 8 科</small></div><div class="quest-stamps">${departments.map(d=>`<span class="${questState.completed.includes(d.id)?'earned':''}">${questState.completed.includes(d.id)?'✓':'○'} ${d.name}</span>`).join('')}</div><div class="reward-card"><span>🎁</span><div><h3>校方準備的實體小禮物</h3><p>帶著好奇心完成八個科別的探索，再呼叫我吧！</p><small>獎品內容、領取時間、地點與確認方式，待校方公告。</small></div></div><button class="primary-btn redeem-button" id="redeem-quest-reward" disabled>${coins===8?'已集滿！領取辦法待公告':`還差 ${8-coins} 枚，再去逛逛吧`}</button><p class="reward-pending">${coins===8?'金幣先幫你保留，不會預先扣除。':'目前尚未開放正式兌換，先開心地探索吧！'}</p>${questStorageNotice()}`);
 }
 
 function initCampusQuests() {
-  syncQuestState();refreshQuestWallet();initNpcBoat();
+  syncQuestState();refreshQuestWallet();
   $('#quest-wallet').onclick=openRewardNpc;
-  const food=$('.fish-soup-shop');const openFood=()=>openModal(`<div class="eyebrow">岸邊風景 · 萊爾富右側</div><h2 id="dialog-title">南臺灣土魠魚羹</h2><img class="shop-logo-preview" src="assets/nantaiwan-mark.svg" alt="南臺灣土魠魚羹商標，依提供圖樣描繪"><p>逛完小島，也到岸邊的小吃店看看吧。</p><p class="course-footnote">商標依你提供的圖樣描繪為 SVG。店面為想像場景，非實際店址示意。</p>`);food.onclick=()=>{if(!drag.moved)openFood();};food.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFood();}};
+  const food=$('.fish-soup-shop');const openFood=()=>openModal(`<div class="eyebrow">校外散步 · 萊爾富右側</div><h2 id="dialog-title">南臺灣土魠魚羹</h2><img class="shop-logo-preview" src="assets/nantaiwan-mark.svg" alt="南臺灣土魠魚羹商標，依提供圖樣描繪"><p>逛完校園，也到校外的小吃店看看吧。</p><p class="course-footnote">商標依你提供的圖樣描繪為 SVG。店面為想像場景，非實際店址示意。</p>`);food.onclick=()=>{if(!drag.moved)openFood();};food.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFood();}};
   const npc=$('#reward-npc');npc.onclick=()=>{if(!drag.moved)openRewardNpc();};npc.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openRewardNpc();}};
   window.addEventListener('storage',event=>{if(event.key===QUEST_KEY){syncQuestState();refreshQuestWallet();}});
 }
