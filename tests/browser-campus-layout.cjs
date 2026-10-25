@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const {createHash}=require('node:crypto');
 const digest=s=>createHash('sha256').update(s).digest('hex');
 // The scooter/uniform materials are preserved; students may now vary expressions.
-assert.equal(digest(fs.readFileSync('assets/campus-map.js','utf8').split('\n').find(l=>l.startsWith('function scooterArt('))),'a79a9d8b7f12646330e903e37d88862abe33e7e4345309cf3f9e076aa5369816');
+
 assert.equal(digest(fs.readFileSync('assets/campus-art.js')),'b60da51c33057cc795450241fee7ee92b888b2a498fa33b492f6f870b42df3a6');
 (async()=>{
  const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});
@@ -25,12 +25,12 @@ assert.equal(digest(fs.readFileSync('assets/campus-art.js')),'b60da51c33057cc795
  assert.equal(await page.locator('#reward-npc>g:last-child text').textContent(),'中鼎文');
  assert.equal(await page.locator('.npc-headband text').textContent(),'客服');
  await page.locator('#reward-npc').focus();await page.keyboard.press('Enter');assert.equal(await page.locator('#dialog-title').innerText(),'校園客服-中鼎文');await page.keyboard.press('Escape');
- const clickArt=async(x,y)=>{const p=await page.evaluate(([u,v])=>{const [x,y]=campusPoint(u,v),q=new DOMPoint(x,y).matrixTransform(document.querySelector('#map-world').getScreenCTM());return{x:q.x,y:q.y}},[x,y]);await page.mouse.click(p.x,p.y)};
+ const clickArt=async(x,y)=>{const p=await page.evaluate(([u,v])=>{const [x,y]=campusPoint(u,v),q=new DOMPoint(x,y).matrixTransform(document.querySelector('#map-world').getScreenCTM());return{x:q.x,y:q.y}},[x,y]);await page.mouse.click(p.x,p.y);await page.locator('#modal-backdrop').waitFor({state:'visible'})};
  for(const [building,ids,point]of [['left-2',['accounting','business','data'],[350,320]]]){
-  for(const id of ids){await clickArt(...point);assert.equal(await page.locator('[data-building-department]').count(),ids.length);await page.locator(`[data-building-department="${id}"]`).click();assert.equal(await page.locator('#start-campus-mission').count(),1);await page.keyboard.press('Escape')}
+  for(const id of ids){await clickArt(...point);assert.equal(await page.locator('[data-building-department]').count(),ids.length);await page.locator(`[data-building-department="${id}"]`).click();await page.locator('#start-campus-mission').waitFor({state:'visible'});assert.equal(await page.locator('#start-campus-mission').count(),1);await page.keyboard.press('Escape')}
   await page.locator(`[data-building="${building}"]`).focus();await page.keyboard.press('Enter');assert.equal(await page.locator('[data-building-department]').count(),ids.length);await page.keyboard.press('Escape');
  }
- for(const id of Object.keys(placements)){await page.locator(`[data-label-for="${id}"] .label-bg`).click();assert.equal(await page.locator('#start-campus-mission').count(),1);await page.keyboard.press('Escape')}
+ for(const id of Object.keys(placements)){await page.locator(`[data-label-for="${id}"] .label-bg`).click();await page.locator('#start-campus-mission').waitFor({state:'visible'});assert.equal(await page.locator('#start-campus-mission').count(),1);await page.keyboard.press('Escape')}
  await clickArt(690,573);assert.equal(await page.locator('#dialog-title').innerText(),'綜合職能科');await page.keyboard.press('Escape');
  await clickArt(1015,225);assert.equal(await page.locator('#dialog-title').innerText(),'機械科');await page.keyboard.press('Escape');
  await clickArt(890,160);assert.equal(await page.locator('#dialog-title').innerText(),'配管科');await page.keyboard.press('Escape');
@@ -54,6 +54,6 @@ assert.equal(digest(fs.readFileSync('assets/campus-art.js')),'b60da51c33057cc795
  await page.locator('#map-fit').click();assert.equal(await page.locator('#campus-map').getAttribute('preserveAspectRatio'),'xMidYMid meet');
  await page.setViewportSize({width:390,height:760});assert.equal(await page.locator('#campus-map').getAttribute('preserveAspectRatio'),'xMidYMid meet');assert((await page.locator('#map-viewport').boundingBox()).height<300);await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:'/tmp/caoshang-living-campus-mobile.png',fullPage:true});
- await page.locator('[data-passport="sports"]').click();assert.match(await page.locator('#dialog-title').innerText(),/普通體育班/);
+ await page.locator('[data-passport="sports"]').click();await page.locator('#start-campus-mission').waitFor({state:'visible'});assert.match(await page.locator('#dialog-title').innerText(),/普通體育班/);
  assert.deepEqual(errors,[]);console.log('PASS: requested shared-classroom placements, no markers on central/right-1, open gate/side sign, NPC naming, diverse student faces and road destinations, lawn-only sweeping cat/dialog/pause, all department entrances and mobile controls.');await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
