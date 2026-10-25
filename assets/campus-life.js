@@ -7,7 +7,7 @@ function initCampusResidents(){
  for(let i=0;i<20;i++){
   const el=document.createElementNS('http://www.w3.org/2000/svg','g');el.setAttribute('class','walking-resident');el.dataset.resident=String(i);el.innerHTML=animal(0,0,'',i%3===0?'rabbit':i%3===1?'bear':'cat');layer.append(el);actors.push(actorAt(i%CAMPUS_NODES.length,el,13+(i%4)*2));
  }
- const npc=actorAt(13,$('#reward-npc'),40);npc.waiting=0;const patrol=[13,8,9,10,11,12,16,21,22,20,19,18,17];let patrolIndex=0;
+ const npc=actorAt(13,$('#reward-npc'),40);npc.waiting=0;const patrol=[13,11,9,3,8,10,12,14,17,19,20,19,18,15,13,16,12];let patrolIndex=0;
  function choose(actor){let target;if(actor===npc){patrolIndex=(patrolIndex+1)%patrol.length;target=patrol[patrolIndex];}else{do{target=Math.floor(Math.random()*8);}while(target===actor.node);}actor.target=target;actor.path=campusRoute(actor.node,target);actor.segment=0;actor.offset=0;}
  function advance(actor,seconds){
   if(actor===npc&&npcHovered)return;

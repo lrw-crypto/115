@@ -1,65 +1,102 @@
 'use strict';
-// A playful interpretation of the supplied school photos; department locations
-// are navigation assignments, not claims about actual classroom locations.
-const CAMPUS_ORIGIN={x:430,y:70};
-const campusPoint=(u,v,z=0)=>[CAMPUS_ORIGIN.x+(u-v)*.866,CAMPUS_ORIGIN.y+(u+v)*.5-z];
-const CAMPUS_NODE_UV=[[290,127],[465,127],[390,392],[550,392],[640,127],[710,392],[780,267],[180,430],[220,145],[290,145],[465,145],[640,145],[820,145],[220,270],[550,270],[740,270],[820,270],[220,420],[390,420],[550,420],[710,420],[820,420],[850,450]];
+// One campus courtyard, viewed from outside the main gate toward the rear hall.
+// Department assignments are game navigation, not verified classroom locations.
+const campusPoint=(u,v,z=0)=>[620+u*(.62+v*.00048+z*.0003),85+v*.9-z];
+const CAMPUS_BUILDINGS={
+ mechanical:{side:'left',row:0,u:-490,v:200,w:305,d:68},
+ piping:{side:'right',row:0,u:185,v:200,w:305,d:68},
+ business:{side:'left',row:1,u:-490,v:370,w:305,d:68},
+ data:{side:'right',row:1,u:185,v:370,w:305,d:68},
+ english:{side:'left',row:2,u:-490,v:540,w:305,d:68},
+ service:{side:'right',row:2,u:185,v:540,w:305,d:68},
+ accounting:{side:'rear',u:-82,v:75,w:164,d:65},
+ sports:{side:'field',u:-625,v:15,w:0,d:0}
+};
+const CAMPUS_NODE_UV=[[-165,245],[165,245],[-165,415],[0,155],[165,415],[-165,585],[165,585],[-625,120],[-155,155],[155,155],[-155,245],[155,245],[-155,415],[155,415],[-155,585],[155,585],[0,415],[-155,650],[155,650],[0,650],[0,690],[-625,155],[-540,155]];
 const CAMPUS_NODES=CAMPUS_NODE_UV.map(([u,v])=>campusPoint(u,v));
-const CAMPUS_EDGES=[[0,9],[1,10],[2,18],[3,19],[4,11],[5,20],[6,15],[7,17],[8,9],[9,10],[10,11],[11,12],[13,14],[14,15],[15,16],[17,18],[18,19],[19,20],[20,21],[8,13],[13,17],[12,16],[16,21],[21,22]];
+const CAMPUS_EDGES=[[0,10],[1,11],[2,12],[3,8],[3,9],[4,13],[5,14],[6,15],[7,21],[21,22],[22,8],[8,10],[9,11],[10,12],[11,13],[12,14],[13,15],[12,16],[16,13],[14,17],[15,18],[17,19],[19,18],[19,20]];
 function campusRoute(from,to){const queue=[[from]],seen=new Set([from]);while(queue.length){const path=queue.shift(),last=path.at(-1);if(last===to)return path;for(const [a,b] of CAMPUS_EDGES){const next=a===last?b:b===last?a:null;if(next!==null&&!seen.has(next)){seen.add(next);queue.push([...path,next]);}}}return [from];}
-function schoolBlock(u,v,w=116,d=40,h=54,roof='#3e647a'){
- const color='#fff0d2';let art=box(u,v,w,d,h,color);
- // Brick piers and two levels of windows on the long, cream-colored facade.
- for(let i=0;i<Math.floor(w/22);i++){
-  const x=u+3+i*22;
-  art+=poly([pt(x,v+d,0),pt(x+6,v+d,0),pt(x+6,v+d,h),pt(x,v+d,h)],'#e47650');
-  for(const z of [h-11,h-34])art+=poly([pt(x+8,v+d+.1,z),pt(x+18,v+d+.1,z),pt(x+18,v+d+.1,z-13),pt(x+8,v+d+.1,z-13)],'#7fcbce','stroke="#fff5dc" stroke-width="1.5"');
+// Both wings share world coordinates. Their inward gables are built separately,
+// rather than flipping an SVG (which would also reverse doors, logos and text).
+function campusBlock(s,{glass=false,decorative=false}={}){
+ const {u,v,w,d,side}=s,h=glass?98:74,P=campusPoint;
+ const face=(a,b,c,e,color,attrs='')=>poly([P(...a),P(...b),P(...c),P(...e)],color,attrs);
+ let art=face([u,v+d,0],[u+w,v+d,0],[u+w,v+d,h],[u,v+d,h],'#ffe8bc');
+ const inner=side==='left'?u+w:u,outer=side==='left'?u:u+w;
+ art+=face([outer,v,0],[outer,v+d,0],[outer,v+d,h],[outer,v,h],'#c56c59');
+ art+=`<g class="inward-facade" data-facing="${side==='left'?'right':side==='right'?'left':'front'}">`;
+ art+=face([inner,v,0],[inner,v+d,0],[inner,v+d,h],[inner,v,h],'#ed9a7c');
+ if(!glass){
+  // Two bright window bands and a sheltered ground-floor corridor.
+  for(let x=u+7;x<u+w-10;x+=32){
+   art+=face([x,v+d,0],[x+7,v+d,0],[x+7,v+d,h],[x,v+d,h],'#e6795b');
+   for(const z of [h-8,h-30])art+=face([x+9,v+d+.1,z],[x+27,v+d+.1,z],[x+27,v+d+.1,z-13],[x+9,v+d+.1,z-13],'#78c9db','stroke="#fff6d8" stroke-width="1.5"');
+   art+=face([x+9,v+d+.2,18],[x+27,v+d+.2,18],[x+27,v+d+.2,0],[x+9,v+d+.2,0],'#688e96');
+  }
+  for(const z of [21,43])art+=`<path d="M${P(u,v+d+.3,z)}L${P(u+w,v+d+.3,z)}" stroke="#fff5d7" stroke-width="3"/>`;
+  // The entrance and upper window are on the end facing the central lawn.
+  art+=face([inner,v+d*.38,0],[inner,v+d*.72,0],[inner,v+d*.72,23],[inner,v+d*.38,23],'#3e8298');
+  art+=face([inner,v+d*.35,36],[inner,v+d*.74,36],[inner,v+d*.74,51],[inner,v+d*.35,51],'#97e6de','stroke="#fff4d9" stroke-width="2"');
  }
- const a=pt(u,v,h),b=pt(u+w,v,h),c=pt(u+w,v+d,h),e=pt(u,v+d,h),ra=w>=d?pt(u,v+d/2,h+18):pt(u+w/2,v,h+18),rb=w>=d?pt(u+w,v+d/2,h+18):pt(u+w/2,v+d,h+18);
- art+=w>=d?poly([a,b,rb,ra],shade(roof,15),'stroke="#f3ebd6" stroke-width="1"')+poly([ra,rb,c,e],roof,'stroke="#d4e0d4" stroke-width="1"'):poly([a,e,rb,ra],shade(roof,15),'stroke="#f3ebd6" stroke-width="1"')+poly([ra,rb,c,b],roof,'stroke="#d4e0d4" stroke-width="1"');
- for(let i=8;i<w&&w>=d;i+=11)art+=`<path d="M${pt(u+i,v+d/2,h+18)}L${pt(u+i,v+d,h)}" stroke="#adc1c0" opacity=".28" stroke-width="1"/>`;
- return art;
-}
-function courtyardSchool(id){
- const w=132,l=98,arm=25,h=46;
- let art=poly([pt(-70,-54),pt(70,-54),pt(70,58),pt(-70,58)],'#f0cc86','stroke="#ffebad" stroke-width="4"');
- art+=poly([pt(-37,-17),pt(37,-17),pt(37,49),pt(-37,49)],'#9bd046','stroke="#d3e697" stroke-width="3"');
- art+=`<g class="courtyard-wing" data-wing="main">${schoolBlock(-w/2,-l/2,w,arm,h,'#285b83')}</g>`;
- art+=`<g class="courtyard-wing" data-wing="left">${schoolBlock(-w/2,-l/2+arm,arm,l-arm,h,'#2d668a')}</g>`;
- art+=`<g class="courtyard-wing" data-wing="right">${schoolBlock(w/2-arm,-l/2+arm,arm,l-arm,h,'#285b83')}</g>`;
- art+=`<g class="courtyard-garden" transform="translate(-7 18) scale(.23)">${departmentLandmark(id)}</g>`;
- art+=`<path d="M${pt(-12,31)}L${pt(-12,68)}M${pt(12,31)}L${pt(12,68)}" stroke="#fff0d2" stroke-width="4"/>`;
- return `<g class="courtyard-complex" data-courtyard="${id}">${art}</g>`;
+ art+='</g>';
+ if(glass){
+  art+=face([u+17,v+d+.2,3],[u+w-17,v+d+.2,3],[u+w-17,v+d+.2,77],[u+17,v+d+.2,77],'#73cdd4','stroke="#e6f8db" stroke-width="3"');
+  for(let x=u+17;x<=u+w-17;x+=26)art+=`<path d="M${P(x,v+d+.3,3)}L${P(x,v+d+.3,77)}" stroke="#d4eedd" stroke-width="2"/>`;
+  for(const z of [20,40,60])art+=`<path d="M${P(u+17,v+d+.4,z)}L${P(u+w-17,v+d+.4,z)}" stroke="#d4eedd" stroke-width="2"/>`;
+  art+=face([u,v+d+.6,98],[u+w,v+d+.6,98],[u+w,v+d+.6,81],[u,v+d+.6,81],'#e68166');
+ }else{
+  const gable=side==='left'?u+w:u;
+  art+=poly([P(gable,v,h),P(gable,v+d,h),P(gable,v+d/2,h+20)],'#ffe7ba','stroke="#fff3d1" stroke-width="2"');
+  art+=`<circle cx="${P(gable,v+d/2,h+7)[0]}" cy="${P(gable,v+d/2,h+7)[1]}" r="3.5" fill="#4d9ca3"/>`;
+ }
+ const a=P(u-5,v-6,h),b=P(u+w+5,v-6,h),c=P(u+w+5,v+d+6,h),e=P(u-5,v+d+6,h),ra=P(u-5,v+d/2,h+20),rb=P(u+w+5,v+d/2,h+20);
+ art+=`<g class="school-roof" data-ridge="across-courtyard">${poly([a,b,rb,ra],'#6087a0','stroke="#d3e0d3" stroke-width="1.5"')}${poly([ra,rb,c,e],'#335f7c','stroke="#dce8d6" stroke-width="1.5"')}`;
+ for(let x=u;x<u+w;x+=14)art+=`<path d="M${P(x,v+d/2,h+20)}L${P(x,v+d+6,h)}" stroke="#8baeb9" stroke-width="1" opacity=".6"/>`;
+ art+='</g>';
+ if(glass){const roof=P(0,v+d/2,h+20);art+=`<path d="m${roof[0]-22} ${roof[1]-4} 22-22 22 22Z" fill="#b6eef0" stroke="#eef9d8" stroke-width="3"/>`;}
+ return `<g class="school-block ${decorative?'rear-connector':''}" data-side="${side}" ${s.row===undefined?'':`data-row="${s.row}"`}>${art}</g>`;
 }
 function schoolBuilding(d){
- const sports=d.id==='sports';
- const art=sports?`<g transform="rotate(23)"><ellipse cy="-5" rx="112" ry="64" fill="#c4593d"/><ellipse cy="-5" rx="106" ry="58" fill="#ec9864"/><ellipse cy="-5" rx="86" ry="43" fill="#8acb36"/><ellipse cy="-5" rx="110" ry="62" fill="none" stroke="#ffeec2" stroke-width="1.5"/><ellipse cy="-5" rx="101" ry="53" fill="none" stroke="#ffeec2" stroke-width="1.5"/><path d="M-72-25v40H72v-40Z" fill="none" stroke="#eef4b9" stroke-width="1.5"/></g><g transform="translate(2 -2) scale(.5)">${departmentLandmark(d.id)}</g>`:courtyardSchool(d.id);
- return `<g class="campus-building" data-department="${d.id}" role="button" tabindex="0" aria-label="探索${d.name}，體驗小任務" transform="translate(${d.x} ${d.y}) scale(${d.scale})"><ellipse cy="20" rx="92" ry="28" fill="#426a4f30" filter="url(#shadow)"/><g filter="url(#soft-shadow)">${art}</g><g class="building-sign" transform="translate(${d.id==='data'?45:-12} ${sports?84:d.id==='english'?65:d.id==='data'?-86:91})">${d.id==='data'?'<path d="M0 23L-34 64" stroke="#bcab6c" stroke-width="1.5" fill="none"/>':''}<rect class="label-bg" x="-91" y="-12" width="182" height="34" rx="13"/><circle cx="-69" cy="5" r="5" fill="${d.accent}"/><text text-anchor="middle" x="6" y="11" fill="#245a64" font-size="17" font-weight="700">${d.name}</text></g></g>`;
+ const sports=d.id==='sports',rear=d.side==='rear';
+ let art;
+ if(sports){art=`<ellipse cy="-4" rx="127" ry="61" fill="#d35c43" stroke="#fff0bc" stroke-width="4"/><ellipse cy="-4" rx="118" ry="53" fill="#f29d62"/><ellipse cy="-4" rx="96" ry="37" fill="#76c73d"/><ellipse cy="-4" rx="123" ry="57" fill="none" stroke="#fff0c7" stroke-width="1.5"/><ellipse cy="-4" rx="110" ry="46" fill="none" stroke="#fff0c7" stroke-width="1.5"/><path d="M-73-28v47H73v-47Z" fill="none" stroke="#e9f4b8" stroke-width="1.5"/><g transform="translate(0 -8) scale(.44)">${departmentLandmark(d.id)}</g>`;}
+ else{
+  art=`<g transform="translate(${-d.x} ${-d.y})">${campusBlock(d,{glass:rear})}</g>`;
+  const landmark=campusPoint(d.u+d.w*(d.side==='left'?.33:.67),d.v+d.d*.7,rear?112:82);
+  art+=`<g class="department-model" transform="translate(${landmark[0]-d.x} ${landmark[1]-d.y}) scale(${rear?.48:.64})">${departmentLandmark(d.id)}</g>`;
+ }
+ const labelY=sports?75:rear?25:-20;
+ return `<g class="campus-building" data-department="${d.id}" data-campus-side="${d.side}" role="button" tabindex="0" aria-label="探索${d.name}，體驗小任務" transform="translate(${d.x} ${d.y})"><g filter="url(#soft-shadow)">${art}</g><g class="building-sign" transform="translate(0 ${labelY})"><rect class="label-bg" x="-91" y="-12" width="182" height="34" rx="13"/><circle cx="-69" cy="5" r="5" fill="${d.accent}"/><text text-anchor="middle" x="6" y="11" fill="#245a64" font-size="17" font-weight="700">${d.name}</text></g></g>`;
 }
-function schoolLibrary(){return `<g transform="translate(529.6 337.5) scale(.9)">${box(-39,-36,76,49,72,'#f5d4b3')}<path d="M-54-8 12 30v-62l-66-38Z" fill="#a2c8bd" stroke="#ebdfc7" stroke-width="4"/><path d="M-54-50 12-12m-66-19 66 38m-46-65V4m20-50V17M-54-8 12 30" fill="none" stroke="#779d99" stroke-width="2"/><path d="m-49-72 31-27 44 36-35 12Z" fill="#b8d5c5" stroke="#f8eed8" stroke-width="2"/><path d="m-18-99 9 48m-40-21 75 9" fill="none" stroke="#789996" stroke-width="1.5"/><text x="-7" y="51" text-anchor="middle" fill="#66816c" font-size="11">學習中庭</text></g>`;}
 function campusShops(){
- // Use the original shop art without the former shore/sea: recreate a small block.
- const hilife=`<g class="hilife-store" transform="translate(923 723)"><path d="M-50-24H55l27-17v55L55 32-50 12Z" fill="#fff2d3" stroke="#dacfb0" stroke-width="2"/><path d="m55-24 27-17v55L55 32Z" fill="#d0d9c0"/><path d="m-56-30 111 0 36-20H-20Z" fill="#f7efd6"/><path d="M-51-27H57v22H-51Z" fill="#269bab"/><path d="M-51-27H57v5H-51Z" fill="#d94e52"/><text x="2" y="-11" text-anchor="middle" fill="white" font-size="12" font-weight="700">萊爾富 Hi-Life</text><path d="M-42 0h35v15h-35Zm48-1h26v26H6Z" fill="#9dc8b8" stroke="#e7dfbf" stroke-width="2"/></g>`;
- return `<g class="campus-shops" aria-label="校外店家">${hilife}${foodShopScenery().replace('translate(1002 108)','translate(1100 744)')}<text x="1020" y="807" fill="#8b8e73" font-size="10">校外散步・店家想像場景</text></g>`;
+ const hilife=`<g class="hilife-store" transform="translate(890 762)"><path d="M-50-24H55l27-17v55L55 32-50 12Z" fill="#fff2d3" stroke="#dacfb0" stroke-width="2"/><path d="m55-24 27-17v55L55 32Z" fill="#d0d9c0"/><path d="m-56-30 111 0 36-20H-20Z" fill="#f7efd6"/><path d="M-51-27H57v22H-51Z" fill="#269bab"/><path d="M-51-27H57v5H-51Z" fill="#d94e52"/><text x="2" y="-11" text-anchor="middle" fill="white" font-size="12" font-weight="700">萊爾富 Hi-Life</text><path d="M-42 0h35v15h-35Zm48-1h26v26H6Z" fill="#9dc8b8" stroke="#e7dfbf" stroke-width="2"/></g>`;
+ return `<g class="campus-shops" aria-label="面向正門，左邊南臺灣土魠魚羹、右邊萊爾富">${foodShopScenery().replace('translate(1002 108)','translate(330 753)')}${hilife}<text x="620" y="802" text-anchor="middle" fill="#65805b" font-size="11">面向校園：左・南臺灣土魠魚羹 ｜ 右・萊爾富</text></g>`;
 }
 function scooterArt(){return `<g class="scooter-model"><ellipse cy="13" rx="37" ry="8" fill="#4d6c5920"/><circle cx="-24" cy="10" r="7" fill="#526d70" stroke="#d3dfd1" stroke-width="2"/><circle cx="25" cy="10" r="7" fill="#526d70" stroke="#d3dfd1" stroke-width="2"/><path d="M-24 8h42L25-27h-11" fill="none" stroke="#e7b44e" stroke-width="5" stroke-linecap="round"/><path d="M17 6 6-14" stroke="#5c8c90" stroke-width="4"/><g transform="translate(-2 -3) scale(.72)">${animal(0,0,'','rabbit')}</g><g class="npc-headband"><path d="M-14-41q12-12 25 0" stroke="#e2aa48" stroke-width="3" fill="none"/><rect x="-14" y="-50" width="28" height="13" rx="5" fill="#fff1a5" stroke="#d9ac51" stroke-width="1"/><text x="0" y="-40" text-anchor="middle" fill="#8a6e34" font-size="9" font-weight="800">客服</text></g></g>`;}
 function campusNpc(){return `<g class="reward-npc campus-npc" id="reward-npc" role="button" tabindex="0" aria-label="呼叫中鼎文，校園客服" transform="translate(540 530)"><g class="npc-scooter">${scooterArt()}</g><g transform="translate(0 31)"><rect x="-67" y="-9" width="134" height="25" rx="12" fill="#fff5cc" stroke="#e7d9a7"/><text x="0" y="8" text-anchor="middle" fill="#8e794a" font-size="11">中鼎文・校園客服</text></g></g>`;}
 function renderCampusMap(){
- const corners=[[0,0],[850,0],[850,460],[0,460]].map(([u,v])=>campusPoint(u,v));
- let art=poly(corners.map(([x,y])=>[x,y+13]),'#85a849')+poly(corners,'#b4d96e','stroke="#fff0be" stroke-width="12" stroke-linejoin="round"');
- const frontGate=campusPoint(850,450);art+=`<path d="M${campusPoint(900,495)}Q${frontGate[0]+130} ${frontGate[1]+73} 1250 790" fill="none" stroke="#97aca2" stroke-width="48"/><path d="M${campusPoint(900,495)}Q${frontGate[0]+130} ${frontGate[1]+73} 1250 790" fill="none" stroke="#fff4c8" stroke-width="2" stroke-dasharray="13 12"/>`;
- const lawn=[[400,165],[745,165],[745,242],[400,242]].map(([u,v])=>campusPoint(u,v));art+=poly(lawn,'#78c439','stroke="#f2d195" stroke-width="9"');
- art+=poly([[410,176],[732,176],[732,230],[410,230]].map(([u,v])=>campusPoint(u,v)),'#98d64c');
- for(const [a,b] of CAMPUS_EDGES){const p=CAMPUS_NODES[a],q=CAMPUS_NODES[b];art+=`<path d="M${p}L${q}" fill="none" stroke="#efd59d" stroke-width="21" stroke-linecap="round"/><path d="M${p}L${q}" fill="none" stroke="#fff4d4" stroke-width="1"/>`;}
- for(const [u,v] of [[60,150],[135,150]]){const outer=[[u,v],[u+65,v],[u+65,v+47],[u,v+47]].map(([a,b])=>campusPoint(a,b));art+=poly(outer,'#f4a85e','stroke="#ffdeb0" stroke-width="3"');art+=poly([[u+5,v+5],[u+60,v+5],[u+60,v+42],[u+5,v+42]].map(([a,b])=>campusPoint(a,b)),'#79be5b','stroke="#eaf0bd" stroke-width="1"');art+=`<path d="M${campusPoint(u+32,v+5)}L${campusPoint(u+32,v+42)}" stroke="#eaf0bd" stroke-width="1"/>`;}
- const [ax,ay]=campusPoint(170,30);art+=`<g id="activity-center" transform="translate(${ax} ${ay}) scale(.83)">${schoolBlock(-80,-35,154,66,67,'#315a75')}<text x="0" y="53" text-anchor="middle" fill="#3e7959" font-size="13">漾采樓・活動中心</text></g>${schoolLibrary()}`;
- const [lx,ly]=campusPoint(580,205);art+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="#518e39" font-size="12" font-weight="600">中央草地</text>`;
- const treeUV=[[25,50],[25,110],[25,180],[25,250],[25,320],[25,390],[105,440],[265,440],[440,440],[610,440],[785,440],[820,55],[820,110],[820,200],[820,300],[60,25],[215,25],[375,25],[545,25],[710,25],[430,247],[505,247],[590,247],[675,247],[760,247],[330,180],[330,250]];
- for(const [u,v] of treeUV){const [x,y]=campusPoint(u,v);art+=`<g transform="translate(${x} ${y}) scale(.62)">${tree(0,0,1)}</g>`;}
+ for(const d of departments){const s=CAMPUS_BUILDINGS[d.id];Object.assign(d,s);[d.x,d.y]=campusPoint(s.u+s.w/2,s.v+s.d);d.scale=1;}
+ const P=campusPoint,corners=[[-900,-20],[900,-20],[600,690],[-600,690]].map(([u,v])=>P(u,v));
+ let art=poly(corners.map(([x,y])=>[x,y+12]),'#79a750')+poly(corners,'#a8d65d','stroke="#fff0b8" stroke-width="10" stroke-linejoin="round"');
+ art+=`<path d="M60 740H1180" stroke="#89a09a" stroke-width="53" stroke-linecap="round"/><path d="M60 740H1180" stroke="#fff4d4" stroke-width="2" stroke-dasharray="17 14"/>`;
+ const lawn=[[-130,165],[130,165],[130,625],[-130,625]].map(([u,v])=>P(u,v));
+ art+=`<g id="central-courtyard" data-layout="single-u">${poly(lawn,'#72c437','stroke="#f5df9a" stroke-width="10"')}`;
+ for(let v=165;v<625;v+=46)art+=poly([P(-125,v),P(125,v),P(125,Math.min(v+22,620)),P(-125,Math.min(v+22,620))],'#89d348');
+ art+=`<text x="620" y="405" text-anchor="middle" fill="#4c982d" font-size="16" font-weight="700" letter-spacing="3">中央草地</text><text x="620" y="426" text-anchor="middle" fill="#5b9e37" font-size="9" letter-spacing="2">一起發現你的方向</text></g>`;
+ for(const [a,b] of CAMPUS_EDGES){art+=`<path d="M${CAMPUS_NODES[a]}L${CAMPUS_NODES[b]}" fill="none" stroke="#f1d59b" stroke-width="22" stroke-linecap="round"/><path d="M${CAMPUS_NODES[a]}L${CAMPUS_NODES[b]}" stroke="#fff2cf" stroke-width="1"/>`;}
+ art+=`<g id="rear-campus-wing" aria-label="後方校舍連接左右翼">${campusBlock({u:-490,v:75,w:408,d:65,side:'left'},{decorative:true})}${campusBlock({u:82,v:75,w:408,d:65,side:'right'},{decorative:true})}</g>`;
+ // Rear sports field and small activity centre follow the supplied overview.
+ art+=`<g id="activity-center" transform="translate(1035 106)"><path d="M-83-10H70v54H-83Z" fill="#f2c18d"/><path d="m-93-10 30-43H50l32 43Z" fill="#3c6b89" stroke="#d9e6cf" stroke-width="3"/><path d="M-52 44V6H38v38" fill="#7bcbd2" stroke="#fff3cd" stroke-width="4"/><text x="-7" y="62" text-anchor="middle" fill="#49764c" font-size="12">漾采樓・活動中心</text></g>`;
+ const trees=[];
+ for(const v of [175,330,500,640])for(const u of [-132,132])trees.push([u,v,.65]);
+ for(const v of [200,365,535,650])for(const u of [-555,555])trees.push([u,v,.83]);
+
+ for(const [u,v,size]of trees){const [x,y]=P(u,v);art+=`<g class="campus-tree" transform="translate(${x} ${y}) scale(${size})">${tree(0,0,1)}</g>`;}
  art+=[...departments].sort((a,b)=>a.y-b.y).map(schoolBuilding).join('');
- const [mx,my]=campusPoint(785,274);art+=`<g transform="translate(${mx} ${my})"><ellipse cy="7" rx="20" ry="9" fill="#8da978"/><path d="M-10 0q-9-20 9-25 20-4 18 17Q15 3 6-4q-6-5 2-10" fill="none" stroke="#fff3c7" stroke-width="5"/></g>`;
- art+=`<g id="campus-main-gate" transform="translate(${frontGate})"><path d="M-45-36V0m90-36V0" stroke="#e47448" stroke-width="12"/><path d="M-55-43H55l12 12H-67Z" fill="#236787"/><text y="-23" text-anchor="middle" fill="#fff8d1" font-size="12" font-weight="700">國立草屯商工</text><path d="M-42 6h84" stroke="#fff7d9" stroke-width="5"/><text y="30" text-anchor="middle" fill="#5d8064" font-size="12">正門・芬草路</text></g><g transform="translate(284 146)"><path d="M-42-14H42" stroke="#366b80" stroke-width="8"/><text y="8" text-anchor="middle" fill="#517954" font-size="11">北門・中投公路下</text></g>`;
- art+=`<g transform="translate(1060 570) scale(.65)">${schoolBlock(-40,-30,78,44,59,'#42566e')}</g>`;
+ // A small campus sculpture beside the entrance, without obstructing the lawn.
+ art+=`<g transform="translate(463 666)"><ellipse cy="8" rx="22" ry="9" fill="#8da978"/><path d="M-10 0q-9-20 9-25 20-4 18 17Q15 3 6-4q-6-5 2-10" fill="none" stroke="#fff3c7" stroke-width="6"/></g>`;
+ const frontGate=P(0,690);
+ art+=`<g id="campus-main-gate" transform="translate(${frontGate})"><path d="M-66-33V4m132-37V4" stroke="#e9794e" stroke-width="13"/><path d="M-77-43H77l14 14H-91Z" fill="#235d7e" stroke="#cadfcb" stroke-width="2"/><rect x="-65" y="-31" width="130" height="21" fill="#e98e5d"/><text y="-16" text-anchor="middle" fill="#fff8d1" font-size="14" font-weight="800">國立草屯商工</text><path d="M-58 12h116" stroke="#fff7d9" stroke-width="5"/><text y="38" text-anchor="middle" fill="#456c57" font-size="12">正門・芬草路</text></g>`;
  art+=campusShops()+`<g id="campus-students" aria-hidden="true"></g>`+campusNpc();
  $('#map-world').innerHTML=art;
  const labels=document.createElementNS('http://www.w3.org/2000/svg','g');labels.id='campus-labels';

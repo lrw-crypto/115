@@ -14,8 +14,6 @@ const departments=[
     "icon": "⚙️",
     "color": "#fff1bf",
     "accent": "#ff9847",
-    "x": 624.85,
-    "y": 247.5,
     "subtitle": "從機械製圖、加工到數值控制，親手實現想法。",
     "description": "從機械製圖、加工到數值控制，親手實現想法。",
     "departments": [
@@ -23,10 +21,7 @@ const departments=[
     ],
     "programIds": [
       "mechanical"
-    ],
-    "scale": 0.84,
-    "u": 290,
-    "v": 65
+    ]
   },
   {
     "id": "piping",
@@ -36,8 +31,6 @@ const departments=[
     "icon": "🔧",
     "color": "#baf0dd",
     "accent": "#10b9ba",
-    "x": 776.4,
-    "y": 335.0,
     "subtitle": "認識金屬管線、銲接與建築配管的實作世界。",
     "description": "認識金屬管線、銲接與建築配管的實作世界。",
     "departments": [
@@ -45,10 +38,7 @@ const departments=[
     ],
     "programIds": [
       "piping"
-    ],
-    "scale": 0.84,
-    "u": 465,
-    "v": 65
+    ]
   },
   {
     "id": "business",
@@ -58,8 +48,6 @@ const departments=[
     "icon": "🛒",
     "color": "#ffe4b5",
     "accent": "#ff6656",
-    "x": 481.96,
-    "y": 430.0,
     "subtitle": "用門市經營、行銷與專題，探索商業的可能。",
     "description": "用門市經營、行銷與專題，探索商業的可能。",
     "departments": [
@@ -67,10 +55,7 @@ const departments=[
     ],
     "programIds": [
       "business"
-    ],
-    "scale": 0.87,
-    "u": 390,
-    "v": 330
+    ]
   },
   {
     "id": "accounting",
@@ -80,8 +65,6 @@ const departments=[
     "icon": "📒",
     "color": "#e3ccff",
     "accent": "#a46bea",
-    "x": 620.52,
-    "y": 510.0,
     "subtitle": "從會計學到帳務實作，學習看懂數字的語言。",
     "description": "從會計學到帳務實作，學習看懂數字的語言。",
     "departments": [
@@ -89,10 +72,7 @@ const departments=[
     ],
     "programIds": [
       "accounting"
-    ],
-    "scale": 0.87,
-    "u": 550,
-    "v": 330
+    ]
   },
   {
     "id": "data",
@@ -102,8 +82,6 @@ const departments=[
     "icon": "💻",
     "color": "#bcecfb",
     "accent": "#289fdd",
-    "x": 927.95,
-    "y": 422.5,
     "subtitle": "以程式、多媒體與資料庫，把點子做成作品。",
     "description": "以程式、多媒體與資料庫，把點子做成作品。",
     "departments": [
@@ -111,10 +89,7 @@ const departments=[
     ],
     "programIds": [
       "data"
-    ],
-    "scale": 0.84,
-    "u": 640,
-    "v": 65
+    ]
   },
   {
     "id": "english",
@@ -124,8 +99,6 @@ const departments=[
     "icon": "🌍",
     "color": "#ffe0df",
     "accent": "#ed7bb1",
-    "x": 759.0799999999999,
-    "y": 590.0,
     "subtitle": "從聽講、閱讀到簡報，讓你的想法走向世界。",
     "description": "從聽講、閱讀到簡報，讓你的想法走向世界。",
     "departments": [
@@ -134,12 +107,9 @@ const departments=[
     "programIds": [
       "english"
     ],
-    "scale": 0.87,
     "aliases": [
       "應用英文科"
-    ],
-    "u": 710,
-    "v": 330
+    ]
   },
   {
     "id": "service",
@@ -149,8 +119,6 @@ const departments=[
     "icon": "🌼",
     "color": "#e3f7ac",
     "accent": "#8fbd25",
-    "x": 927.95,
-    "y": 562.5,
     "subtitle": "在餐飲、清潔與服務實作中，累積生活的自信。",
     "description": "在餐飲、清潔與服務實作中，累積生活的自信。",
     "departments": [
@@ -158,10 +126,7 @@ const departments=[
     ],
     "programIds": [
       "service"
-    ],
-    "scale": 0.84,
-    "u": 780,
-    "v": 205
+    ]
   },
   {
     "id": "sports",
@@ -171,8 +136,6 @@ const departments=[
     "icon": "🏅",
     "color": "#c7f2de",
     "accent": "#1aa886",
-    "x": 239.48,
-    "y": 300.0,
     "subtitle": "以專項體能、技術訓練與運動防護，超越自己。",
     "description": "以專項體能、技術訓練與運動防護，超越自己。",
     "departments": [
@@ -180,10 +143,7 @@ const departments=[
     ],
     "programIds": [
       "sports"
-    ],
-    "scale": 1.03,
-    "u": 120,
-    "v": 340
+    ]
   }
 ];
 const programName=p=>departments.find(d=>d.id===p.id).name;
