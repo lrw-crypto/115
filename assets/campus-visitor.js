@@ -2,6 +2,9 @@
 let campusVisitorController=null;
 const CAMPUS_VISITOR_HOME_NODE='east-2';
 const CAMPUS_VISITOR_BUILDING='right-2';
+// Beside the original visitor, on the same foreground walkway.
+const CAMPUS_SUPPORTER_POINT=[868,477];
+const CAMPUS_SUPPORTER_LINE='加油!加油!';
 // Start one short head-shake at 3, 6, 9… active seconds; stand still between them.
 function campusVisitorHeadAngle(seconds){if(seconds<3)return 0;const phase=(seconds-3)%3;return phase<.65?Math.sin(phase/.65*Math.PI*4)*7:0;}
 const CAMPUS_VISITOR_LINE='我沒吃鳳梨跟芒果呀!';
@@ -36,4 +39,15 @@ function createCampusVisitor(layer){
 }
 function openCampusVisitor(){
  openModal(`<div class="crying-visitor-dialog"><img class="crying-visitor-portrait" src="assets/crying-visitor.png" alt="戴黑框眼鏡、穿黃領條紋衫的先生，委屈地流著眼淚" width="1024" height="1536"><div class="crying-visitor-speech"><h2 id="dialog-title">${CAMPUS_VISITOR_LINE}</h2></div></div>`);
+}
+function createCampusSupporter(layer){
+ $('#campus-supporter')?.remove();
+ const el=document.createElementNS('http://www.w3.org/2000/svg','g');el.id='campus-supporter';el.setAttribute('class','campus-visitor campus-supporter');el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label','和旁邊的加油角色說話');
+ el.innerHTML=`<ellipse class="resident-ground-shadow" cy=".4" rx="7" ry="2.2" fill="#43684c32"/><image class="supporter-figure" href="assets/campus-supporter.svg" x="-15" y="-48.5" width="30" height="50" aria-hidden="true"/><ellipse class="visitor-hit-area" cx="0" cy="-22" rx="13" ry="25" fill="transparent"/><g class="visitor-talk-hint" transform="translate(0 -55)" aria-hidden="true"><rect x="-15" y="-8" width="30" height="16" rx="8" fill="#fff1f5" stroke="#c37b98"/><text y="3" text-anchor="middle" font-size="9" fill="#783d5b">加油</text></g>`;
+ layer.append(el);el.onpointerdown=e=>{drag.moved=false;e.stopPropagation();};
+ const talk=()=>{el.focus({preventScroll:true});openCampusSupporter();};
+ el.onclick=()=>{if(!drag.moved)talk();};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();talk();}};return el;
+}
+function openCampusSupporter(){
+ openModal(`<div class="crying-visitor-dialog supporter-dialog"><img class="crying-visitor-portrait supporter-portrait" src="assets/campus-supporter.svg" alt="短黑髮、圓框眼鏡、白上衣黑裙的加油角色，笑著替你打氣" width="180" height="300"><div class="crying-visitor-speech supporter-speech"><h2 id="dialog-title">${CAMPUS_SUPPORTER_LINE}</h2></div></div>`);
 }

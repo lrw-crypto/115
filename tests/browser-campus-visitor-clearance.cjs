@@ -13,7 +13,7 @@ const assert=require('node:assert/strict');const{chromium}=require('playwright')
    for(let f=0;f<18000;f++){
     const before=walkingController.actors.map(a=>[a.x,a.y]);walkingController.step(1/60,false);inspect();
     for(let i=0;i<20;i++){const a=walkingController.actors[i];jump=Math.max(jump,Math.hypot(a.x-before[i][0],a.y-before[i][1]));if(a.curve&&!campusFixedResidentClear(...CAMPUS_NODES[a.target]))throw Error('occupied destination');}
-    if(f%120===0){walkingController.paint();const v=visitor.parts.figure.getBoundingClientRect();for(const a of walkingController.actors){const b=a.parts.figure.getBoundingClientRect();if(Math.min(b.right,v.right)>Math.max(b.left,v.left)&&Math.min(b.bottom,v.bottom)>Math.max(b.top,v.top))overlappingBodies++;}}
+    if(f%120===0){walkingController.paint();for(const v of [visitor.parts.figure.getBoundingClientRect(),document.querySelector('.supporter-figure').getBoundingClientRect()])for(const a of walkingController.actors){const b=a.parts.figure.getBoundingClientRect();if(Math.min(b.right,v.right)>Math.max(b.left,v.left)&&Math.min(b.bottom,v.bottom)>Math.max(b.top,v.top))overlappingBodies++;}}
    }
    // Exercise the per-substep guard even if a future bad curve is supplied.
    const start=[visitor.x-bounds.halfWidth-1,visitor.y],probe={...walkingController.actors[0],x:start[0],y:start[1],offset:0,velocity:1000,speed:1000,waiting:0,curve:residentSampledCurve([start,[visitor.x,visitor.y]])};walkingController.advance(probe,.1);
@@ -21,7 +21,7 @@ const assert=require('node:assert/strict');const{chromium}=require('playwright')
   });
   console.log('300-second fixed visitor clearance:',seed,result);
   assert.equal(result.forbidden,0);assert.equal(result.overlappingBodies,0);assert(result.minGap>=0);assert(result.jump<.3);assert(result.completed.every(n=>n>=3),'students must keep completing trips');assert.deepEqual(result.after,result.home);assert(result.guardStopped);assert.equal(result.blockedNodeRoutes,0);
-  await page.evaluate(()=>setCampusRouteDebug(true));assert(await page.locator('.fixed-resident-clearance').isVisible());await page.evaluate(()=>setCampusRouteDebug(false));
+  await page.evaluate(()=>setCampusRouteDebug(true));assert.equal(await page.locator('.fixed-resident-clearance').count(),2);assert(await page.locator('.fixed-resident-clearance').first().isVisible());await page.evaluate(()=>setCampusRouteDebug(false));
   if(seed===915){await page.screenshot({path:'/tmp/visitor-clearance-desktop.png'});await page.setViewportSize({width:390,height:844});await page.locator('#map-fit').click();await page.screenshot({path:'/tmp/visitor-clearance-mobile.png',fullPage:true});await page.locator('#campus-visitor').click();assert.equal(await page.locator('#dialog-title').innerText(),'我沒吃鳳梨跟芒果呀!');await page.keyboard.press('Escape');assert.equal(await page.evaluate(()=>questCoins()),0);}
   await context.close();
  }

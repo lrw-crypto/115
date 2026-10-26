@@ -63,8 +63,8 @@ const {chromium}=require('playwright');
  await page.keyboard.press('Escape');assert(await page.locator('[data-course="data"]').evaluate(el=>el===document.activeElement));
  await page.locator('[data-course="data"]').click();await page.locator('#data-return-campus').click();
  assert(await page.locator('#map-page').isVisible());assert.deepEqual(await page.evaluate(()=>({...camera})),home);
- // Shared building chooser and passport also route to the same introduction.
- await page.evaluate(()=>openCampusBuilding('left-2'));await page.locator('[data-building-department="data"]').click();await page.locator('.data-department-dialog').waitFor({state:'visible'});await page.keyboard.press('Escape');
+ // The passport routes to the same intro; buildings are scenery only.
+ await page.locator('[data-passport="data"]').click();await page.locator('.data-department-dialog').waitFor({state:'visible'});await page.keyboard.press('Escape');
  await page.setViewportSize({width:390,height:844});await page.locator('[data-passport="data"]').click();await page.locator('.data-department-dialog').waitFor({state:'visible'});
  assert(await page.locator('#dialog').evaluate(el=>el.clientHeight>innerHeight*.9));
  for(const width of [390,320]){
@@ -94,6 +94,6 @@ const {chromium}=require('playwright');
  await page.locator('[data-passport="english"]').click();await page.locator('#start-campus-mission').waitFor({state:'visible'});
  assert.equal(await page.locator('#dialog-title').innerText(),'應用英語科');assert.equal(await page.locator('.department-topic').count(),4);assert.equal(await page.locator('.data-department-dialog').count(),0);
  assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);
- console.log('PASS: /115/ relative paths, all 7 original photos, map/course/shared-building/passport entrances, responsive layout, sticky title, lightbox controls/keyboard/focus, scroll lock, collapsed details, camera restoration, original game and persisted coins, generic department compatibility; no console or resource errors.');
+ console.log('PASS: /115/ relative paths, all 7 original photos, map/course/passport entrances, responsive layout, sticky title, lightbox controls/keyboard/focus, scroll lock, collapsed details, camera restoration, original game and persisted coins, generic department compatibility; no console or resource errors.');
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});

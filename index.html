@@ -7,7 +7,7 @@
 <link rel="preload" as="image" href="assets/campus-macaron.png?v=iron-roofs2-pavilion">
 <link rel="preload" as="image" href="assets/groundskeeper-cat.png">
 <link rel="stylesheet" href="assets/campus.css">
-<link rel="stylesheet" href="assets/campus-layout.css?v=visitor1">
+<link rel="stylesheet" href="assets/campus-layout.css?v=supporter-passport1">
 <link rel="stylesheet" href="assets/data-processing-intro.css?v=photos1">
 </head>
 <body>
@@ -33,13 +33,13 @@
 </header>
 <main>
 <section class="map-page" id="map-page">
-<div class="intro"><div class="eyebrow"><span></span>探索學校 · 體驗科別 · 發現興趣</div><h1>今天，換你當<br><span>草商新生！</span><svg class="hero-star" viewBox="0 0 44 44"><path d="M22 2 26 17 42 22 26 26 22 42 17 26 2 22 17 17Z"/></svg></h1><p>帶著探索護照，認識不同科別、發現校園生活，<br>找到你想挑戰的方向。</p><div class="intro-bottom"><span class="avatars"><b>🧑‍🎓</b><b>👩‍🎓</b><b>🧑‍🎓</b><b>＋</b></span><span>點選建築就能玩，不用操控角色<small>完成小任務，蓋滿你的探索護照</small></span></div></div>
-<div class="map-toolbar" role="group" aria-label="科別分類"><button class="chip active" data-filter="all"><svg><use href="#i-grid"/></svg>全部建築</button><button class="chip" data-filter="engineering"><i class="dot engineering"></i>機械工藝</button><button class="chip" data-filter="business"><i class="dot business"></i>商業與數位</button><button class="chip" data-filter="community"><i class="dot community"></i>語言與生活</button></div>
+<div class="intro"><div class="eyebrow"><span></span>探索學校 · 體驗科別 · 發現興趣</div><h1>今天，換你當<br><span>草商新生！</span><svg class="hero-star" viewBox="0 0 44 44"><path d="M22 2 26 17 42 22 26 26 22 42 17 26 2 22 17 17Z"/></svg></h1><p>帶著探索護照，認識不同科別、發現校園生活，<br>找到你想挑戰的方向。</p><div class="intro-bottom"><span class="avatars"><b>🧑‍🎓</b><b>👩‍🎓</b><b>🧑‍🎓</b><b>＋</b></span><span>點選科別方塊就能玩，不用操控角色<small>完成小任務，蓋滿你的探索護照</small></span></div></div>
+<div class="map-toolbar" role="group" aria-label="科別分類"><button class="chip active" data-filter="all"><svg><use href="#i-grid"/></svg>全部科別</button><button class="chip" data-filter="engineering"><i class="dot engineering"></i>機械工藝</button><button class="chip" data-filter="business"><i class="dot business"></i>商業與數位</button><button class="chip" data-filter="community"><i class="dot community"></i>語言與生活</button></div>
 <div id="map-viewport" class="map-viewport" aria-label="可拖曳、縮放與選取的立體校園地圖"><svg id="campus-map" viewBox="0 0 1240 815" role="group" aria-label="草商探索趣互動地圖"><defs><linearGradient id="student-skin" x1="0" y1="0" x2=".85" y2="1"><stop stop-color="#ffe5b8"/><stop offset=".55" stop-color="#efbf83"/><stop offset="1" stop-color="#d89d65"/></linearGradient><linearGradient id="student-hair" x2="1" y2="1"><stop stop-color="#575749"/><stop offset=".5" stop-color="#2c3029"/><stop offset="1" stop-color="#1f251f"/></linearGradient><linearGradient id="uniform-blue" x2="1" y2="1"><stop stop-color="#307eac"/><stop offset="1" stop-color="#1b537b"/></linearGradient><filter id="shadow" x="-40%" y="-50%" width="180%" height="230%"><feGaussianBlur stdDeviation="12"/></filter><filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="230%"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#356855" flood-opacity=".16"/></filter><linearGradient id="water" x2="0" y2="1"><stop stop-color="#d2e9e5"/><stop offset="1" stop-color="#c3e1db"/></linearGradient><pattern id="water-grid" width="55" height="32" patternUnits="userSpaceOnUse"><path d="M23 17q6 3 12 0" stroke="#86bdb1" stroke-width="1" fill="none" opacity=".24"/></pattern></defs><g id="map-world"></g></svg></div>
-<div class="map-caption"><span class="tiny-orbit"></span>每個科別，都有新的可能<span class="caption-line"></span><span>點選建築，開始體驗</span></div>
+<div class="map-caption"><span class="tiny-orbit"></span>每個科別，都有新的可能<span class="caption-line"></span><span>點選科別方塊，開始體驗</span></div>
 <aside class="passport-panel" id="passport-panel" aria-label="探索護照"></aside><aside class="live-panel" hidden><div class="panel-top"><div><span class="eyebrow">CAMPUS HAPPENINGS</span><h2>校園裡，正在發生</h2></div><span class="pulse-label"><i></i><span id="live-label">DEMO</span></span></div><div class="panel-tabs"><button class="active" data-feed="all">最新動態</button><button data-feed="event">活動消息</button></div><div id="feed-list" aria-live="polite"></div><button class="all-activity" data-view="activity">看看校園的大小事 <svg><use href="#i-arrow"/></svg></button><div class="bot-note"><span class="bot-face">▣</span><span>TA bot 的校園觀測站<small id="bot-note">示範動態 · 尚未連接 Discord</small></span><button class="icon-btn" id="connect-bot" aria-label="設定 TA bot 資料來源"><svg><use href="#i-settings"/></svg></button></div></aside>
 <div class="map-controls"><button id="toggle-walk" class="walk-toggle" aria-pressed="false">Ⅱ 暫停散步</button><button id="map-fit" class="map-fit" aria-label="查看完整校園全景">全景</button><button class="icon-btn" id="reset-map" aria-label="重設地圖視角"><svg><use href="#i-compass"/></svg></button><span></span><button class="icon-btn" id="zoom-in" aria-label="放大地圖">＋</button><button class="icon-btn" id="zoom-out" aria-label="縮小地圖">−</button></div>
-<div class="map-hint"><svg><use href="#i-people"/></svg>拖曳放大校園 · 直接點建築或護照，即可玩任務</div>
+<div class="map-hint"><svg><use href="#i-people"/></svg>拖曳放大校園 · 直接點科別方塊或護照，即可玩任務</div>
 <div class="campus-guide"><span>你的探索起點</span><b>還沒想好方向？</b><button id="random-department">幫我選個科別 <svg><use href="#i-arrow"/></svg></button><span class="guide-flower">✿</span></div>
 </section>
 <section id="content-page" class="content-page" hidden></section>
@@ -50,14 +50,14 @@
 <div class="modal-backdrop" id="modal-backdrop" hidden><section class="dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" tabindex="-1"></section></div>
 <div class="toast" id="toast" role="status" hidden></div>
 <script src="assets/curriculum-data.js" defer></script>
-<script src="assets/campus-life.js?v=visitor-clearance3" defer></script>
+<script src="assets/campus-life.js?v=supporter-passport1" defer></script>
 <script src="assets/campus-quests.js?v=readable1" defer></script>
 <script src="assets/campus-art.js" defer></script>
-<script src="assets/campus-map.js?v=walk1" defer></script>
-<script src="assets/campus-navigation.js?v=visitor-clearance3" defer></script>
-<script src="assets/campus-visitor.js?v=visitor-still2" defer></script>
+<script src="assets/campus-map.js?v=supporter-passport1" defer></script>
+<script src="assets/campus-navigation.js?v=supporter-passport1" defer></script>
+<script src="assets/campus-visitor.js?v=supporter-passport1" defer></script>
 <script src="assets/campus-missions.js" defer></script>
 <script src="assets/campus-guides.js?v=readable1" defer></script>
 <script src="assets/data-processing-intro.js?v=photos1" defer></script>
-<script src="assets/campus-app.js?v=data-photos1" defer></script>
+<script src="assets/campus-app.js?v=supporter-passport1" defer></script>
 </body></html>

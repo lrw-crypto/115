@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 300">
+ <defs>
+  <radialGradient id="skin" cx="35%" cy="25%" r="80%"><stop stop-color="#ffe5d1"/><stop offset=".72" stop-color="#edbe9e"/><stop offset="1" stop-color="#c58f75"/></radialGradient>
+  <linearGradient id="hair" x2="1" y2=".5"><stop stop-color="#3c4047"/><stop offset=".45" stop-color="#171a20"/><stop offset="1" stop-color="#34353c"/></linearGradient>
+  <linearGradient id="skirt" x2="1" y2=".3"><stop stop-color="#414049"/><stop offset=".5" stop-color="#22242c"/><stop offset="1" stop-color="#45414a"/></linearGradient>
+  <linearGradient id="shirt" x2="1" y2="1"><stop stop-color="#fffdf6"/><stop offset="1" stop-color="#ddd9d2"/></linearGradient>
+  <clipPath id="print"><rect x="66" y="120" width="45" height="45" rx="2"/></clipPath>
+ </defs>
+ <!-- A separate, hand-drawn character in the campus SVG style, based on the supplied outfit. -->
+ <path d="M67 232v45h15l3-45m12 0 1 45h15l-1-45" fill="url(#skin)"/>
+ <path d="M65 274q6-4 18 0l2 14q-11 7-27 0l3-7Zm32 0q6-4 17 0l5 14q-12 7-25 0Z" fill="#faf7ed" stroke="#c9bfb4" stroke-width="2"/>
+ <path d="M60 285q12 4 25 0m10 0q12 4 24 0" fill="none" stroke="#dfd9cb" stroke-width="2"/>
+ <path d="m48 135-7 39-3 19q-1 10 5 10l4-8 2 5q4 1 4-5l3-22 8-32m52-6 12 37 2 21q1 10 7 8l2-10 3 5q5 0 3-8l-6-22-10-37" fill="url(#skin)" stroke="#cf9b7d" stroke-width="1"/>
+ <path d="m125 171 13-3 2 8-13 3Z" fill="#3e4248"/><rect x="130" y="170" width="7" height="6" rx="2" fill="#ddd7c6"/>
+ <path d="M62 110q27-15 55 0l14 28-17 9-1 29H62l-1-29-17-9Z" fill="url(#shirt)" stroke="#c9c4bf" stroke-width="1.5"/>
+ <path d="M78 104q11 12 22 0v11q-12 9-23-1Z" fill="url(#skin)"/>
+ <path d="M75 111q14 15 29 0" fill="none" stroke="#d1ccc5" stroke-width="3"/>
+ <rect x="66" y="120" width="45" height="45" rx="2" fill="#ece7db" stroke="#5c6062" stroke-width="1.5"/>
+ <g clip-path="url(#print)" fill="none" stroke-width="1.2">
+  <path d="m68 123 7 3-3 7 5 6-7 3m14-21 3 7-4 5 7 8m9-20-2 8 7 5-6 7m-32 9 8-3 3 8-5 6m12-13 6-4 5 9-6 6m14-17-1 7 7 5-6 6" stroke="#6d8192"/>
+  <path d="m71 126 4 4m13-6 3 5m12-1 3-4m-28 18 3 4m11-5 3 4m10 4 4 5m-38 5 5 4m12-7 5 5" stroke="#c1a476"/>
+  <path d="M65 135h46m-46 13h46m-31-28v46m15-46v46" stroke="#adb4b2" stroke-dasharray="2 3"/>
+ </g>
+ <path d="M61 171q26 7 52 0l17 65q-39 16-80-1Z" fill="url(#skirt)" stroke="#33323b" stroke-width="1.2"/>
+ <path d="m69 179-6 52m19-52-2 57m17-57 4 56m9-55 8 49" fill="none" stroke="#65616a" stroke-width="1.3" opacity=".65"/>
+ <path d="m110 165-4 9 13 6-4-11-5 20m0-20-10 14" fill="none" stroke="#fcfaf0" stroke-width="4" stroke-linecap="round"/>
+ <path d="M33 103Q17 85 25 49 33 3 84 5q55-5 67 44 12 39-6 58-17 11-34 2H58Z" fill="url(#hair)" stroke="#28292e" stroke-width="2"/>
+ <ellipse cx="42" cy="70" rx="8" ry="12" fill="url(#skin)"/><ellipse cx="136" cy="70" rx="8" ry="12" fill="url(#skin)"/>
+ <path d="M43 49Q48 20 88 23q40 3 45 32l-1 30q-4 29-43 31-40-2-45-31Z" fill="url(#skin)"/>
+ <path d="M38 70Q30 29 69 13q24-10 43 0-36 0-51 30L44 58l-3 26Zm57-49q39-1 46 40l2 37-13 9 1-49q-5-17-18-21Z" fill="url(#hair)"/>
+ <path d="M32 75Q22 35 57 17m-19 67q-6-28 13-48m71-15q20 19 20 52" fill="none" stroke="#686770" stroke-width="2" opacity=".5"/>
+ <path d="M57 58q9-6 17-1m29 0q8-5 16 1" fill="none" stroke="#554035" stroke-width="2.5" stroke-linecap="round"/>
+ <g fill="#fff8ec" fill-opacity=".17" stroke="#40352f" stroke-width="3"><circle cx="66" cy="74" r="16"/><circle cx="111" cy="74" r="16"/><path d="M82 72q6-4 13 0m-45-1-9-3m86 3 9-3" fill="none"/></g>
+ <path d="M58 75q7-8 14 0m32 0q7-8 14 0" fill="none" stroke="#4a342a" stroke-width="2.7" stroke-linecap="round"/>
+ <ellipse cx="57" cy="88" rx="8" ry="4" fill="#eb9d96" opacity=".6"/><ellipse cx="120" cy="88" rx="8" ry="4" fill="#eb9d96" opacity=".6"/>
+ <path d="M85 83q3 4 7 0" fill="none" stroke="#cb8f72" stroke-width="1.8" stroke-linecap="round"/>
+ <path d="M77 94q12 12 25-1" fill="#c46e6b" stroke="#a95e59" stroke-width="1.5" stroke-linecap="round"/>
+ <path d="M80 95q10 5 19-1" stroke="#fff5e7" stroke-width="2" fill="none"/>
+</svg>

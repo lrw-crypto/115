@@ -52,14 +52,15 @@ for(const[a,b]of CAMPUS_EDGES){const length=Math.hypot(CAMPUS_NODES[a][0]-CAMPUS
 // Functions are evaluated after all scripts load, so his home has one source of truth.
 const CAMPUS_FIXED_RESIDENT_PADDING={x:18,y:34};
 function campusFixedResidentBounds(radius=CAMPUS_WALK_RADIUS){const[x,y]=CAMPUS_NODES[CAMPUS_NODE_INDEX[CAMPUS_VISITOR_HOME_NODE]];return{x,y,halfWidth:CAMPUS_FIXED_RESIDENT_PADDING.x+radius,halfDepth:CAMPUS_FIXED_RESIDENT_PADDING.y+radius};}
-function campusFixedResidentClear(x,y,radius=CAMPUS_WALK_RADIUS){const b=campusFixedResidentBounds(radius);return Math.abs(x-b.x)>=b.halfWidth||Math.abs(y-b.y)>=b.halfDepth;}
+function campusFixedResidentObstacles(radius=CAMPUS_WALK_RADIUS){const[x,y]=campusPoint(...CAMPUS_SUPPORTER_POINT);return[campusFixedResidentBounds(radius),{x,y,halfWidth:18+radius,halfDepth:34+radius}];}
+function campusFixedResidentClear(x,y,radius=CAMPUS_WALK_RADIUS){return campusFixedResidentObstacles(radius).every(b=>Math.abs(x-b.x)>=b.halfWidth||Math.abs(y-b.y)>=b.halfDepth);}
 function campusFixedResidentSegmentClear(a,b,radius=CAMPUS_WALK_RADIUS){
- const obstacle=campusFixedResidentBounds(radius);let enter=0,exit=1;
+ return campusFixedResidentObstacles(radius).every(obstacle=>{let enter=0,exit=1;
  for(const [axis,centre,extent]of [[0,obstacle.x,obstacle.halfWidth],[1,obstacle.y,obstacle.halfDepth]]){
   const delta=b[axis]-a[axis],low=centre-extent,high=centre+extent;
   if(Math.abs(delta)<1e-10){if(a[axis]<=low||a[axis]>=high)return true;continue;}
   const t1=(low-a[axis])/delta,t2=(high-a[axis])/delta;enter=Math.max(enter,Math.min(t1,t2));exit=Math.min(exit,Math.max(t1,t2));if(enter>=exit)return true;
- }return false;
+ }return false;});
 }
 const campusComponentCache=new Map();
 function campusReachableNodes(from){

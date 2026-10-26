@@ -30,26 +30,15 @@ const CENTRAL_LAWN=[[706,447],[805,421],[1091,685],[931,729]];
 const CAMPUS_CAT_POINT=[910,604];
 function campusContains(point,polygon){let inside=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){const a=polygon[i],b=polygon[j];if((a[1]>point[1])!==(b[1]>point[1])&&point[0]<(b[0]-a[0])*(point[1]-a[1])/(b[1]-a[1])+a[0])inside=!inside;}return inside;}
 function schoolBuilding(id,place){
- const [x,y]=campusPoint(...place.anchor),regions=place.polygons.map(p=>p.map(([u,v])=>campusPoint(u,v))),local=p=>p.map(([a,b])=>[a-x,b-y]);
- const paths=regions.map(p=>`M${local(p).map(q=>q.join(',')).join('L')}Z`).join('');
- const vertices=regions.flat(),minX=Math.min(...vertices.map(p=>p[0]))-x,minY=Math.min(...vertices.map(p=>p[1]))-y,maxX=Math.max(...vertices.map(p=>p[0]))-x,maxY=Math.max(...vertices.map(p=>p[1]))-y;
+ const regions=place.polygons.map(p=>p.map(([u,v])=>campusPoint(u,v)));
  const maskRegions=[...regions,...(place.canopies||[]).map(p=>p.map(([u,v])=>campusPoint(u,v)))];
  const worldPaths=maskRegions.map(p=>`M${p.map(q=>q.join(',')).join('L')}Z`).join('');
  const occluder=id==='sports'?'':`<g id="occluder-${id}" class="campus-occluder" aria-hidden="true"><defs><clipPath id="building-mask-${id}" clipPathUnits="userSpaceOnUse"><path d="${worldPaths}"/></clipPath></defs><image href="${CAMPUS_ART}" width="1240" height="815" preserveAspectRatio="none" clip-path="url(#building-mask-${id})"/></g>`;
- if(!place.departments.length)return occluder;
- const names=place.departments.map(id=>departments.find(d=>d.id===id).name).join('、');
- return `${occluder}<g class="campus-building" data-building="${id}" data-campus-side="${place.side}" data-order="${place.order||''}" role="button" tabindex="0" aria-label="${place.name}：${names}" transform="translate(${x} ${y})"><rect class="building-click-box" x="${minX}" y="${minY}" width="${maxX-minX}" height="${maxY-minY}" fill="transparent"/><path class="building-hit-area" d="${paths}"/></g>`;
+ return occluder;
 }
 function campusDepartmentLabel(d){return `<g class="campus-map-label" data-label-for="${d.id}" data-department="${d.id}" data-building-id="${d.buildingId}" role="button" tabindex="0" aria-label="探索${d.name}" transform="translate(${d.labelX} ${d.labelY})"><g class="building-sign"><rect class="label-bg" x="-68" y="-13" width="136" height="26" rx="11"/><circle cx="-54" cy="0" r="3.5" fill="${d.accent}"/><text text-anchor="middle" x="5" y="4" font-size="12.5" font-weight="800">${d.name}</text></g></g>`;}
-function openCampusBuilding(id){
- const place=CAMPUS_PLACES[id];if(!place||!place.departments.length)return;
- if(place.departments.length===1){openDepartment(place.departments[0]);return;}
- openModal(`<div class="eyebrow">一起發現你的興趣</div><h2 id="dialog-title">${place.name}</h2><p>這棟有幾個不同的科別，想先認識哪一科？</p><div class="building-department-choices">${place.departments.map(id=>{const d=departments.find(d=>d.id===id);return `<button data-building-department="${id}"><span>${d.icon}</span><div><b>${d.name}</b><small>${d.subtitle}</small></div><span>→</span></button>`}).join('')}</div>`);
- $$('[data-building-department]').forEach(button=>button.onclick=()=>openDepartment(button.dataset.buildingDepartment));
-}
 function applyCampusFilter(){
  for(const d of departments)$(`[data-label-for="${d.id}"]`).classList.toggle('dim',filter!=='all'&&d.type!==filter);
- for(const [id,place]of Object.entries(CAMPUS_PLACES)){const el=$(`[data-building="${id}"]`);if(el)el.classList.toggle('dim',filter!=='all'&&!place.departments.some(id=>departments.find(d=>d.id===id).type===filter));}
 }
 function sweepingCatArt(){return `<g class="cat-sweep-body"><image href="assets/groundskeeper-cat.png" x="-27" y="-72" width="54" height="76" preserveAspectRatio="xMidYMax meet"/><g transform="translate(7 -28)"><g class="cat-broom"><path d="M-16-29 19 27" stroke="#8f6944" stroke-width="3.8" stroke-linecap="round"/><path d="M-16-29 19 27" stroke="#d5ad6e" stroke-width="1.4" stroke-linecap="round"/><path d="m17 22 8-4 13 18q-12 9-24 7Z" fill="#b5945c" stroke="#8f734c" stroke-width="1"/><path d="m19 25 3 15m1-17 4 15m0-17 6 15" stroke="#e7ca8c" stroke-width="1.3"/><path d="m17 24 10-5" stroke="#6f674e" stroke-width="3"/></g></g></g>`;}
 function sweepingCat(){const [x,y]=campusPoint(...CAMPUS_CAT_POINT);return `<g id="groundskeeper-cat" class="sweeping-cat" data-zone="central-lawn" role="button" tabindex="0" aria-label="和草地掃地貓說話" transform="translate(${x} ${y})"><rect class="cat-motion-bounds" x="-44" y="-100" width="100" height="135" fill="transparent" pointer-events="none"/><ellipse cy="1" rx="23" ry="7" fill="#537b4c30"/>${sweepingCatArt()}<ellipse class="cat-click-area" cx="4" cy="-29" rx="36" ry="44" fill="transparent"/><g class="cat-talk-hint" transform="translate(10 -87)"><rect x="-24" y="-10" width="48" height="20" rx="10" fill="#fff5ef" stroke="#d7a6b8"/><text y="4" text-anchor="middle" font-size="10" fill="#976c84">喵～</text></g></g>`;}
@@ -69,7 +58,6 @@ function renderCampusMap(){
  art+=`<g id="campus-main-gate" data-open="true" transform="translate(${gx} ${gy})" aria-label="開放式校門"><title>開放式正門</title></g><g id="campus-side-school-name" transform="translate(${sx} ${sy}) rotate(-17)"><text y="4" text-anchor="middle" fill="#fff2ce" stroke="#744d3f" stroke-width=".3" paint-order="stroke" font-size="12.5" font-weight="800" letter-spacing="1">國立草屯商工</text></g>`;
  art+=campusShops()+`<g id="campus-students" aria-hidden="true"></g>`+sweepingCat()+campusNpc()+`<g id="campus-labels">${departments.map(campusDepartmentLabel).join('')}</g>`;
  $('#map-world').innerHTML=art;
- $$('[data-building]').forEach(el=>{el.onclick=()=>{if(!drag.moved){el.focus({preventScroll:true});openCampusBuilding(el.dataset.building);}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCampusBuilding(el.dataset.building);}};});
  $$('[data-label-for]').forEach(el=>{el.onclick=()=>{if(!drag.moved){el.focus({preventScroll:true});openDepartment(el.dataset.labelFor);}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDepartment(el.dataset.labelFor);}};});
  const cat=$('#groundskeeper-cat');cat.onclick=()=>{if(!drag.moved){cat.focus();openSweepingCat();}};cat.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSweepingCat();}};
 }
