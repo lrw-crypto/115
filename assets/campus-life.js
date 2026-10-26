@@ -73,7 +73,9 @@ function initCampusResidents(){
  // objects actually pass each other. Neither students nor shadows intercept clicks.
  for(const[id,place]of Object.entries(CAMPUS_PLACES)){
   if(id==='sports')continue;const el=$(`#occluder-${id}`);if(!el)continue;
-  const depth=campusPoint(0,Math.max(...place.polygons.flat().map(p=>p[1]))+24)[1];fixedDepth.push({element:el,y:depth,id:'building-'+id});layer.append(el);
+  // The mask already includes the visible building silhouette. Extending its
+  // depth below that silhouette hid walkers on the track and entrance paving.
+  const depth=campusPoint(0,Math.max(...place.polygons.flat().map(p=>p[1])))[1];fixedDepth.push({element:el,y:depth,id:'building-'+id});layer.append(el);
  }
  for(const tree of CAMPUS_WALK_TREES){
   let el=$('#walk-occluder-'+tree.id);if(!el){el=document.createElementNS('http://www.w3.org/2000/svg','g');el.id='walk-occluder-'+tree.id;el.setAttribute('class','campus-occluder');el.setAttribute('aria-hidden','true');const polygon=tree.polygon.map(p=>campusPoint(...p).join(',')).join(' ');el.innerHTML=`<defs><clipPath id="walk-mask-${tree.id}" clipPathUnits="userSpaceOnUse"><polygon points="${polygon}"/></clipPath></defs><image href="${CAMPUS_ART}" width="1240" height="815" preserveAspectRatio="none" clip-path="url(#walk-mask-${tree.id})"/>`;}
