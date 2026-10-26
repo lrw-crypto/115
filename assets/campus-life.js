@@ -56,7 +56,10 @@ function initCampusResidents(){
  const actors=[],fixedDepth=[];let tickCount=0;
  function actorAt(node,element,speed,id){const[x,y]=CAMPUS_NODES[node];return{id,node,target:node,zone:CAMPUS_NODE_ZONES[node],x,y,baseX:x,baseY:y,element,speed,velocity:0,path:[],curve:null,offset:0,travelled:0,gaitPhase:Math.random(),poseWeight:0,waiting:.3+Math.random()*2.5,heading:1,dx:1,dy:0,moving:false,yielding:false,completedRoutes:0};}
  function shuffled(list){return list.map(n=>[Math.random(),n]).sort((a,b)=>a[0]-b[0]).map(p=>p[1]);}
- const mainStarts=shuffled(CAMPUS_STOP_NODES.filter(i=>CAMPUS_NODE_ZONES[i]==='courtyard')),trackStarts=shuffled([40,44,48,52]),starts=[...mainStarts.slice(0,16),...trackStarts];
+ const eligible=CAMPUS_STOP_NODES.filter(i=>campusFixedResidentClear(...CAMPUS_NODES[i]));
+ const mainStarts=[],occupancy=new Map();
+ for(const node of shuffled(eligible.filter(i=>CAMPUS_NODE_ZONES[i]==='courtyard'))){const component=campusReachableNodes(node),key=component[0],capacity=eligible.filter(i=>component.includes(i)).length-1,count=occupancy.get(key)||0;if(count>=capacity)continue;mainStarts.push(node);occupancy.set(key,count+1);if(mainStarts.length===16)break;}
+ const trackStarts=shuffled([40,44,48,52]),starts=[...mainStarts,...trackStarts];
  for(let i=0;i<20;i++){
   const el=document.createElementNS('http://www.w3.org/2000/svg','g');el.setAttribute('class','walking-resident');el.setAttribute('aria-hidden','true');el.dataset.resident=String(i);el.dataset.expression=STUDENT_EXPRESSIONS[i%STUDENT_EXPRESSIONS.length];
   el.innerHTML=`<ellipse class="resident-ground-shadow" cy=".4" rx="6.8" ry="2.2" fill="#43684c32"/><g class="walker-figure">${animal(0,0,'',i%3===0?'rabbit':i%3===1?'bear':'cat',el.dataset.expression)}</g>`;
@@ -86,11 +89,11 @@ function initCampusResidents(){
   fixedDepth.push({element:el,y:campusPoint(...tree.base)[1],id:'tree-'+tree.id});layer.append(el);
  }
  let debugLayer=$('#campus-route-debug');if(!debugLayer){debugLayer=document.createElementNS('http://www.w3.org/2000/svg','g');debugLayer.id='campus-route-debug';debugLayer.setAttribute('aria-hidden','true');debugLayer.style.pointerEvents='none';$('#map-world').append(debugLayer);}
- function setDebug(enabled){debug=Boolean(enabled);debugLayer.style.display=debug?'':'none';if(debug){debugLayer.innerHTML=`${Object.entries(CAMPUS_NAV_ZONES).map(([zone,g])=>g.areas.map(poly=>`<polygon points="${poly.map(p=>campusPoint(...p).join(',')).join(' ')}" fill="${g.color}" fill-opacity=".12" stroke="${g.color}" stroke-width="1"/>`).join('')+g.holes.map(poly=>`<polygon points="${poly.map(p=>campusPoint(...p).join(',')).join(' ')}" fill="#d11" fill-opacity=".18" stroke="#d11"/>`).join('')).join('')}${CAMPUS_EDGES.map(([a,b])=>`<path d="M${CAMPUS_NODES[a]}L${CAMPUS_NODES[b]}" fill="none" stroke="${CAMPUS_NAV_ZONES[CAMPUS_NODE_ZONES[a]].color}" stroke-width="2"/>`).join('')}${CAMPUS_NODES.map(([x,y],i)=>`<g><circle cx="${x}" cy="${y}" r="3" fill="white" stroke="#356b64"/><text x="${x+5}" y="${y-5}" fill="#194d45" stroke="white" stroke-width="2" paint-order="stroke" font-size="10">${i}</text><title>${CAMPUS_NAV_POINTS[i][0]}</title></g>`).join('')}${actors.map(a=>`<g data-debug-actor="${a.id}"><circle r="${CAMPUS_WALK_RADIUS}" fill="none" stroke="#a21576" stroke-width="1"/><path d="M-4 0h8M0-4v8" stroke="#c04"/></g>`).join('')}`;paint();}}
+ function setDebug(enabled){debug=Boolean(enabled);debugLayer.style.display=debug?'':'none';if(debug){debugLayer.innerHTML=`${Object.entries(CAMPUS_NAV_ZONES).map(([zone,g])=>g.areas.map(poly=>`<polygon points="${poly.map(p=>campusPoint(...p).join(',')).join(' ')}" fill="${g.color}" fill-opacity=".12" stroke="${g.color}" stroke-width="1"/>`).join('')+g.holes.map(poly=>`<polygon points="${poly.map(p=>campusPoint(...p).join(',')).join(' ')}" fill="#d11" fill-opacity=".18" stroke="#d11"/>`).join('')).join('')}${(()=>{const b=campusFixedResidentBounds();return `<rect class="fixed-resident-clearance" x="${b.x-b.halfWidth}" y="${b.y-b.halfDepth}" width="${b.halfWidth*2}" height="${b.halfDepth*2}" fill="#e7a526" fill-opacity=".18" stroke="#c78416" stroke-dasharray="4 3"/>`;})()}${CAMPUS_EDGES.filter(([a,b])=>campusFixedResidentSegmentClear(CAMPUS_NODES[a],CAMPUS_NODES[b])).map(([a,b])=>`<path d="M${CAMPUS_NODES[a]}L${CAMPUS_NODES[b]}" fill="none" stroke="${CAMPUS_NAV_ZONES[CAMPUS_NODE_ZONES[a]].color}" stroke-width="2"/>`).join('')}${CAMPUS_NODES.map(([x,y],i)=>`<g><circle cx="${x}" cy="${y}" r="3" fill="white" stroke="#356b64"/><text x="${x+5}" y="${y-5}" fill="#194d45" stroke="white" stroke-width="2" paint-order="stroke" font-size="10">${i}</text><title>${CAMPUS_NAV_POINTS[i][0]}</title></g>`).join('')}${actors.map(a=>`<g data-debug-actor="${a.id}"><circle r="${CAMPUS_WALK_RADIUS}" fill="none" stroke="#a21576" stroke-width="1"/><path d="M-4 0h8M0-4v8" stroke="#c04"/></g>`).join('')}`;paint();}}
  function choose(actor){
   let target;if(actor===npc){patrolIndex=(patrolIndex+1)%patrol.length;target=patrol[patrolIndex];}
   else{
-   let candidates=CAMPUS_STOP_NODES.filter(i=>i!==actor.node&&CAMPUS_NODE_ZONES[i]===actor.zone&&campusRoute(actor.node,i).length>1);
+   let candidates=eligible.filter(i=>i!==actor.node&&CAMPUS_NODE_ZONES[i]===actor.zone&&campusRoute(actor.node,i).length>1);
    // One visitor at a time in the cul-de-sac across the marked crosswalk.
    candidates=candidates.filter(i=>i!==14||!actors.some(a=>a!==actor&&(a.node===14||a.target===14||a.path.includes(13))));
    candidates=candidates.filter(node=>!actors.some(a=>a!==actor&&(a.target===node||!a.curve&&a.node===node)));
@@ -119,8 +122,10 @@ function initCampusResidents(){
   }
   const acceleration=actor===npc?34:23;
   actor.velocity+=Math.max(-acceleration*seconds,Math.min(acceleration*seconds,desired-actor.velocity));
-  const travel=Math.min(remaining,Math.max(0,actor.velocity*seconds));actor.offset+=travel;
-  const next=residentCurvePoint(actor.curve,actor.offset);actor.x=actor.baseX=next.x;actor.y=actor.baseY=next.y;actor.dx=next.dx;actor.dy=next.dy;
+  const travel=Math.min(remaining,Math.max(0,actor.velocity*seconds)),next=residentCurvePoint(actor.curve,actor.offset+travel);
+  // Last guard for every simulation substep; never push or teleport the student.
+  if(actor!==npc&&!campusFixedResidentSegmentClear([actor.x,actor.y],[next.x,next.y])){actor.velocity=0;actor.yielding=true;return;}
+  actor.offset+=travel;actor.x=actor.baseX=next.x;actor.y=actor.baseY=next.y;actor.dx=next.dx;actor.dy=next.dy;
   if(Math.abs(next.dx)>.06)actor.heading=next.dx<0?-1:1;
   actor.travelled+=travel;actor.gaitPhase+=travel/(12+4*Math.abs(next.dx));actor.moving=travel>0&&actor.velocity>.15;
   if(remaining-travel<1e-9){actor.node=actor.target;actor.path=[];actor.curve=null;actor.velocity=0;actor.moving=false;actor.completedRoutes++;actor.waiting=actor===npc?.65:1.2+Math.random()*2.8;}

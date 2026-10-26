@@ -41,21 +41,44 @@ const CAMPUS_NODE_ZONES=CAMPUS_NAV_POINTS.map(p=>p[3]);
 const CAMPUS_NODE_INDEX=Object.fromEntries(CAMPUS_NAV_POINTS.map((p,i)=>[p[0],i]));
 const chains=[[0,1,2,3,4,5,6,7,8,9,10,12,13,14],[10,11],[10,15,16,17,18],[0,19,20,21,22,23,54,24,25,55,26,27,28],[29,30,31,32,33,34,35,36,37,38,39],[40,41,42,43,44,45,46,47,48,49,50,51,52,53,40]];
 const CAMPUS_EDGES=chains.flatMap(chain=>chain.slice(1).map((n,i)=>[chain[i],n]));
+// Original map nodes remain available for landmarks; select residents through
+// campusReachableNodes / fixed-resident clearance, never from this list alone.
 const CAMPUS_WALK_NODES=CAMPUS_NODES.map((_,i)=>i).filter(i=>CAMPUS_NODE_ZONES[i]!=='service');
 const CAMPUS_STOP_NODES=[...Array.from({length:29},(_,i)=>i).filter(i=>![9,12,13].includes(i)),40,42,44,46,48,50,52];
 const CAMPUS_NAV_WORLD=Object.fromEntries(Object.entries(CAMPUS_NAV_ZONES).map(([key,z])=>[key,{areas:z.areas.map(p=>p.map(q=>campusPoint(...q))),holes:z.holes.map(p=>p.map(q=>campusPoint(...q)))}]));
 const CAMPUS_ADJACENCY=CAMPUS_NODES.map(()=>[]);
 for(const[a,b]of CAMPUS_EDGES){const length=Math.hypot(CAMPUS_NODES[a][0]-CAMPUS_NODES[b][0],CAMPUS_NODES[a][1]-CAMPUS_NODES[b][1]);CAMPUS_ADJACENCY[a].push({next:b,length});CAMPUS_ADJACENCY[b].push({next:a,length});}
+// The fixed visitor reserves enough room for both complete character silhouettes.
+// Functions are evaluated after all scripts load, so his home has one source of truth.
+const CAMPUS_FIXED_RESIDENT_PADDING={x:18,y:34};
+function campusFixedResidentBounds(radius=CAMPUS_WALK_RADIUS){const[x,y]=CAMPUS_NODES[CAMPUS_NODE_INDEX[CAMPUS_VISITOR_HOME_NODE]];return{x,y,halfWidth:CAMPUS_FIXED_RESIDENT_PADDING.x+radius,halfDepth:CAMPUS_FIXED_RESIDENT_PADDING.y+radius};}
+function campusFixedResidentClear(x,y,radius=CAMPUS_WALK_RADIUS){const b=campusFixedResidentBounds(radius);return Math.abs(x-b.x)>=b.halfWidth||Math.abs(y-b.y)>=b.halfDepth;}
+function campusFixedResidentSegmentClear(a,b,radius=CAMPUS_WALK_RADIUS){
+ const obstacle=campusFixedResidentBounds(radius);let enter=0,exit=1;
+ for(const [axis,centre,extent]of [[0,obstacle.x,obstacle.halfWidth],[1,obstacle.y,obstacle.halfDepth]]){
+  const delta=b[axis]-a[axis],low=centre-extent,high=centre+extent;
+  if(Math.abs(delta)<1e-10){if(a[axis]<=low||a[axis]>=high)return true;continue;}
+  const t1=(low-a[axis])/delta,t2=(high-a[axis])/delta;enter=Math.max(enter,Math.min(t1,t2));exit=Math.min(exit,Math.max(t1,t2));if(enter>=exit)return true;
+ }return false;
+}
+const campusComponentCache=new Map();
+function campusReachableNodes(from){
+ if(campusComponentCache.has(from))return campusComponentCache.get(from);
+ if(!CAMPUS_NODES[from]||!campusFixedResidentClear(...CAMPUS_NODES[from]))return [];
+ const queue=[from],seen=new Set(queue);
+ for(let i=0;i<queue.length;i++)for(const{next}of CAMPUS_ADJACENCY[queue[i]])if(!seen.has(next)&&campusFixedResidentSegmentClear(CAMPUS_NODES[queue[i]],CAMPUS_NODES[next])){seen.add(next);queue.push(next);}
+ const component=[...seen].sort((a,b)=>a-b);for(const n of component)campusComponentCache.set(n,component);return component;
+}
 function campusRoute(from,to){
- if(!CAMPUS_NODES[from]||!CAMPUS_NODES[to]||CAMPUS_NODE_ZONES[from]!==CAMPUS_NODE_ZONES[to])return [];
+ if(!CAMPUS_NODES[from]||!CAMPUS_NODES[to]||!campusReachableNodes(from).includes(to))return [];
  const distance=new Map([[from,0]]),previous=new Map(),pending=new Set([from]);
  while(pending.size){const node=[...pending].reduce((a,b)=>distance.get(a)<distance.get(b)?a:b);pending.delete(node);if(node===to){const path=[to];while(path[0]!==from)path.unshift(previous.get(path[0]));return path;}
-  for(const{next,length}of CAMPUS_ADJACENCY[node]){const cost=distance.get(node)+length;if(cost<(distance.get(next)??Infinity)){distance.set(next,cost);previous.set(next,node);pending.add(next);}}
+  for(const{next,length}of CAMPUS_ADJACENCY[node]){if(!campusFixedResidentSegmentClear(CAMPUS_NODES[node],CAMPUS_NODES[next]))continue;const cost=distance.get(node)+length;if(cost<(distance.get(next)??Infinity)){distance.set(next,cost);previous.set(next,node);pending.add(next);}}
  }return [];
 }
 function campusDistanceToEdge(x,y,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],length=dx*dx+dy*dy,t=length?Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/length)):0;return Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy);}
 function campusWalkPointSafe(x,y,radius=CAMPUS_WALK_RADIUS,zone='courtyard'){
- const geometry=CAMPUS_NAV_WORLD[zone];if(!geometry)return false;
+ const geometry=CAMPUS_NAV_WORLD[zone];if(!geometry||!campusFixedResidentClear(x,y,radius))return false;
  if(!geometry.areas.some(poly=>campusContains([x,y],poly)))return false;
  // Analytic circle/obstacle clearance also catches narrow flowerbed corners.
  for(const poly of geometry.holes){if(campusContains([x,y],poly)||poly.some((a,i)=>campusDistanceToEdge(x,y,a,poly[(i+1)%poly.length])<radius))return false;}
@@ -68,6 +91,6 @@ function campusWalkSegmentSafe(a,b,radius=CAMPUS_WALK_RADIUS,zone='courtyard'){
 }
 function validateCampusNavigation(){
  const errors=[];
- for(const[a,b]of CAMPUS_EDGES)if(!campusWalkSegmentSafe(CAMPUS_NODES[a],CAMPUS_NODES[b],CAMPUS_WALK_RADIUS,CAMPUS_NODE_ZONES[a]))errors.push(`${CAMPUS_NAV_POINTS[a][0]} → ${CAMPUS_NAV_POINTS[b][0]}`);
+ for(const[a,b]of CAMPUS_EDGES)if(campusFixedResidentSegmentClear(CAMPUS_NODES[a],CAMPUS_NODES[b])&&!campusWalkSegmentSafe(CAMPUS_NODES[a],CAMPUS_NODES[b],CAMPUS_WALK_RADIUS,CAMPUS_NODE_ZONES[a]))errors.push(`${CAMPUS_NAV_POINTS[a][0]} → ${CAMPUS_NAV_POINTS[b][0]}`);
  return errors;
 }

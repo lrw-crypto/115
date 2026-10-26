@@ -13,7 +13,7 @@ const base=process.env.CAMPUS_BASE_URL||'http://127.0.0.1:8012/115/';
   let curves=0,samples=0;const invalid=[];
   for(const from of CAMPUS_WALK_NODES)for(const to of CAMPUS_WALK_NODES){
    const path=campusRoute(from,to),zone=CAMPUS_NODE_ZONES[from];
-   if(zone!==CAMPUS_NODE_ZONES[to]){if(path.length)invalid.push(['disconnected',from,to]);continue;}
+   if(!campusReachableNodes(from).includes(to)){if(path.length)invalid.push(['disconnected/occupied',from,to]);continue;}
    if(from===to)continue;
    if(path.at(-1)!==to){invalid.push(['unreachable',from,to]);continue;}
    const curve=residentCurve(path,2.6);curves++;
