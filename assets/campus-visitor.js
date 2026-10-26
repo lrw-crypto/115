@@ -1,6 +1,9 @@
 'use strict';
 let campusVisitorController=null;
-const CAMPUS_VISITOR_ROUTE=['east-1','east-2','tree-skirt-1','east-3','east-4','tree-skirt-2','east-5','east-6','east-end'];
+const CAMPUS_VISITOR_HOME_NODE='east-2';
+const CAMPUS_VISITOR_BUILDING='right-2';
+// Start one short head-shake at 3, 6, 9… active seconds; stand still between them.
+function campusVisitorHeadAngle(seconds){if(seconds<3)return 0;const phase=(seconds-3)%3;return phase<.65?Math.sin(phase/.65*Math.PI*4)*7:0;}
 const CAMPUS_VISITOR_LINE='我沒吃鳳梨跟芒果呀!';
 function campusVisitorArt(){return `<defs>
  <radialGradient id="visitor-skin" cx="35%" cy="20%" r="85%"><stop stop-color="#fbe4d5"/><stop offset=".65" stop-color="#deb29a"/><stop offset="1" stop-color="#bb846f"/></radialGradient>
@@ -15,15 +18,15 @@ function campusVisitorArt(){return `<defs>
  <path d="M-8-24h16l5 9-4 3v7q-9 3-18 0v-7l-4-3Z" fill="url(#visitor-polo)"/>
  <g clip-path="url(#visitor-shirt-clip)" fill="none">${Array.from({length:10},(_,i)=>`<path d="M-14 ${-21+i*1.8}h28" stroke="${i%3===0?'#58a2b1':i%3===1?'#da8eae':'#b6a4c1'}" stroke-width=".5"/>`).join('')}</g>
  <path d="m-7-25 7 3-4 7-5-6Zm14 0-7 3 4 7 5-6Z" fill="#eac745" stroke="#c4a02e" stroke-width=".6"/><path d="M0-21v9" stroke="#b5a6b8" stroke-width=".8"/><circle cy="-18" r=".7" fill="#e7e1d7"/><circle cy="-15" r=".7" fill="#e7e1d7"/>
- <circle cx="-14" cy="-36" r="3.7" fill="#d6a68f"/><circle cx="14" cy="-36" r="3.7" fill="#d6a68f"/><ellipse cy="-39" rx="15" ry="17" fill="url(#visitor-skin)"/>
+ <g class="visitor-head"><circle cx="-14" cy="-36" r="3.7" fill="#d6a68f"/><circle cx="14" cy="-36" r="3.7" fill="#d6a68f"/><ellipse cy="-39" rx="15" ry="17" fill="url(#visitor-skin)"/>
  <path d="M-13-47q-7 6-2 17l1-13ZM13-47q7 6 2 17l-1-13Z" fill="#665a55"/>
  <path d="m-11-44 6-2m10 0 6 2" stroke="#665143" stroke-width="1.7" stroke-linecap="round"/>
  <g fill="none" stroke="#393936" stroke-width="1.5"><rect x="-12" y="-41" width="11" height="9" rx="2"/><rect x="1" y="-41" width="11" height="9" rx="2"/><path d="M-1-38h2m-13 0-3-1m27 1 3-1"/></g>
  <ellipse cx="-6.5" cy="-36.5" rx="1.1" ry="1.7" fill="#39322c"/><ellipse cx="6.5" cy="-36.5" rx="1.1" ry="1.7" fill="#39322c"/><ellipse cy="-32" rx="2.2" ry="1.7" fill="#d9a98c"/><path d="M-4-27q4-4 8 0" fill="none" stroke="#a46560" stroke-width="1.4" stroke-linecap="round"/>
- </g></g>`;}
+ </g></g></g>`;}
 function createCampusVisitor(layer){
  $('#campus-visitor')?.remove();
- const el=document.createElementNS('http://www.w3.org/2000/svg','g');el.id='campus-visitor';el.setAttribute('class','campus-visitor');el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label','和右側步道的條紋衫先生說話');
+ const el=document.createElementNS('http://www.w3.org/2000/svg','g');el.id='campus-visitor';el.setAttribute('class','campus-visitor');el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label','和應用英文科大樓前的條紋衫先生說話');
  el.innerHTML=`<ellipse class="resident-ground-shadow" cy=".4" rx="7" ry="2.2" fill="#43684c32"/><g class="walker-figure">${campusVisitorArt()}</g><ellipse class="visitor-hit-area" cx="0" cy="-20" rx="13" ry="23" fill="transparent"/><g class="visitor-talk-hint" transform="translate(0 -46)" aria-hidden="true"><rect x="-12" y="-8" width="24" height="16" rx="8" fill="#fff5d9" stroke="#c3a658"/><text y="3" text-anchor="middle" font-size="12" fill="#80643b">⋯</text></g>`;
  layer.append(el);
  el.onpointerdown=e=>{drag.moved=false;e.stopPropagation();};
