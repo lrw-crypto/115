@@ -18,8 +18,8 @@ const{chromium}=require('playwright');
  // A new action or Escape must cancel the pending introduction.
  await page.locator('[data-label-for="piping"]').click();await page.keyboard.press('Escape');await page.waitForTimeout(700);assert(await page.locator('#modal-backdrop').isHidden());assert.equal(await page.evaluate(()=>camera.scale),1);
  await page.locator('[data-label-for="mechanical"]').click();await page.locator('.search-toggle').click();await page.waitForTimeout(700);assert.equal(await page.locator('#dialog-title').innerText(),'想體驗哪個科別？');await page.keyboard.press('Escape');
- await page.setViewportSize({width:390,height:844});await page.locator('[data-passport="data"]').click();await page.locator('#start-campus-mission').waitFor({state:'visible'});await page.locator('.department-topic summary').first().click();
- assert.equal(await page.locator('#dialog-title').innerText(),'資料處理科');assert(await page.locator('.topic-story p').first().evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>=17));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ await page.setViewportSize({width:390,height:844});await page.locator('[data-passport="data"]').click();await page.locator('#start-campus-mission').waitFor({state:'visible'});await page.locator('.data-learn-more summary').click();
+ assert.equal(await page.locator('#dialog-title').innerText(),'資料處理科');assert(await page.locator('.data-intro-cover p').evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>=17));assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
  await page.screenshot({path:'/tmp/caoshang-readable-department-mobile.png',fullPage:true});await page.keyboard.press('Escape');
  // Distance-driven stepping and rolling are observable while the scene runs.
  await page.setViewportSize({width:1440,height:1100});await page.mouse.move(5,90);await page.waitForFunction(()=>walkingController.actors.some(a=>a.moving));

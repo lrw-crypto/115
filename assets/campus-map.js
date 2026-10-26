@@ -75,7 +75,7 @@ function renderCampusMap(){
  art+=`<g id="campus-main-gate" data-open="true" transform="translate(${gx} ${gy})" aria-label="開放式校門"><title>開放式正門</title></g><g id="campus-side-school-name" transform="translate(${sx} ${sy}) rotate(-17)"><text y="4" text-anchor="middle" fill="#fff2ce" stroke="#744d3f" stroke-width=".3" paint-order="stroke" font-size="12.5" font-weight="800" letter-spacing="1">國立草屯商工</text></g>`;
  art+=campusShops()+`<g id="campus-students" aria-hidden="true"></g>`+sweepingCat()+campusNpc()+`<g id="campus-labels">${departments.map(campusDepartmentLabel).join('')}</g>`;
  $('#map-world').innerHTML=art;
- $$('[data-building]').forEach(el=>{el.onclick=()=>{if(!drag.moved)openCampusBuilding(el.dataset.building);};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCampusBuilding(el.dataset.building);}};});
- $$('[data-label-for]').forEach(el=>{el.onclick=()=>{if(!drag.moved)openDepartment(el.dataset.labelFor);};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDepartment(el.dataset.labelFor);}};});
+ $$('[data-building]').forEach(el=>{el.onclick=()=>{if(!drag.moved){el.focus({preventScroll:true});openCampusBuilding(el.dataset.building);}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openCampusBuilding(el.dataset.building);}};});
+ $$('[data-label-for]').forEach(el=>{el.onclick=()=>{if(!drag.moved){el.focus({preventScroll:true});openDepartment(el.dataset.labelFor);}};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openDepartment(el.dataset.labelFor);}};});
  const cat=$('#groundskeeper-cat');cat.onclick=()=>{if(!drag.moved){cat.focus();openSweepingCat();}};cat.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openSweepingCat();}};
 }
