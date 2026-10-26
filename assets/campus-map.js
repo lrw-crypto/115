@@ -28,12 +28,6 @@ const CAMPUS_BUILDINGS={
 };
 const CENTRAL_LAWN=[[706,447],[805,421],[1091,685],[931,729]];
 const CAMPUS_CAT_POINT=[910,604];
-const CAMPUS_NODE_UV=[[925,540],[945,566],[708,450],[740,477],[765,505],[1006,606],[822,562],[340,226],[726,456],[836,453],[803,534],[900,518],[872,622],[1006,606],[945,712],[1030,822],[852,519],[930,746],[1080,794],[925,715],[875,802],[462,277],[490,233],[425,155],[375,129],[680,413],[484,260],[740,407],[743,806],[585,807],[523,695],[462,686],[360,636],[280,530],[217,421],[232,366],[188,312],[210,300],[1038,852],[1200,808],[1365,696],[1490,606],[955,622],[1036,634],[575,730],[628,780]];
-const CAMPUS_NODES=CAMPUS_NODE_UV.map(([u,v])=>campusPoint(u,v));
-const CAMPUS_EDGES=[[0,11],[1,11],[2,8],[3,8],[4,10],[5,13],[6,10],[7,21],[21,22],[22,23],[23,24],[22,26],[25,27],[27,9],[8,10],[9,11],[10,12],[11,13],[12,14],[10,16],[16,11],[14,17],[15,18],[17,19],[19,42],[42,43],[19,20],[8,25],[20,28],[28,29],[30,31],[31,32],[32,33],[33,34],[34,35],[35,36],[36,37],[37,7],[20,38],[38,39],[39,40],[40,41],[30,44],[44,45],[45,28],[15,20]];
-// Residents choose freely among campus walks and roads, including the outer loop.
-const CAMPUS_WALK_NODES=[7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45];
-function campusRoute(from,to){const queue=[[from]],seen=new Set([from]);while(queue.length){const path=queue.shift(),last=path.at(-1);if(last===to)return path;for(const [a,b] of CAMPUS_EDGES){const next=a===last?b:b===last?a:null;if(next!==null&&!seen.has(next)){seen.add(next);queue.push([...path,next]);}}}return [from];}
 function campusContains(point,polygon){let inside=false;for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){const a=polygon[i],b=polygon[j];if((a[1]>point[1])!==(b[1]>point[1])&&point[0]<(b[0]-a[0])*(point[1]-a[1])/(b[1]-a[1])+a[0])inside=!inside;}return inside;}
 function schoolBuilding(id,place){
  const [x,y]=campusPoint(...place.anchor),regions=place.polygons.map(p=>p.map(([u,v])=>campusPoint(u,v))),local=p=>p.map(([a,b])=>[a-x,b-y]);
