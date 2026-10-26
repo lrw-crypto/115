@@ -174,8 +174,10 @@ CAMPUS_BASE_URL=http://127.0.0.1:8012/115/ node tests/browser-campus-walking.cjs
 
 ### 加油角色與清楚的探索護照
 
-`assets/campus-supporter.svg` 是依參考造型繪製的短髮、圓框眼鏡、白上衣與黑裙角色。地圖與對話使用同一份 SVG；`assets/campus-visitor.js` 的 `CAMPUS_SUPPORTER_POINT` 設定站位（原固定角色旁），`CAMPUS_SUPPORTER_LINE` 設定「加油!加油!」對白。沿用共用視窗、鍵盤與焦點返回，對話不影響金幣。兩位固定角色都納入路網與每步移動的避讓檢查，除錯模式會顯示兩個禁入區。
+`assets/campus-supporter-3d.png` 是依參考造型製作的短髮、圓框眼鏡、白上衣與黑裙 3D Q 版角色。地圖與對話使用同一張透明 PNG，對話依原始比例縮放並使用 `object-fit: contain`，避免拉伸；`assets/campus-visitor.js` 的 `CAMPUS_SUPPORTER_POINT` 設定站位（原固定角色旁），`CAMPUS_SUPPORTER_LINE` 設定「加油!加油!」對白。沿用共用視窗、鍵盤與焦點返回，對話不影響金幣。兩位固定角色都納入路網與每步移動的避讓檢查，除錯模式會顯示兩個禁入區。
 
 `assets/campus-layout.css` 最後的護照樣式集中控制字級、配色與手機排版：科名 16px、任務狀態 13px、標題 24px，使用深紫文字與粉色卡片；完成項目為深綠文字、綠色底與勾號。桌機護照加寬為 280px，手機窄螢幕單欄排列，版面高度隨內容延伸，避免放大文字被裁掉。
 
 `tests/browser-campus-supporter-passport.cjs` 檢查新角色對白／固定位置／焦點、護照字級與對比、窄手機不溢出、科名方塊可互動而背景不觸發介紹。`tests/browser-campus-visitor-clearance.cjs` 也檢查學生不與兩位固定角色重疊。
+
+頁首標語「今天，換你當草商新生！」位於品牌名稱之後，品牌採用鮮明粉紅／橘色／藍綠漸層；手機將標語換到品牌下方。地圖上方不再提供分類列，八科方塊全部顯示。版面樣式在 `assets/campus-layout.css` 最後一段，頁首內容在 `index.html`。
