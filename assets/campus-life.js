@@ -66,6 +66,11 @@ function initCampusResidents(){
   for(const leg of legs)body.parentNode.insertBefore(leg,body);
   actor.parts={figure:el.querySelector('.walker-figure'),body,left:legs[0],right:legs[1],legs:legs.map(el=>({el,skin:el.children[0],sock:el.children[1],shoe:el.children[2]})),armLeft:el.querySelector('.arm-left'),armRight:el.querySelector('.arm-right'),face:el.querySelector('.student-face')};actors.push(actor);
  }
+ const visitorElement=createCampusVisitor(layer),visitor=actorAt(CAMPUS_NODE_INDEX['east-5'],visitorElement,14,21);visitor.kind='visitor';visitor.waiting=.8;
+ visitor.parts={figure:visitorElement.querySelector('.walker-figure'),body:visitorElement.querySelector('.friend-bob'),armLeft:visitorElement.querySelector('.arm-left'),armRight:visitorElement.querySelector('.arm-right'),legs:[...visitorElement.querySelectorAll('.step-left,.step-right')].map(el=>({el,skin:el.children[0],sock:el.children[1],shoe:el.children[2]}))};
+ const pedestrians=[...actors,visitor];let visitorDirection=1,visitorHovered=false;
+ visitorElement.onpointerenter=()=>visitorHovered=true;visitorElement.onpointerleave=()=>visitorHovered=false;visitorElement.onfocus=()=>visitor.waiting=Math.max(visitor.waiting,.8);visitorElement.onblur=()=>visitorHovered=false;
+ campusVisitorController={actor:visitor,route:CAMPUS_VISITOR_ROUTE.map(n=>CAMPUS_NODE_INDEX[n])};
  const npc=actorAt(CAMPUS_NODE_INDEX['service-start'],$('#reward-npc'),32,20);npc.waiting=0;
  const patrol=['service-start','service-end','service-start','service-south'].map(n=>CAMPUS_NODE_INDEX[n]);let patrolIndex=0;
  npc.wheels=[...npc.element.querySelectorAll('.scooter-wheel')];npc.scooter=npc.element.querySelector('.npc-scooter');npc.headband=npc.element.querySelector('.npc-headband');
@@ -85,6 +90,7 @@ function initCampusResidents(){
  function setDebug(enabled){debug=Boolean(enabled);debugLayer.style.display=debug?'':'none';if(debug){debugLayer.innerHTML=`${Object.entries(CAMPUS_NAV_ZONES).map(([zone,g])=>g.areas.map(poly=>`<polygon points="${poly.map(p=>campusPoint(...p).join(',')).join(' ')}" fill="${g.color}" fill-opacity=".12" stroke="${g.color}" stroke-width="1"/>`).join('')+g.holes.map(poly=>`<polygon points="${poly.map(p=>campusPoint(...p).join(',')).join(' ')}" fill="#d11" fill-opacity=".18" stroke="#d11"/>`).join('')).join('')}${CAMPUS_EDGES.map(([a,b])=>`<path d="M${CAMPUS_NODES[a]}L${CAMPUS_NODES[b]}" fill="none" stroke="${CAMPUS_NAV_ZONES[CAMPUS_NODE_ZONES[a]].color}" stroke-width="2"/>`).join('')}${CAMPUS_NODES.map(([x,y],i)=>`<g><circle cx="${x}" cy="${y}" r="3" fill="white" stroke="#356b64"/><text x="${x+5}" y="${y-5}" fill="#194d45" stroke="white" stroke-width="2" paint-order="stroke" font-size="10">${i}</text><title>${CAMPUS_NAV_POINTS[i][0]}</title></g>`).join('')}${actors.map(a=>`<g data-debug-actor="${a.id}"><circle r="${CAMPUS_WALK_RADIUS}" fill="none" stroke="#a21576" stroke-width="1"/><path d="M-4 0h8M0-4v8" stroke="#c04"/></g>`).join('')}`;paint();}}
  function choose(actor){
   let target;if(actor===npc){patrolIndex=(patrolIndex+1)%patrol.length;target=patrol[patrolIndex];}
+  else if(actor===visitor){const ends=[CAMPUS_NODE_INDEX['east-1'],CAMPUS_NODE_INDEX['east-end']];target=ends[visitorDirection>0?1:0];if(actor.node===target){visitorDirection*=-1;target=ends[visitorDirection>0?1:0];}}
   else{
    let candidates=CAMPUS_STOP_NODES.filter(i=>i!==actor.node&&CAMPUS_NODE_ZONES[i]===actor.zone&&campusRoute(actor.node,i).length>1);
    // One visitor at a time in the cul-de-sac across the marked crosswalk.
@@ -100,18 +106,18 @@ function initCampusResidents(){
  }
  function advance(actor,seconds){
   actor.moving=false;actor.yielding=false;
-  if(actor===npc&&npcHovered){actor.velocity=0;return;}
+  if(actor===npc&&npcHovered||actor===visitor&&visitorHovered){actor.velocity=0;return;}
   if(actor.waiting>0){actor.waiting=Math.max(0,actor.waiting-seconds);actor.velocity=0;return;}
   if(!actor.curve)choose(actor);if(!actor.curve)return;
   const remaining=actor.curve.total-actor.offset,p=residentCurvePoint(actor.curve,actor.offset),look=residentCurvePoint(actor.curve,actor.offset+12);
   let desired=Math.min(actor.speed*Math.min(p.turn,look.turn),Math.sqrt(Math.max(0,remaining)*26));
   if(actor!==npc){
-   for(const other of actors){if(other===actor)continue;const vx=other.x-actor.x,vy=other.y-actor.y,forward=vx*p.dx+vy*p.dy,across=Math.abs(vx*p.dy-vy*p.dx),sameDirection=p.dx*other.dx+p.dy*other.dy>.35;
+   for(const other of pedestrians){if(other===actor)continue;const vx=other.x-actor.x,vy=other.y-actor.y,forward=vx*p.dx+vy*p.dy,across=Math.abs(vx*p.dy-vy*p.dx),sameDirection=p.dx*other.dx+p.dy*other.dy>.35;
     // Follow the person ahead; opposing streams have bounded, prechecked lanes.
     if(forward>0&&forward<27&&across<7&&sameDirection){const factor=Math.max(0,Math.min(1,(forward-12)/15));desired=Math.min(desired,actor.speed*factor);actor.yielding=true;}
    }
   }else{
-   for(const student of actors){const near=Math.hypot(student.x-actor.x,student.y-actor.y);if(near<72){desired=Math.min(desired,actor.speed*Math.max(0,(near-38)/34));actor.yielding=true;}}
+   for(const student of pedestrians){const near=Math.hypot(student.x-actor.x,student.y-actor.y);if(near<72){desired=Math.min(desired,actor.speed*Math.max(0,(near-38)/34));actor.yielding=true;}}
   }
   const acceleration=actor===npc?34:23;
   actor.velocity+=Math.max(-acceleration*seconds,Math.min(acceleration*seconds,desired-actor.velocity));
@@ -121,7 +127,7 @@ function initCampusResidents(){
   actor.travelled+=travel;actor.gaitPhase+=travel/(12+4*Math.abs(next.dx));actor.moving=travel>0&&actor.velocity>.15;
   if(remaining-travel<1e-9){actor.node=actor.target;actor.path=[];actor.curve=null;actor.velocity=0;actor.moving=false;actor.completedRoutes++;actor.waiting=actor===npc?.65:1.2+Math.random()*2.8;}
  }
- function simulate(seconds){for(const actor of actors)advance(actor,seconds);advance(npc,seconds);for(const actor of actors)actor.poseWeight+=(Number(actor.moving)*Math.min(1,actor.velocity/4)-actor.poseWeight)*(1-Math.exp(-seconds*18));tickCount++;}
+ function simulate(seconds){for(const actor of pedestrians)advance(actor,seconds);advance(npc,seconds);for(const actor of pedestrians)actor.poseWeight+=(Number(actor.moving)*Math.min(1,actor.velocity/4)-actor.poseWeight)*(1-Math.exp(-seconds*18));tickCount++;}
  function legPose(actor,part,index,active){
   const hip=index?5:-5,shoeX=index?5:-6,phase=(actor.gaitPhase+index*.5)%1,stance=.55,stride=12+4*Math.abs(actor.dx),half=stride*stance/2;
   let along,lift=0;if(phase<stance)along=half-phase/stance*(2*half);else{const t=(phase-stance)/(1-stance),ease=t*t*(3-2*t);along=-half+2*half*ease;lift=Math.sin(t*Math.PI)*1.35;}
@@ -135,7 +141,7 @@ function initCampusResidents(){
  function paint(){
   const active=!paused&&!document.hidden&&!$('#map-page').hidden&&$('#modal-backdrop').hidden&&!document.body.classList.contains('department-zooming');
   if(active!==lastActive){document.body.classList.toggle('residents-inactive',!active);lastActive=active;}
-  for(const actor of actors){
+  for(const actor of pedestrians){
    residentAttribute(actor.element,'transform',`translate(${actor.x.toFixed(3)} ${actor.y.toFixed(3)})`);
    residentAttribute(actor.parts.figure,'transform',`translate(0 ${-STUDENT_SOLE*STUDENT_SCALE}) scale(${actor.heading*STUDENT_SCALE} ${STUDENT_SCALE})`);
    const weight=active?actor.poseWeight:0,swing=Math.sin(actor.gaitPhase*Math.PI*2)*weight;
@@ -143,12 +149,12 @@ function initCampusResidents(){
    residentAttribute(actor.parts.body,'transform',`translate(0 ${(-Math.abs(swing)*.18).toFixed(2)})`);
    residentAttribute(actor.parts.armLeft,'transform',`rotate(${(-swing*13).toFixed(2)} -9 -17)`);residentAttribute(actor.parts.armRight,'transform',`rotate(${(swing*13).toFixed(2)} 9 -17)`);
    actor.element.classList.toggle('is-walking',active&&actor.moving);if(actor.element.dataset.node!==String(actor.node))actor.element.dataset.node=actor.node;
-   if(debug)residentAttribute(debugLayer.querySelector(`[data-debug-actor="${actor.id}"]`),'transform',`translate(${actor.x} ${actor.y})`);
+   if(debug&&actor!==visitor)residentAttribute(debugLayer.querySelector(`[data-debug-actor="${actor.id}"]`),'transform',`translate(${actor.x} ${actor.y})`);
   }
   residentAttribute(npc.element,'transform',`translate(${npc.x.toFixed(3)} ${npc.y.toFixed(3)})`);residentAttribute(npc.scooter,'transform',`translate(0 ${-17*NPC_SCALE}) scale(${npc.heading*NPC_SCALE} ${NPC_SCALE})`);residentAttribute(npc.headband,'transform',`scale(${npc.heading} 1)`);
   for(const wheel of npc.wheels)residentAttribute(wheel,'transform',`rotate(${npc.travelled/(7*NPC_SCALE)*180/Math.PI%360})`);
   npc.element.dataset.yielding=String(npc.yielding);npc.element.dataset.campusX=npc.x.toFixed(3);npc.element.dataset.campusY=npc.y.toFixed(3);
-  const depth=[...fixedDepth,...actors,npc].sort((a,b)=>a.y-b.y||String(a.id).localeCompare(String(b.id)));let cursor=layer.firstChild;
+  const depth=[...fixedDepth,...pedestrians,npc].sort((a,b)=>a.y-b.y||String(a.id).localeCompare(String(b.id)));let cursor=layer.firstChild;
   for(const item of depth){if(item.element===cursor)cursor=cursor.nextSibling;else layer.insertBefore(item.element,cursor);}
  }
  function step(seconds,render=true){accumulator+=Math.max(0,Math.min(.1,seconds));while(accumulator+1e-9>=WALK_FIXED_STEP){simulate(WALK_FIXED_STEP);accumulator-=WALK_FIXED_STEP;}if(render)paint();}
