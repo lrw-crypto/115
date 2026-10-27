@@ -3,6 +3,13 @@
 // Edit the introduction here. Photos are the school's original uploaded files;
 // paths are relative so the same page works under GitHub Pages' /115/ prefix.
 const DATA_PROCESSING_INTRO = {
+ id: 'data', folder: 'data-processing',
+ sections: [
+  {id:'projects', title:'動手做什麼', extraKey:'extra'},
+  {id:'equipment', title:'我們的學習設備'},
+  {id:'awards', title:'看看我們的競賽成果'}
+ ],
+ missionNote: '完成原有指令小任務，首次可得 1 枚金幣。閱讀介紹不影響進度。',
  title: '資料處理科',
  subtitle: '把創意變成看得見的作品！',
  description: '學習程式、App、網頁與多媒體，結合商業應用，動手實現自己的想法。',
@@ -24,21 +31,25 @@ const DATA_PROCESSING_INTRO = {
   {title:'未來方向', text:'可探索資訊相關科系，以及程式設計、網頁設計、電子商務等領域。'}
  ]
 };
-function dataPhotoPath(photo){return `assets/departments/data-processing/${photo.file}`;}
-function dataPhotoCards(section){
- return DATA_PROCESSING_INTRO.photos.map((photo,index)=>photo.section!==section?'':`<figure class="data-photo-card"><button class="data-photo-open" data-data-photo="${index}" aria-label="放大照片：${esc(photo.title)}（第 ${index+1} 張，共 7 張）"><img src="${dataPhotoPath(photo)}" alt="${esc(photo.alt)}" width="${photo.width}" height="${photo.height}" loading="${index<2?'eager':'lazy'}" decoding="async"><span class="data-photo-hint" aria-hidden="true">＋ 放大照片</span></button><figcaption><h4>${esc(photo.title)}</h4><p>${esc(photo.description)}</p></figcaption></figure>`).join('');
+// Shared photo-first introduction and album; the data-prefixed CSS/hooks are
+// retained so the existing data-processing introduction keeps its presentation.
+function dataPhotoPath(photo,info=DATA_PROCESSING_INTRO){return `assets/departments/${info.folder}/${photo.file}`;}
+function dataPhotoCards(section,info=DATA_PROCESSING_INTRO){
+ return info.photos.map((photo,index)=>photo.section!==section?'':`<figure class="data-photo-card"><button class="data-photo-open" data-data-photo="${index}" aria-label="放大照片：${esc(photo.title)}（第 ${index+1} 張，共 ${info.photos.length} 張）"><img src="${dataPhotoPath(photo,info)}" alt="${esc(photo.alt)}" width="${photo.width}" height="${photo.height}" loading="${index<2?'eager':'lazy'}" decoding="async"><span class="data-photo-hint" aria-hidden="true">＋ 放大照片</span></button><figcaption><h4>${esc(photo.title)}</h4><p>${esc(photo.description)}</p></figcaption></figure>`).join('');
 }
-function renderDataProcessingIntro(origin){
- const info=DATA_PROCESSING_INTRO;
- openModal(`<header class="data-intro-header"><h2 id="dialog-title">${info.title}</h2></header><div class="data-intro-body"><section class="data-intro-cover"><span class="data-intro-kicker">草商科別探索</span><h3>${info.subtitle}</h3><p>${info.description}</p><ul class="data-skill-tags" aria-label="可以學到的技能">${info.skills.map(s=>`<li>${s}</li>`).join('')}</ul></section><section class="data-intro-section" aria-labelledby="data-projects-title"><h3 id="data-projects-title">動手做什麼</h3><div class="data-photo-grid data-projects">${dataPhotoCards('projects')}</div><p class="data-extra">${info.extra}</p></section><section class="data-intro-section" aria-labelledby="data-equipment-title"><h3 id="data-equipment-title">我們的學習設備</h3><div class="data-photo-grid data-equipment">${dataPhotoCards('equipment')}</div></section><section class="data-intro-section" aria-labelledby="data-awards-title"><h3 id="data-awards-title">看看我們的競賽成果</h3><div class="data-photo-grid data-awards">${dataPhotoCards('awards')}</div></section><details class="data-learn-more"><summary>想知道更多？<span aria-hidden="true">＋</span></summary><div>${info.more.map(m=>`<section><h4>${m.title}</h4><p>${m.text}</p></section>`).join('')}</div></details><div class="data-intro-actions"><button class="primary-btn" id="start-campus-mission">開始科別體驗 →</button><button class="secondary-btn" id="data-return-campus">返回校園</button><p>完成原有指令小任務，首次可得 1 枚金幣。閱讀介紹不影響進度。</p></div></div>`,{department:true});
+function renderDataProcessingIntro(origin){renderDepartmentPhotoIntro(DATA_PROCESSING_INTRO,origin);}
+function renderDepartmentPhotoIntro(info,origin){
+ const hasMission=typeof startMission==='function'&&typeof MISSION_INFO!=='undefined'&&Boolean(MISSION_INFO[info.id]);
+ openModal(`<header class="data-intro-header"><h2 id="dialog-title">${esc(info.title)}</h2></header><div class="data-intro-body"><section class="data-intro-cover"><span class="data-intro-kicker">草商科別探索</span><h3>${esc(info.subtitle)}</h3><p>${esc(info.description)}</p><ul class="data-skill-tags" aria-label="可以學到的技能">${info.skills.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></section>${info.sections.map(section=>`<section class="data-intro-section" aria-labelledby="${info.id}-${section.id}-title"><h3 id="${info.id}-${section.id}-title">${esc(section.title)}</h3><div class="data-photo-grid data-${section.id}${section.columns===3?' data-three-columns':''}">${dataPhotoCards(section.id,info)}</div>${(section.extra||info[section.extraKey])?`<p class="data-extra">${esc(section.extra||info[section.extraKey])}</p>`:''}</section>`).join('')}<details class="data-learn-more"><summary>想知道更多？<span aria-hidden="true">＋</span></summary><div>${info.more.map(m=>`<section><h4>${esc(m.title)}</h4>${(m.paragraphs||[m.text]).map(text=>`<p>${esc(text)}</p>`).join('')}</section>`).join('')}</div></details><div class="data-intro-actions">${hasMission?'<button class="primary-btn" id="start-campus-mission">開始科別體驗 →</button>':''}<button class="secondary-btn" id="${info.id}-return-campus" data-return-campus>返回校園</button>${hasMission?`<p>${esc(info.missionNote)}</p>`:''}</div></div>`,{department:true});
  const dialog=$('#dialog');dialog.classList.add('data-department-dialog');
+ if(info.id!=='data')dialog.classList.add(`${info.id}-department-dialog`);
  $('.data-intro-header').append($('.dialog-close'));
  modalOrigin=origin;dialog.scrollTop=0;
- dialog.querySelectorAll('[data-data-photo]').forEach(button=>button.onclick=()=>openDataPhoto(Number(button.dataset.dataPhoto),button));
- $('#start-campus-mission').onclick=()=>startMission('data');
- $('#data-return-campus').onclick=()=>{
+ dialog.querySelectorAll('[data-data-photo]').forEach(button=>button.onclick=()=>openDataPhoto(Number(button.dataset.dataPhoto),button,info));
+ if(hasMission)$('#start-campus-mission').onclick=()=>startMission(info.id);
+ dialog.querySelector('[data-return-campus]').onclick=()=>{
   closeModal();
-  if($('#map-page').hidden){showView('map');$('[data-label-for="data"]').focus({preventScroll:true});}
+  if($('#map-page').hidden){showView('map');$(`[data-label-for="${info.id}"]`).focus({preventScroll:true});}
  };
 }
 
@@ -49,16 +60,16 @@ function closeDataPhoto(restoreFocus=true){
  const backdrop=$('#modal-backdrop');backdrop.inert=false;backdrop.removeAttribute('aria-hidden');
  if(restoreFocus&&origin?.isConnected)origin.focus({preventScroll:true});
 }
-function openDataPhoto(index,origin){
+function openDataPhoto(index,origin,info=DATA_PROCESSING_INTRO){
  closeDataPhoto(false);
  const viewer=document.createElement('section');
  viewer.className='data-photo-viewer';viewer.setAttribute('role','dialog');viewer.setAttribute('aria-modal','true');viewer.setAttribute('aria-labelledby','data-photo-title');viewer.tabIndex=-1;
  viewer.innerHTML=`<div class="data-viewer-top"><h2 id="data-photo-title"></h2><button class="data-viewer-close" aria-label="關閉照片">${ico('close')}</button></div><div class="data-viewer-image"><img alt=""></div><div class="data-viewer-bottom"><button class="data-viewer-prev" aria-label="上一張照片">← 上一張</button><span class="data-viewer-count" role="status" aria-live="polite"></span><button class="data-viewer-next" aria-label="下一張照片">下一張 →</button></div>`;
  dataPhotoViewer={element:viewer,origin,index};
  function showPhoto(next){
-  const photos=DATA_PROCESSING_INTRO.photos;dataPhotoViewer.index=(next+photos.length)%photos.length;
+  const photos=info.photos;dataPhotoViewer.index=(next+photos.length)%photos.length;
   const photo=photos[dataPhotoViewer.index],img=viewer.querySelector('img');
-  img.src=dataPhotoPath(photo);img.alt=photo.alt;
+  img.src=dataPhotoPath(photo,info);img.alt=photo.alt;
   viewer.querySelector('h2').textContent=photo.title;
   viewer.querySelector('.data-viewer-count').textContent=`${dataPhotoViewer.index+1} / ${photos.length}`;
  }
