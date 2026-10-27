@@ -43,11 +43,11 @@ function openCampusVisitor(){
 function createCampusSupporter(layer){
  $('#campus-supporter')?.remove();
  const el=document.createElementNS('http://www.w3.org/2000/svg','g');el.id='campus-supporter';el.setAttribute('class','campus-visitor campus-supporter');el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label','和旁邊的加油角色說話');
- el.innerHTML=`<ellipse class="resident-ground-shadow" cy=".4" rx="7" ry="2.2" fill="#43684c32"/><image class="supporter-figure" href="assets/campus-supporter-3d.png" x="-15" y="-48.5" width="30" height="50" preserveAspectRatio="xMidYMax meet" aria-hidden="true"/><ellipse class="visitor-hit-area" cx="0" cy="-22" rx="13" ry="25" fill="transparent"/><g class="visitor-talk-hint" transform="translate(0 -55)" aria-hidden="true"><rect x="-15" y="-8" width="30" height="16" rx="8" fill="#fff1f5" stroke="#c37b98"/><text y="3" text-anchor="middle" font-size="9" fill="#783d5b">加油</text></g>`;
+ el.innerHTML=`<ellipse class="resident-ground-shadow" cy=".4" rx="7" ry="2.2" fill="#43684c32"/><image class="supporter-figure" href="assets/campus-supporter-original.jpg" x="-15" y="-48.5" width="30" height="50" preserveAspectRatio="xMidYMax meet" aria-hidden="true"/><ellipse class="visitor-hit-area" cx="0" cy="-22" rx="13" ry="25" fill="transparent"/><g class="visitor-talk-hint" transform="translate(0 -55)" aria-hidden="true"><rect x="-15" y="-8" width="30" height="16" rx="8" fill="#fff1f5" stroke="#c37b98"/><text y="3" text-anchor="middle" font-size="9" fill="#783d5b">加油</text></g>`;
  layer.append(el);el.onpointerdown=e=>{drag.moved=false;e.stopPropagation();};
  const talk=()=>{el.focus({preventScroll:true});openCampusSupporter();};
  el.onclick=()=>{if(!drag.moved)talk();};el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();talk();}};return el;
 }
 function openCampusSupporter(){
- openModal(`<div class="crying-visitor-dialog supporter-dialog"><img class="crying-visitor-portrait supporter-portrait" src="assets/campus-supporter-3d.png" alt="短黑髮、圓框眼鏡、白上衣黑裙的加油角色，笑著替你打氣" width="1024" height="1536"><div class="crying-visitor-speech supporter-speech"><h2 id="dialog-title">${CAMPUS_SUPPORTER_LINE}</h2></div></div>`);
+ openModal(`<div class="crying-visitor-dialog supporter-dialog"><img class="crying-visitor-portrait supporter-portrait" src="assets/campus-supporter-original.jpg" alt="短黑髮、圓框眼鏡、白上衣黑裙的加油角色，笑著替你打氣" width="157" height="400"><div class="crying-visitor-speech supporter-speech"><h2 id="dialog-title">${CAMPUS_SUPPORTER_LINE}</h2></div></div>`);
 }
