@@ -193,3 +193,10 @@ CAMPUS_BASE_URL=http://127.0.0.1:8012/115/ node tests/browser-campus-walking.cjs
 瀏覽器檢查：在已有 Playwright 與 Chromium 的環境設定 `NODE_PATH`，執行 `node tests/browser-player-gestures.cjs`；可透過 `CAMPUS_BASE_URL` 指定預覽網址（預設 `http://127.0.0.1:8013/115/`）。測試包含八科實際旅程、可行走區域取樣、取消／改選不跳位置、角色儲存、課程／搜尋入口、原有商經遊戲與金幣、Chromium 原生雙指觸控與錨點、轉單指、取消、失焦、重設、誤點抑制、上限，以及手機與 iPad 尺寸的橫直版面。這些是 Chromium 模擬，不能取代 iPhone／iPad Safari 實機測試。
 
 個人化功能已接入正式網站。玩家與選角預覽共用 `campusPlayerArt`，沿用學校制服，加上可辨識的小書包與肩帶，頭上顯示暱稱。頭上與頁首只顯示暱稱；不合新長度規則的舊暱稱會於下次開啟時要求重新設定，不變動既有金幣。選角視窗及校園上方明確顯示「點選科別後，自動走到探索入口」。完成八科任務後，護照提示「已集滿！找中鼎文」，沿用原有客服與實體小禮物資訊；領取規則仍待校方補充，不會預先扣除金幣。
+
+
+### 草稿：前 15 名小獎品與全站名次
+
+完成八科後自動由中鼎文登記完成名次，成功後顯示可截圖的名次／領獎編號；第 16 位起告知獎品已發送完畢。`assets/campus-rewards.js` 共用原有視窗，`assets/reward-config.js` 只放公開部署網址，`server/prize-counter.gs` 使用 Google Apps Script 全域鎖與試算表保存全站紀錄。暱稱不傳送給後端。詳見 `server/README.md` 的部署步驟、查重規則及校方領取紀錄說明。
+
+此輪仍需校方提供 Apps Script `/exec` 網址才能實際連線驗證；未設定時不會產生假名次或顯示可領獎。正式網站暫不套用此草稿，避免活動開始後無法正確登記。
