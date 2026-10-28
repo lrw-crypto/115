@@ -9,22 +9,28 @@ function campusPlayerArt(gender){
  const straps=`<g class="player-backpack-straps" fill="none" stroke="${dark}" stroke-width="2.5" stroke-linecap="round"><path d="M-8-22q-3 6-1 12M8-22q3 6 1 12"/></g>`;
  return animal(0,0,'',girl?'cat':'bear','smile').replace('<g class="friend-bob">',`<g class="friend-bob">${bag}`).replace('<circle cx="4" cy="-15"',`${straps}<circle cx="4" cy="-15"`);
 }
+function validCampusNickname(value){return /^(?:[\p{Script=Han}]{1,3}|[A-Za-z]{1,6})$/u.test(value);}
 function chooseCampusPlayer(after){
- openModal(`<div class="eyebrow">MY CAMPUS ADVENTURE</div><h2 id="dialog-title">今天，換你當草商新生！</h2><p>背上小書包，用你的暱稱逛校園！點選科別，就會自動沿步道走到探索入口。</p><div class="player-choices">${['boy','girl'].map(g=>`<button type="button" data-player-gender="${g}" aria-pressed="${(campusPlayerProfile?.gender||'boy')===g}"><svg viewBox="-30 -65 60 80" aria-hidden="true">${campusPlayerArt(g)}</svg>${g==='boy'?'男生角色':'女生角色'}</button>`).join('')}</div><label for="player-name">你的暱稱（最多 12 個字）</label><input id="player-name" maxlength="12" autocomplete="off" placeholder="例如：小宇" value="${esc(campusPlayerProfile?.name||'')}"><p>角色與暱稱保存在此瀏覽器，不影響已獲得的金幣。</p><button class="primary-btn" id="player-start">進入校園 →</button>`);
+ openModal(`<h2 id="dialog-title">選擇角色與暱稱</h2><p class="player-walk-instruction">點選科別後，自動走到探索入口</p><div class="player-choices">${['boy','girl'].map(g=>`<button type="button" data-player-gender="${g}" aria-pressed="${(campusPlayerProfile?.gender||'boy')===g}"><svg viewBox="-30 -65 60 80" aria-hidden="true">${campusPlayerArt(g)}</svg>${g==='boy'?'男生角色':'女生角色'}</button>`).join('')}</div><label for="player-name">暱稱（中文最多 3 字／英文最多 6 字）</label><input id="player-name" maxlength="6" autocomplete="off" aria-describedby="player-name-error" placeholder="輸入暱稱" value="${esc(campusPlayerProfile?.name||'')}"><p id="player-name-error" class="player-name-error" role="alert" hidden></p><small class="player-storage-note">角色與暱稱保存在此瀏覽器。</small><button class="primary-btn" id="player-start">進入校園 →</button>`);
  let gender=campusPlayerProfile?.gender||'boy';$$('[data-player-gender]').forEach(b=>b.onclick=()=>{gender=b.dataset.playerGender;$$('[data-player-gender]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});
- $('#player-start').onclick=()=>{campusPlayerProfile={gender,name:$('#player-name').value.trim().slice(0,12)||'草商新生'};try{localStorage.setItem('caotun-player-v1',JSON.stringify(campusPlayerProfile));}catch{}closeModal();paintCampusPlayer();if(after)after();};
+ $('#player-name').oninput=()=>{$('#player-name').removeAttribute('aria-invalid');$('#player-name-error').hidden=true;};
+ $('#player-start').onclick=()=>{
+  const name=$('#player-name').value.trim();
+  if(!validCampusNickname(name)){$('#player-name').setAttribute('aria-invalid','true');$('#player-name-error').textContent='請輸入中文 1～3 字或英文 1～6 字。';$('#player-name-error').hidden=false;$('#player-name').focus();return;}
+  campusPlayerProfile={gender,name};try{localStorage.setItem('caotun-player-v1',JSON.stringify(campusPlayerProfile));}catch{}closeModal();paintCampusPlayer();if(after)after();
+ };
 }
 function paintCampusPlayer(position=campusPlayerPosition||CAMPUS_NODES[campusPlayerNode],moving=false){
  let el=$('#campus-player');if(!el){el=document.createElementNS('http://www.w3.org/2000/svg','g');el.id='campus-player';el.style.pointerEvents='none';$('#map-world').append(el);}
  if(!campusPlayerProfile)return;
  const previous=campusPlayerPosition;campusPlayerPosition=[...position];if(moving&&previous){const dx=position[0]-previous[0];campusPlayerDistance+=Math.hypot(dx,position[1]-previous[1]);if(Math.abs(dx)>.01)campusPlayerHeading=dx<0?-1:1;}
- const labelWidth=Math.max(116,Array.from(campusPlayerProfile.name).length*10+32);
- if(el.dataset.profile!==JSON.stringify(campusPlayerProfile)){el.dataset.profile=JSON.stringify(campusPlayerProfile);el.innerHTML=`<ellipse rx="13" ry="5" fill="#ffcd6488" stroke="#c47b28"/><g class="player-body" transform="scale(.8)">${campusPlayerArt(campusPlayerProfile.gender)}</g><rect class="player-nameplate" x="${-labelWidth/2}" y="-74" width="${labelWidth}" height="21" rx="10" fill="#fff7da" stroke="#d3a555"/><text class="player-nickname" y="-60" text-anchor="middle" font-size="10" fill="#765029">${esc(campusPlayerProfile.name)} · 你</text>`;}
+ const labelWidth=Math.max(56,Array.from(campusPlayerProfile.name).length*10+20);
+ if(el.dataset.profile!==JSON.stringify(campusPlayerProfile)){el.dataset.profile=JSON.stringify(campusPlayerProfile);el.innerHTML=`<ellipse rx="13" ry="5" fill="#ffcd6488" stroke="#c47b28"/><g class="player-body" transform="scale(.8)">${campusPlayerArt(campusPlayerProfile.gender)}</g><rect class="player-nameplate" x="${-labelWidth/2}" y="-74" width="${labelWidth}" height="21" rx="10" fill="#fff7da" stroke="#d3a555"/><text class="player-nickname" y="-60" text-anchor="middle" font-size="10" fill="#765029">${esc(campusPlayerProfile.name)}</text>`;}
  el.setAttribute('role','img');el.setAttribute('aria-label',`${campusPlayerProfile.name}的${campusPlayerProfile.gender==='girl'?'女生':'男生'}角色，背著小書包`);
  const body=el.querySelector('.player-body');body.setAttribute('transform',`translate(0 -7.52) scale(${campusPlayerHeading*.8} .8)`);
  const swing=moving?Math.sin(campusPlayerDistance/16*Math.PI*2):0;for(const [selector,angle,pivot]of [['.step-left',swing*18,'-5 -5'],['.step-right',-swing*18,'5 -5'],['.arm-left',-swing*12,'-9 -17'],['.arm-right',swing*12,'9 -17']])el.querySelector(selector).setAttribute('transform',`rotate(${angle} ${pivot})`);
  el.setAttribute('transform',`translate(${position[0]} ${position[1]})`);el.classList.toggle('player-walking',moving);
- $('#player-profile').textContent=`${campusPlayerProfile.gender==='girl'?'👧':'👦'} ${campusPlayerProfile.name} · 換角色`;
+ $('#player-profile').textContent=campusPlayerProfile.name;$('#player-profile').setAttribute('aria-label',`${campusPlayerProfile.name}，更換角色或暱稱`);$('#player-profile').title='更換角色或暱稱';
 }
 function cancelCampusPlayerWalk(){campusPlayerSerial++;if(campusPlayerFrame!==null)cancelAnimationFrame(campusPlayerFrame);campusPlayerFrame=null;$('#campus-player')?.classList.remove('player-walking');$('#player-travel')?.remove();if(campusPlayerProfile)paintCampusPlayer();}
 function walkCampusPlayer(id){
@@ -37,7 +43,7 @@ function walkCampusPlayer(id){
  const options=endpoints.map(node=>{const path=campusRoute(node,target);let length=Math.hypot(start[0]-CAMPUS_NODES[node][0],start[1]-CAMPUS_NODES[node][1]);for(let i=1;i<path.length;i++)length+=Math.hypot(CAMPUS_NODES[path[i]][0]-CAMPUS_NODES[path[i-1]][0],CAMPUS_NODES[path[i]][1]-CAMPUS_NODES[path[i-1]][1]);return{path,length}}).filter(o=>o.path.length).sort((a,b)=>a.length-b.length);
  const route=options[0]?.path||[],transfer=!route.length,points=[start,...route.map(n=>CAMPUS_NODES[n])];
  const status=document.createElement('div');status.id='player-travel';
- status.innerHTML=`<span role="status">${transfer?`步道不相連，轉場前往${esc(d.name)}的探索入口…`:`${esc(campusPlayerProfile.name)}，前往${esc(d.name)}…`}</span><button type="button" id="cancel-player-travel">取消前往</button>`;
+ status.innerHTML=`<span role="status">${transfer?`步道不相連，轉場前往${esc(d.name)}的探索入口…`:`前往${esc(d.name)}的探索入口…`}</span><button type="button" id="cancel-player-travel">取消前往</button>`;
  $('#map-page').append(status);$('#cancel-player-travel').onclick=()=>{cancelCampusPlayerWalk();origin?.focus?.({preventScroll:true});};
  const arrival=()=>{campusPlayerNode=target;campusPlayerSegment=null;campusPlayerPosition=[...CAMPUS_NODES[target]];campusPlayerFrame=null;paintCampusPlayer();status.remove();const focusOrigin=origin?.getClientRects&&!origin.getClientRects().length?$(`[data-label-for="${id}"]`):origin;showDepartmentAfterWalk(id,focusOrigin);};
  // Retain the transfer notice even when walking animations are reduced.
@@ -56,7 +62,7 @@ function walkCampusPlayer(id){
  campusPlayerFrame=requestAnimationFrame(frame);
 }
 function initCampusPlayer(){
- try{const p=JSON.parse(localStorage.getItem('caotun-player-v1'));if(p&&['boy','girl'].includes(p.gender)&&typeof p.name==='string')campusPlayerProfile={gender:p.gender,name:p.name.slice(0,12)};}catch{}
- const button=document.createElement('button');button.id='player-profile';button.textContent='選擇我的角色';button.onclick=()=>chooseCampusPlayer();$('.header-right').prepend(button);paintCampusPlayer();
+ try{const p=JSON.parse(localStorage.getItem('caotun-player-v1'));if(p&&['boy','girl'].includes(p.gender)&&typeof p.name==='string'&&validCampusNickname(p.name.trim()))campusPlayerProfile={gender:p.gender,name:p.name.trim()};}catch{}
+ const button=document.createElement('button');button.id='player-profile';button.textContent='設定暱稱';button.onclick=()=>chooseCampusPlayer();$('.header-right').prepend(button);paintCampusPlayer();
  if(!campusPlayerProfile)chooseCampusPlayer();
 }

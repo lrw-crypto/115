@@ -25,3 +25,5 @@ for(const id of c.departments.map(d=>d.id)){c.walkCampusPlayer(id);flush();asser
 c.walkCampusPlayer('data');c.cancelCampusPlayerWalk();const count=shown.length;flush();assert.equal(shown.length,count);
 c.walkCampusPlayer('data');c.walkCampusPlayer('service');flush();assert.equal(shown.at(-1),'service');assert.equal(shown.length,count+1);
 assert(painted.some(x=>x.m));console.log('PASS eight destinations, movement, cancellation, replacement visit, status cleanup');
+
+for(const name of ['小宇','小草商','Amy','Caotun'])assert(c.validCampusNickname(name));for(const name of ['', '草商新生','English','阿Amy','Test1'])assert(!c.validCampusNickname(name));console.log('PASS Chinese/English nickname limits');

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="assets/campus.css">
 <link rel="stylesheet" href="assets/campus-layout.css?v=supporter-original1">
 <link rel="stylesheet" href="assets/data-processing-intro.css?v=shared-photos2">
-<link rel="stylesheet" href="assets/campus-player.css?v=player-review2">
+<link rel="stylesheet" href="assets/campus-player.css?v=nickname-guide1">
 </head>
 <body>
 <svg class="icon-library" aria-hidden="true"><defs>
@@ -34,6 +34,7 @@
 </header>
 <main>
 <section class="map-page" id="map-page">
+<p class="player-walk-guide"><span aria-hidden="true">👣</span> 點選科別後，自動走到探索入口</p>
 <div id="map-viewport" class="map-viewport" aria-label="可拖曳、縮放與選取的立體校園地圖"><svg id="campus-map" viewBox="0 0 1240 815" role="group" aria-label="草商探索趣互動地圖"><defs><linearGradient id="student-skin" x1="0" y1="0" x2=".85" y2="1"><stop stop-color="#ffe5b8"/><stop offset=".55" stop-color="#efbf83"/><stop offset="1" stop-color="#d89d65"/></linearGradient><linearGradient id="student-hair" x2="1" y2="1"><stop stop-color="#575749"/><stop offset=".5" stop-color="#2c3029"/><stop offset="1" stop-color="#1f251f"/></linearGradient><linearGradient id="uniform-blue" x2="1" y2="1"><stop stop-color="#307eac"/><stop offset="1" stop-color="#1b537b"/></linearGradient><filter id="shadow" x="-40%" y="-50%" width="180%" height="230%"><feGaussianBlur stdDeviation="12"/></filter><filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="230%"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#356855" flood-opacity=".16"/></filter><linearGradient id="water" x2="0" y2="1"><stop stop-color="#d2e9e5"/><stop offset="1" stop-color="#c3e1db"/></linearGradient><pattern id="water-grid" width="55" height="32" patternUnits="userSpaceOnUse"><path d="M23 17q6 3 12 0" stroke="#86bdb1" stroke-width="1" fill="none" opacity=".24"/></pattern></defs><g id="map-world"></g></svg></div>
 <div class="map-caption"><span class="tiny-orbit"></span>每個科別，都有新的可能<span class="caption-line"></span><span>點選科別方塊，開始體驗</span></div>
 <aside class="passport-panel" id="passport-panel" aria-label="探索護照"></aside><aside class="live-panel" hidden><div class="panel-top"><div><span class="eyebrow">CAMPUS HAPPENINGS</span><h2>校園裡，正在發生</h2></div><span class="pulse-label"><i></i><span id="live-label">DEMO</span></span></div><div class="panel-tabs"><button class="active" data-feed="all">最新動態</button><button data-feed="event">活動消息</button></div><div id="feed-list" aria-live="polite"></div><button class="all-activity" data-view="activity">看看校園的大小事 <svg><use href="#i-arrow"/></svg></button><div class="bot-note"><span class="bot-face">▣</span><span>TA bot 的校園觀測站<small id="bot-note">示範動態 · 尚未連接 Discord</small></span><button class="icon-btn" id="connect-bot" aria-label="設定 TA bot 資料來源"><svg><use href="#i-settings"/></svg></button></div></aside>
@@ -59,7 +60,7 @@
 <script src="assets/campus-guides.js?v=readable1" defer></script>
 <script src="assets/data-processing-intro.js?v=shared-photos2" defer></script>
 <script src="assets/business-management-intro.js?v=business-photos1" defer></script>
-<script src="assets/campus-player.js?v=backpack-player1" defer></script>
+<script src="assets/campus-player.js?v=nickname-guide1" defer></script>
 <script src="assets/campus-gestures.js?v=pinch-review2" defer></script>
 <script src="assets/campus-app.js?v=player-pinch-review2" defer></script>
 </body></html>
