@@ -202,3 +202,12 @@ CAMPUS_BASE_URL=http://127.0.0.1:8012/115/ node tests/browser-campus-walking.cjs
 名次以 `ttvs_115_all_tasks_clear` 存在此瀏覽器，重整／重玩／再次找客服使用原名次；同頁請求合併，支援 Web Locks 的瀏覽器協調多分頁結算。沒有名次前不會產生領獎編號或假名次。回應不明的網路失敗保留 pending 狀態，提示截圖洽工作人員，不會自動再 hit。詳見 `server/README.md` 的既有 GAS 介面、測試與活動重設說明。暱稱不傳給 GAS。
 
 測試只使用攔截的模擬 API，不呼叫正式 `hit` 或重設正式人數。
+
+
+### 登出並從零重玩
+
+頁首與角色設定視窗提供「登出並從零重玩」。確認後清除 `caotun-player-v1` 的角色／暱稱，將 `caotun-island-exploration-v1` 重設為零科／零金幣，取消未完成的走路、縮放與小遊戲，回到校門重新選角。其他開著的分頁透過 `caotun-playthrough-reset-v1` 同步重設。
+
+保留 `ttvs_115_all_tasks_clear` 的完成名次、其 pending 記錄及正在結算的請求，完全不呼叫 GAS hit、歸零或刪除全站紀錄。同一瀏覽器重玩破關後沿用原名次，不再增加人次。其他網站偏好與 TA bot 設定不清除。
+
+`tests/browser-player-restart.cjs` 驗證取消確認、清空角色與進度、跨分頁同步、登出後完整重玩不再 hit、結算中登出仍保存原名次、舊遊戲／走路回呼取消，以及手機頁首版面；GAS 全程使用攔截模擬，不改正式計數。

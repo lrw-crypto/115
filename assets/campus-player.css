@@ -12,3 +12,8 @@
 .player-walk-guide{position:absolute;top:8px;left:18px;right:310px;margin:0;min-height:44px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #d0a5c0;border-radius:14px;background:#fff2f8;color:#65364f;font-size:18px;font-weight:750;line-height:1.5;padding:10px 14px;pointer-events:none}.map-page:has(#player-travel) .player-walk-guide{visibility:hidden}
 @media(min-width:801px){.map-viewport{top:66px;height:calc(100% - 123px)}}
 @media(max-width:800px){.player-walk-guide{top:8px;left:12px;right:12px;font-size:17px;min-height:44px;padding:9px 10px}.map-page{padding-top:713px}.map-viewport{top:60px}.map-controls{top:622px}.map-hint{top:670px}.map-page.map-panorama{padding-top:433px}.map-panorama .map-viewport{top:60px}.map-panorama .map-controls{top:342px}.map-panorama .map-hint{top:390px}.dialog .player-walk-instruction{font-size:18px}}
+
+/* Restart only the playthrough; completed global ranks remain preserved. */
+#player-restart{border:1px solid #c79cb5;background:#fff6f8;color:#713c5e;border-radius:18px;min-height:44px;padding:9px 12px;font-size:13px;white-space:nowrap}#player-restart:hover:not(:disabled){background:#f4e1ed}#player-restart:disabled{opacity:.5;cursor:default}.player-choice-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.player-choice-actions button{min-height:46px}
+@media(min-width:801px) and (max-width:1500px){#player-restart{font-size:12px;padding:8px 10px}}
+@media(max-width:800px){.header #player-profile{grid-column:1;max-width:100%}.header #player-restart{grid-column:2/-1;grid-row:3;justify-self:end;font-size:12px;padding:8px;margin:6px 0 8px}.player-choice-actions{flex-direction:column;align-items:stretch}.player-choice-actions button{width:100%}}

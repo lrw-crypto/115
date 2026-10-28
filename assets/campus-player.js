@@ -1,5 +1,7 @@
 'use strict';
 let campusPlayerProfile=null,campusPlayerNode=9,campusPlayerFrame=null,campusPlayerSerial=0,campusPlayerPosition=null,campusPlayerSegment=null,campusPlayerDistance=0,campusPlayerHeading=1;
+const CAMPUS_PLAYER_PROFILE_KEY='caotun-player-v1';
+const CAMPUS_PLAYTHROUGH_RESET_KEY='caotun-playthrough-reset-v1';
 const CAMPUS_PLAYER_STOPS={accounting:1,business:1,data:1,service:5,mechanical:21,piping:20,english:21,sports:47};
 // Reuse the school's existing students; only the player's backpack/straps
 // distinguish this avatar, so the other roaming students stay unchanged.
@@ -11,13 +13,14 @@ function campusPlayerArt(gender){
 }
 function validCampusNickname(value){return /^(?:[\p{Script=Han}]{1,3}|[A-Za-z]{1,6})$/u.test(value);}
 function chooseCampusPlayer(after){
- openModal(`<h2 id="dialog-title">選擇角色與暱稱</h2><p class="player-walk-instruction">點選科別後，自動走到探索入口<br><span class="player-prize-promo">前15名完成遊戲者可以領取小獎品唷！</span></p><div class="player-choices">${['boy','girl'].map(g=>`<button type="button" data-player-gender="${g}" aria-pressed="${(campusPlayerProfile?.gender||'boy')===g}"><svg viewBox="-30 -65 60 80" aria-hidden="true">${campusPlayerArt(g)}</svg>${g==='boy'?'男生角色':'女生角色'}</button>`).join('')}</div><label for="player-name">暱稱（中文最多 3 字／英文最多 6 字）</label><input id="player-name" maxlength="6" autocomplete="off" aria-describedby="player-name-error" placeholder="輸入暱稱" value="${esc(campusPlayerProfile?.name||'')}"><p id="player-name-error" class="player-name-error" role="alert" hidden></p><small class="player-storage-note">角色與暱稱保存在此瀏覽器。</small><button class="primary-btn" id="player-start">進入校園 →</button>`);
+ openModal(`<h2 id="dialog-title">選擇角色與暱稱</h2><p class="player-walk-instruction">點選科別後，自動走到探索入口<br><span class="player-prize-promo">前15名完成遊戲者可以領取小獎品唷！</span></p><div class="player-choices">${['boy','girl'].map(g=>`<button type="button" data-player-gender="${g}" aria-pressed="${(campusPlayerProfile?.gender||'boy')===g}"><svg viewBox="-30 -65 60 80" aria-hidden="true">${campusPlayerArt(g)}</svg>${g==='boy'?'男生角色':'女生角色'}</button>`).join('')}</div><label for="player-name">暱稱（中文最多 3 字／英文最多 6 字）</label><input id="player-name" maxlength="6" autocomplete="off" aria-describedby="player-name-error" placeholder="輸入暱稱" value="${esc(campusPlayerProfile?.name||'')}"><p id="player-name-error" class="player-name-error" role="alert" hidden></p><small class="player-storage-note">角色與暱稱保存在此瀏覽器。</small><div class="player-choice-actions"><button class="primary-btn" id="player-start">進入校園 →</button>${campusPlayerProfile||questCoins()>0?'<button class="secondary-btn" id="player-restart-dialog">登出並從零重玩</button>':''}</div>`);
+ if($('#player-restart-dialog'))$('#player-restart-dialog').onclick=confirmCampusPlayerRestart;
  let gender=campusPlayerProfile?.gender||'boy';$$('[data-player-gender]').forEach(b=>b.onclick=()=>{gender=b.dataset.playerGender;$$('[data-player-gender]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});
  $('#player-name').oninput=()=>{$('#player-name').removeAttribute('aria-invalid');$('#player-name-error').hidden=true;};
  $('#player-start').onclick=()=>{
   const name=$('#player-name').value.trim();
   if(!validCampusNickname(name)){$('#player-name').setAttribute('aria-invalid','true');$('#player-name-error').textContent='請輸入中文 1～3 字或英文 1～6 字。';$('#player-name-error').hidden=false;$('#player-name').focus();return;}
-  campusPlayerProfile={gender,name};try{localStorage.setItem('caotun-player-v1',JSON.stringify(campusPlayerProfile));}catch{}closeModal();paintCampusPlayer();if(after)after();
+  campusPlayerProfile={gender,name};try{localStorage.setItem(CAMPUS_PLAYER_PROFILE_KEY,JSON.stringify(campusPlayerProfile));}catch{}closeModal();paintCampusPlayer();if(after)after();
  };
 }
 function paintCampusPlayer(position=campusPlayerPosition||CAMPUS_NODES[campusPlayerNode],moving=false){
@@ -30,6 +33,7 @@ function paintCampusPlayer(position=campusPlayerPosition||CAMPUS_NODES[campusPla
  const body=el.querySelector('.player-body');body.setAttribute('transform',`translate(0 -7.52) scale(${campusPlayerHeading*.8} .8)`);
  const swing=moving?Math.sin(campusPlayerDistance/16*Math.PI*2):0;for(const [selector,angle,pivot]of [['.step-left',swing*18,'-5 -5'],['.step-right',-swing*18,'5 -5'],['.arm-left',-swing*12,'-9 -17'],['.arm-right',swing*12,'9 -17']])el.querySelector(selector).setAttribute('transform',`rotate(${angle} ${pivot})`);
  el.setAttribute('transform',`translate(${position[0]} ${position[1]})`);el.classList.toggle('player-walking',moving);
+ if($('#player-restart'))$('#player-restart').disabled=false;
  $('#player-profile').textContent=campusPlayerProfile.name;$('#player-profile').setAttribute('aria-label',`${campusPlayerProfile.name}，更換角色或暱稱`);$('#player-profile').title='更換角色或暱稱';
 }
 function cancelCampusPlayerWalk(){campusPlayerSerial++;if(campusPlayerFrame!==null)cancelAnimationFrame(campusPlayerFrame);campusPlayerFrame=null;$('#campus-player')?.classList.remove('player-walking');$('#player-travel')?.remove();if(campusPlayerProfile)paintCampusPlayer();}
@@ -61,8 +65,31 @@ function walkCampusPlayer(id){
  $('#map-page').classList.add('map-panorama');$('#campus-map').setAttribute('preserveAspectRatio','xMidYMid meet');Object.assign(camera,{x:0,y:0,scale:1});updateCamera();
  campusPlayerFrame=requestAnimationFrame(frame);
 }
+function confirmCampusPlayerRestart(){
+ const accepted=window.confirm('登出並從零重玩？\n角色、暱稱、金幣與八科探索進度將清除。\n已登記的完成名次與全站人次會保留，再次破關不會重複計數。');
+ if(accepted)resetCampusPlayerSession();
+}
+function resetCampusPlayerSession(broadcast=true){
+ // Invalidate every deferred walk/zoom/game callback before clearing the round.
+ // An in-flight completion request is deliberately left alone: its rank must
+ // still be saved even if the student logs out while GAS is responding.
+ closeModal();missionSerial++;activeMission=null;selectedDepartment=null;
+ campusPlayerProfile=null;campusPlayerNode=9;campusPlayerPosition=[...CAMPUS_NODES[9]];campusPlayerSegment=null;campusPlayerDistance=0;campusPlayerHeading=1;
+ questState={completed:[]};
+ if(broadcast){
+  let saved=true;
+  for(const operation of [()=>localStorage.removeItem(CAMPUS_PLAYER_PROFILE_KEY),()=>localStorage.setItem(QUEST_KEY,JSON.stringify(questState)),()=>localStorage.setItem(CAMPUS_PLAYTHROUGH_RESET_KEY,crypto.randomUUID())])try{operation();}catch{saved=false;}
+  questStorageOK=saved;
+ }
+ // Do not remove the GAS rank, pending marker, or other site preferences.
+ $('#campus-player')?.remove();$('#player-profile').textContent='設定暱稱';$('#player-profile').setAttribute('aria-label','設定角色與暱稱');$('#player-profile').removeAttribute('title');$('#player-restart').disabled=true;
+ refreshQuestWallet();showView('map');$('#map-page').classList.remove('map-panorama');$('#campus-map').setAttribute('preserveAspectRatio',innerWidth<=800?'xMidYMid slice':'xMidYMid meet');Object.assign(camera,{x:0,y:0,scale:1});updateCamera();
+ chooseCampusPlayer();if(broadcast&&!questStorageOK)toast('本次進度已清除，但此瀏覽器無法保存登出狀態。');
+}
 function initCampusPlayer(){
- try{const p=JSON.parse(localStorage.getItem('caotun-player-v1'));if(p&&['boy','girl'].includes(p.gender)&&typeof p.name==='string'&&validCampusNickname(p.name.trim()))campusPlayerProfile={gender:p.gender,name:p.name.trim()};}catch{}
- const button=document.createElement('button');button.id='player-profile';button.textContent='設定暱稱';button.onclick=()=>chooseCampusPlayer();$('.header-right').prepend(button);paintCampusPlayer();
+ try{const p=JSON.parse(localStorage.getItem(CAMPUS_PLAYER_PROFILE_KEY));if(p&&['boy','girl'].includes(p.gender)&&typeof p.name==='string'&&validCampusNickname(p.name.trim()))campusPlayerProfile={gender:p.gender,name:p.name.trim()};}catch{}
+ const button=document.createElement('button');button.id='player-profile';button.textContent='設定暱稱';button.onclick=()=>chooseCampusPlayer();$('.header-right').prepend(button);
+ const restart=document.createElement('button');restart.id='player-restart';restart.textContent='登出並從零重玩';restart.disabled=!campusPlayerProfile&&questCoins()===0;restart.onclick=confirmCampusPlayerRestart;button.after(restart);paintCampusPlayer();
+ window.addEventListener('storage',event=>{if(event.key===CAMPUS_PLAYTHROUGH_RESET_KEY&&event.newValue)resetCampusPlayerSession(false);});
  if(!campusPlayerProfile)chooseCampusPlayer();
 }
