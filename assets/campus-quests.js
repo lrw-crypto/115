@@ -56,7 +56,7 @@ function questFooter(id){const info=MISSION_INFO[id],done=questState.completed.i
 function awardQuestCoin(id){
  if(!QUEST_IDS.includes(id))return;syncQuestState();const already=questState.completed.includes(id);
  if(!already){questState.completed.push(id);saveQuestState();}refreshQuestWallet();
- if(questCoins()===8){openCompletionReward();return;}
+ if(questCoins()===8){triggerAllTasksCompleted();return;}
  const info=MISSION_INFO[id],department=departments.find(d=>d.id===id);
  openModal(`<div class="mission-success"><span class="success-seal">${already?'✓':'🪙'}</span><div class="eyebrow">PASSPORT STAMPED · ${department.name}</div><h2 id="dialog-title">你認識了這個科別！</h2><p>${info.learn}</p><strong>${already?'已經有這一科的章了，重玩一樣很棒！':'探索金幣 ＋1，護照多了一個章！'}</strong><div class="quest-progress"><span style="width:${questState.completed.length/8*100}%"></span></div><p>已探索 ${questState.completed.length} / 8 科 · 目前 ${questCoins()} 枚金幣</p><div class="form-actions"><button class="primary-btn" id="continue-exploring">繼續逛校園 →</button><button class="secondary-btn" id="view-quest-wallet">看看探索護照</button></div></div>${questStorageNotice()}`);
  $('#continue-exploring').onclick=()=>{closeModal();showView('map');};$('#view-quest-wallet').onclick=openRewardNpc;
@@ -66,7 +66,7 @@ function npcPortrait(){return `<svg class="npc-portrait scooter-portrait" viewBo
 
 function questStorageNotice(){return `<p class="course-footnote">${questStorageOK?'進度保存在此瀏覽器，不會跨裝置同步；清除網站資料會重設進度。':'此瀏覽器無法保存進度，目前只保留在這次開啟的頁面；關閉後可能遺失。'}這是此瀏覽器的探索紀錄；完成名次由共用服務登記。前 15 位完成八科探索者可出示領獎畫面至校長室領取小獎品。</p>`;}
 function openRewardNpc() {
- syncQuestState();refreshQuestWallet();const coins=questCoins();if(coins===8){openCompletionReward();return;}
+ syncQuestState();refreshQuestWallet();const coins=questCoins();if(coins===8){triggerAllTasksCompleted();return;}
  openModal(`<div class="npc-shop-heading">${npcPortrait()}<div class="eyebrow">ZHONG DING WEN · CAMPUS GUIDE</div><h2 id="dialog-title">校園客服-中鼎文</h2><p>每完成一個科別小任務，就能獲得一枚金幣。集滿八枚後，我會自動告訴你完成名次！</p></div><div class="quest-balance"><span>🪙</span><strong>${coins}</strong><small>枚金幣 · 已探索 ${questState.completed.length} / 8 科</small></div><div class="quest-stamps">${departments.map(d=>`<span class="${questState.completed.includes(d.id)?'earned':''}">${questState.completed.includes(d.id)?'✓':'○'} ${d.name}</span>`).join('')}</div><div class="reward-card"><span>🎁</span><div><h3>前 15 名完成者的小獎品</h3><p>記得截圖完成畫面，到校長室領取唷！</p><small>名次以完成八科後，全站登記成功的順序為準。</small></div></div><button class="primary-btn redeem-button" id="redeem-quest-reward" disabled>還差 ${8-coins} 枚，再去逛逛吧</button>${questStorageNotice()}`);
 }
 

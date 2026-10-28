@@ -45,7 +45,7 @@ function walkCampusPlayer(id){
  const status=document.createElement('div');status.id='player-travel';
  status.innerHTML=`<span role="status">${transfer?`步道不相連，轉場前往${esc(d.name)}的探索入口…`:`前往${esc(d.name)}的探索入口…`}</span><button type="button" id="cancel-player-travel">取消前往</button>`;
  $('#map-page').append(status);$('#cancel-player-travel').onclick=()=>{cancelCampusPlayerWalk();origin?.focus?.({preventScroll:true});};
- const arrival=()=>{campusPlayerNode=target;campusPlayerSegment=null;campusPlayerPosition=[...CAMPUS_NODES[target]];campusPlayerFrame=null;paintCampusPlayer();status.remove();const focusOrigin=origin?.getClientRects&&!origin.getClientRects().length?$(`[data-label-for="${id}"]`):origin;showDepartmentAfterWalk(id,focusOrigin);};
+ const arrival=()=>{campusPlayerNode=target;campusPlayerSegment=null;campusPlayerPosition=[...CAMPUS_NODES[target]];campusPlayerFrame=null;paintCampusPlayer();status.remove();triggerEntranceMessage();const focusOrigin=origin?.getClientRects&&!origin.getClientRects().length?$(`[data-label-for="${id}"]`):origin;showDepartmentAfterWalk(id,focusOrigin);};
  // Retain the transfer notice even when walking animations are reduced.
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  if(reduced&&!transfer){arrival();return;}

@@ -1,9 +1,0 @@
-const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
-module.exports=function createCounter(){
- const rows=[['id','rank','time','code','eligible','collected']],props=new Map([['PRIZE_SHEET_ID','test-sheet']]);let held=false,acquired=0,released=0,failWrite=false,uuid=0;
- const sheet={getLastRow:()=>rows.length,appendRow(row){assert(held,'allocation must hold the script lock');if(failWrite){failWrite=false;throw Error('temporary write failure')}rows.push([...row])},getRange(r,c,n=1,width=1){return{getValue:()=>rows[r-1]?.[c-1],getValues:()=>rows.slice(r-1,r-1+n).map(row=>row.slice(c-1,c-1+width)),createTextFinder(query){return{matchEntireCell(){return this},findNext(){assert(held,'lookup must be in the same lock');const index=rows.findIndex((row,i)=>i>=r-1&&i<r-1+n&&row[c-1]===query);return index<0?null:{getRow:()=>index+1}}}}}}};
- const context=vm.createContext({console,Date,Set,Error,JSON,Number,String,Math,PropertiesService:{getScriptProperties:()=>({getProperty:k=>props.get(k),setProperty:(k,v)=>props.set(k,v)})},SpreadsheetApp:{openById:()=>({getSheetByName:()=>sheet}),flush:()=>assert(held)},LockService:{getScriptLock:()=>({waitLock(){assert(!held);held=true;acquired++},releaseLock(){assert(held);held=false;released++}})},Utilities:{getUuid:()=>String(++uuid).padStart(32,'0')},ContentService:{MimeType:{JSON:'json'},createTextOutput:text=>({text,setMimeType(){return this}})}});
- vm.runInContext(fs.readFileSync('server/prize-counter.gs','utf8'),context);
- const complete=['mechanical','piping','business','accounting','data','english','service','sports'];
- return{rows,send:data=>JSON.parse(context.doPost({postData:{contents:JSON.stringify(data)}}).text),register:id=>JSON.parse(context.doPost({postData:{contents:JSON.stringify({clientId:id,completed:complete})}}).text),status:()=>JSON.parse(context.doGet().text),complete,failNextWrite:()=>failWrite=true,locks:()=>({held,acquired,released})};
-};
