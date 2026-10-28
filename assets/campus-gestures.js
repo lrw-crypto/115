@@ -6,9 +6,9 @@ function initCampusGestures(el){
  const pair=()=>{const [a,b]=[...contacts.values()];return {x:(a.x+b.x)/2,y:(a.y+b.y)/2,d:Math.hypot(a.x-b.x,a.y-b.y)};};
  el.addEventListener('pointerdown',e=>{
   if(e.pointerType==='mouse'&&e.button!==0)return;
-  cancelDepartmentVisit(false);contacts.set(e.pointerId,point(e));
+  if(typeof departmentZoomFrame!=='undefined'&&departmentZoomFrame!==null)cancelDepartmentVisit(false);contacts.set(e.pointerId,point(e));
   if(contacts.size===1){drag.active=true;drag.moved=false;drag.x=e.clientX;drag.y=e.clientY;}
-  if(contacts.size>=2){previous=pair();drag.moved=true;suppressUntil=Infinity;}
+  if(contacts.size>=2){previous=pair();drag.moved=true;suppressUntil=Infinity;for(const id of contacts.keys())try{el.setPointerCapture?.(id);}catch{}}
  },true);
  window.addEventListener('pointermove',e=>{
   if(!contacts.has(e.pointerId))return;const before=contacts.get(e.pointerId),next=point(e);contacts.set(e.pointerId,next);
@@ -22,12 +22,14 @@ function initCampusGestures(el){
   }
   if(drag.moved){el.classList.add('dragging');if(e.cancelable)e.preventDefault();}
  },{passive:false});
- const release=e=>{if(!contacts.has(e.pointerId))return;contacts.delete(e.pointerId);previous=null;if(drag.moved)suppressUntil=Date.now()+400;
+ const release=(e,cancelled=false)=>{if(!contacts.has(e.pointerId))return;contacts.delete(e.pointerId);previous=null;if(drag.moved||cancelled)suppressUntil=Date.now()+400;
   drag.active=contacts.size>0;if(!drag.active)el.classList.remove('dragging');
   if(contacts.size>=2)previous=pair();
  };
- window.addEventListener('pointerup',release);window.addEventListener('pointercancel',release);
- window.addEventListener('blur',()=>{contacts.clear();previous=null;drag.active=false;el.classList.remove('dragging');suppressUntil=Date.now()+400;});
+ window.addEventListener('pointerup',release);window.addEventListener('pointercancel',e=>release(e,true));
+ const reset=()=>{contacts.clear();previous=null;drag.active=false;drag.moved=true;el.classList.remove('dragging');suppressUntil=Date.now()+400;};
+ window.addEventListener('blur',reset);window.addEventListener('resize',reset);
+ if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
  el.addEventListener('click',e=>{if(Date.now()<suppressUntil){e.preventDefault();e.stopImmediatePropagation();}},true);
  el.addEventListener('wheel',e=>{e.preventDefault();zoom(e.deltaY<0?.08:-.08);},{passive:false});
 }

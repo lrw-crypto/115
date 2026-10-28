@@ -181,3 +181,15 @@ CAMPUS_BASE_URL=http://127.0.0.1:8012/115/ node tests/browser-campus-walking.cjs
 `tests/browser-campus-supporter-passport.cjs` 檢查新角色對白／固定位置／焦點、護照字級與對比、窄手機不溢出、科名方塊可互動而背景不觸發介紹。`tests/browser-campus-visitor-clearance.cjs` 也檢查學生不與兩位固定角色重疊。
 
 頁首標語「今天，換你當草商新生！」位於品牌名稱之後，品牌採用鮮明粉紅／橘色／藍綠漸層；手機將標語換到品牌下方。地圖上方不再提供分類列，八科方塊全部顯示。版面樣式在 `assets/campus-layout.css` 最後一段，頁首內容在 `index.html`。
+
+### 草稿：玩家角色與多指縮放
+
+`assets/campus-player.js` 管理男／女生角色、暱稱（最多 12 字）與 `caotun-player-v1` 本機儲存；金幣仍沿用既有儲存鍵。科別、護照、課程卡與搜尋結果均先導引至 `CAMPUS_PLAYER_STOPS` 的探索入口，再開啟原有介紹和遊戲。取消按鈕或 Esc 會停在當下位置；改選目的地從所在路段的可達端點續行，不跳回上一個節點。操場等不相通路網保留轉場提示。
+
+`assets/campus-gestures.js` 依 `pointerId` 追蹤接觸點，在 SVG 地圖座標計算兩指中心與縮放錨點；觸控不依螢幕寬度啟用。處理雙指轉單指、第三指、取消、失焦、視窗大小改變及縮放後誤點，縮放上下限與按鈕一致為 0.65–2.8。手機頁首把角色按鈕排在標語之後，避免擠壓品牌；原有科別與相簿視窗沿用。
+
+基本檢查：`node tests/player-gestures.cjs`、三份 JavaScript 的 `node --check`、`python3 tests/validate_curriculum.py`。
+
+瀏覽器檢查：在已有 Playwright 與 Chromium 的環境設定 `NODE_PATH`，執行 `node tests/browser-player-gestures.cjs`；可透過 `CAMPUS_BASE_URL` 指定預覽網址（預設 `http://127.0.0.1:8013/115/`）。測試包含八科實際旅程、可行走區域取樣、取消／改選不跳位置、角色儲存、課程／搜尋入口、原有商經遊戲與金幣、Chromium 原生雙指觸控與錨點、轉單指、取消、失焦、重設、誤點抑制、上限，以及手機與 iPad 尺寸的橫直版面。這些是 Chromium 模擬，不能取代 iPhone／iPad Safari 實機測試。
+
+此功能維持 `codex/player-ipad-pinch` 草稿分支，未部署正式 GitHub Pages。
