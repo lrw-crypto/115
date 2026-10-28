@@ -182,7 +182,7 @@ CAMPUS_BASE_URL=http://127.0.0.1:8012/115/ node tests/browser-campus-walking.cjs
 
 頁首標語「今天，換你當草商新生！」位於品牌名稱之後，品牌採用鮮明粉紅／橘色／藍綠漸層；手機將標語換到品牌下方。地圖上方不再提供分類列，八科方塊全部顯示。版面樣式在 `assets/campus-layout.css` 最後一段，頁首內容在 `index.html`。
 
-### 草稿：玩家角色與多指縮放
+### 個人化玩家角色與多指縮放
 
 `assets/campus-player.js` 管理男／女生角色、暱稱（最多 12 字）與 `caotun-player-v1` 本機儲存；金幣仍沿用既有儲存鍵。科別、護照、課程卡與搜尋結果均先導引至 `CAMPUS_PLAYER_STOPS` 的探索入口，再開啟原有介紹和遊戲。取消按鈕或 Esc 會停在當下位置；改選目的地從所在路段的可達端點續行，不跳回上一個節點。操場等不相通路網保留轉場提示。
 
@@ -192,4 +192,4 @@ CAMPUS_BASE_URL=http://127.0.0.1:8012/115/ node tests/browser-campus-walking.cjs
 
 瀏覽器檢查：在已有 Playwright 與 Chromium 的環境設定 `NODE_PATH`，執行 `node tests/browser-player-gestures.cjs`；可透過 `CAMPUS_BASE_URL` 指定預覽網址（預設 `http://127.0.0.1:8013/115/`）。測試包含八科實際旅程、可行走區域取樣、取消／改選不跳位置、角色儲存、課程／搜尋入口、原有商經遊戲與金幣、Chromium 原生雙指觸控與錨點、轉單指、取消、失焦、重設、誤點抑制、上限，以及手機與 iPad 尺寸的橫直版面。這些是 Chromium 模擬，不能取代 iPhone／iPad Safari 實機測試。
 
-此功能維持 `codex/player-ipad-pinch` 草稿分支，未部署正式 GitHub Pages。
+個人化功能已接入正式網站。玩家與選角預覽共用 `campusPlayerArt`，沿用學校制服，加上可辨識的小書包與肩帶，頭上顯示暱稱。長暱稱會自動加寬名牌。完成八科任務後，護照提示「已集滿！找中鼎文」，沿用原有客服與實體小禮物資訊；領取規則仍待校方補充，不會預先扣除金幣。
